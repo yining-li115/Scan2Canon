@@ -4,7 +4,8 @@ import argparse
 import subprocess
 from pathlib import Path
 
-from experiments.mapanything.common import config, sha256, verify_dinov2, write_json
+from experiments.artifacts import sha256, write_json
+from experiments.mapanything.common import config, verify_dinov2
 
 
 def download(directory: Path) -> None:

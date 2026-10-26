@@ -1,8 +1,15 @@
 # Scan2Canon
 
-Turn multi-view captures of real-world objects into 3D assets with consistent semantic orientations.
+Turn real-world object captures into generated 3D assets with consistent semantic orientations.
 
-This version provides a local backend scaffold for importing images, submitting jobs, checking inputs, recording events, recovering interrupted jobs, and querying status over HTTP. A separate MapAnything experiment provides a pinned GPU environment and an image-only inference runner for server validation. Model inference is not yet connected to backend jobs: by default, jobs become `blocked` at the `reconstruct` stage; no placeholder geometry is presented as a real reconstruction.
+This version provides a local backend scaffold for importing images, submitting jobs, checking inputs, recording events, recovering interrupted jobs, and querying status over HTTP. Independent GPU experiments cover SAM 3D Objects for generative reconstruction and MapAnything as a geometric baseline. Model inference is not yet connected to backend jobs: by default, jobs become `blocked` at the `reconstruct` stage; no placeholder geometry is presented as a real reconstruction.
+
+The current direction is **image + object mask → generated mesh → held-out-view evaluation → semantic canonicalization → review**. Start with [Generative reconstruction](docs/generative-reconstruction.md). A generated asset is a prediction, including unseen surfaces; it must not be labeled as measured geometry or dataset ground truth. The SAM 3D runner records export success separately from validation and dataset approval.
+
+The [semantic orientation experiment](docs/canonicalization.md) renders an existing GLB,
+runs pinned Orient Anything V2 inference, and exports ranked pose candidates with
+explicit coordinate transforms and disagreement records. Candidates require review;
+successful export does not establish a category's semantic front or reconstruction accuracy.
 
 For the first GPU experiment, follow [Server experiments](docs/server-experiments.md). The pinned environment and an eight-view inference/export smoke test were verified on an A100 40 GB on October 26, 2026. This confirms execution, not reconstruction accuracy or semantic canonicalization.
 
@@ -60,7 +67,12 @@ src/scan2canon/
   tools/             Independent compute adapters
 tests/               Recovery, contract, path isolation, and API tests
 experiments/mapanything/  Isolated paper baseline, GPU lockfile, and provenance
+experiments/sam3d/    Masked image preparation, generative inference, and GPU lockfile
+experiments/orientation/  Known-camera rendering, OA V2 inference, and canonical pose candidates
+experiments/artifacts.py  Shared checksums and portable experiment manifests
 scripts/setup_mapanything.sh  Linux CUDA environment installation and kernel check
+scripts/setup_sam3d.sh  Isolated SAM 3D environment and CUDA extension setup
+scripts/setup_orientation.sh  Isolated OA V2 GPU environment and source verification
 docs/architecture.md Architecture boundaries, limitations, and adapter contracts
 ```
 
@@ -91,6 +103,9 @@ uv run mypy src tests experiments
 uv run pytest
 ```
 
-Backend dependency versions are recorded in `uv.lock`. The Linux GPU experiment has its own `experiments/mapanything/uv.lock`; it does not install CUDA packages into the backend environment. Update the corresponding lockfile when changing dependencies. Keep runtime environments and captured data out of version control.
+Use `uv sync --extra canonical` and `uv run --extra canonical pytest` to include the
+CPU orientation geometry/export tests. The extra installs NumPy and trimesh, not CUDA.
 
-The next step is to run the MapAnything baseline on a small sample and inspect geometry, runtime, and memory usage before designing the production reconstruction adapter. VGGT is a planned independent comparison on identical input frames. Meshing, semantic orientation, and agent policies remain separate experiments and are not implied by a successful reconstruction run.
+Backend dependency versions are recorded in `uv.lock`. Each Linux GPU experiment has its own `uv.lock`; it does not install CUDA packages into the backend environment. SAM 3D's compiled extensions use fixed versions/revisions in its setup script, and the installed package inventory is recorded with each run. Update the corresponding lockfile when changing dependencies. Keep runtime environments and captured data out of version control.
+
+The first SAM 3D experiment generated a mesh from one masked video frame on an A100 40 GB: 20.4 seconds of inference and 17.8 GiB peak allocated memory. Other real views remain available for evaluation. MapAnything remains a geometric comparison; its successful smoke test did not establish acceptable object geometry. OA V2 integration has passed local coordinate and export checks; GPU inference and semantic correctness still require verification. Multi-view validation and agent policies remain separate work and are not implied by a successful generation run.

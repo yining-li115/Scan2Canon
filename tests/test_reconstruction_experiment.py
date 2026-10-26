@@ -5,7 +5,8 @@ from typing import Any
 import pytest
 from PIL import Image
 
-from experiments.mapanything.common import config, sha256, verified_inputs, write_json
+from experiments.artifacts import sha256, verified_inputs, write_json
+from experiments.mapanything.common import config
 from experiments.mapanything.prepare import prepare
 from experiments.mapanything.run import run
 

@@ -24,7 +24,10 @@ Code revision: `52185d84dc584920d8dd92d6dfd7d3f0da8a4608`. Local run directory: 
 
 All eight prediction files were readable. Valid depths were positive and finite; valid world points were finite; camera rotation matrices were orthonormal with determinant approximately +1. These are numeric integrity checks only. The scene includes the desk and background, and the object is not isolated or converted into a complete mesh. This single first-run measurement is not a steady-state performance benchmark. The predictions and logs were copied back to the development Mac.
 
-Planned comparisons remain independent: VGGT on the same frames, Orient Anything V2 for orientation, and SAM 3D Objects for single-image asset generation. They have no runnable adapters in this repository yet.
+Comparisons remain independent: VGGT on the same frames is planned;
+[SAM 3D Objects](generative-reconstruction.md) has a verified single-image GPU run;
+[Orient Anything V2](canonicalization.md) has an isolated orientation adapter with
+local coordinate/export verification and GPU inference still to be verified.
 
 ## Pinned environment
 

@@ -5,7 +5,7 @@ import hashlib
 import tempfile
 from pathlib import Path
 
-from experiments.mapanything.common import sha256, write_json
+from experiments.artifacts import sha256, write_json
 from scan2canon.images import NORMALIZATION_VERSION, SUPPORTED_SUFFIXES, prepare_image
 
 

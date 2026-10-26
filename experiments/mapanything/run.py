@@ -10,15 +10,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from experiments.mapanything.common import (
-    CONFIG_PATH,
-    config,
-    read_json,
-    sha256,
-    verified_inputs,
-    verify_dinov2,
-    write_json,
-)
+from experiments.artifacts import read_json, sha256, verified_inputs, write_json
+from experiments.mapanything.common import CONFIG_PATH, config, verify_dinov2
 
 INFERENCE_OPTIONS = {
     "memory_efficient_inference": True,

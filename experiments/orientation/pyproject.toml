@@ -1,0 +1,31 @@
+[project]
+name = "scan2canon-orientation-experiment"
+version = "0.1.0"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+  "torch==2.7.1", "torchvision==0.22.1", "numpy==2.2.6",
+  "huggingface-hub==0.35.3", "pillow>=11,<12", "scipy>=1.15,<1.17",
+  "einops>=0.8,<0.9", "trimesh>=4.6,<6", "rembg==2.0.67",
+  "onnxruntime>=1.20,<1.24",
+]
+
+[tool.uv]
+package = false
+environments = ["sys_platform == 'linux' and platform_machine == 'x86_64'"]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.scan2canon]
+source_repository = "https://github.com/SpatialVision/Orient-Anything-V2.git"
+source_revision = "73b11c9dc83e84daeb563d0c766831f2c66b0a18"
+checkpoint = "Viglong/OriAnyV2_ckpt"
+checkpoint_revision = "34fe2ecbdb987a0fb98437af00600f22a0fdfb99"
+checkpoint_file = "demo_ckpts/rotmod_realrotaug_best.pt"
+checkpoint_license = "CC-BY-4.0"
