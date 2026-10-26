@@ -13,7 +13,9 @@ from experiments.orientation.common import CONFIG_PATH, config, verify_source, v
 from experiments.orientation.download import verify_checkpoint
 
 
-def predict(views: Path, source: Path, checkpoint: Path, output: Path) -> dict[str, Any]:
+def predict(
+    views: Path, source: Path, checkpoint: Path, output: Path, verify_official: bool = False
+) -> dict[str, Any]:
     import numpy as np
     import torch
     from PIL import Image
@@ -40,7 +42,8 @@ def predict(views: Path, source: Path, checkpoint: Path, output: Path) -> dict[s
     with torch.inference_mode():
         for view in manifest["views"]:
             with Image.open(views / view["image"]) as image:
-                inputs = helpers.preprocess_images([image.convert("RGBA")], mode="pad")
+                rgba = image.convert("RGBA")
+                inputs = helpers.preprocess_images([rgba], mode="pad")
             inputs = inputs.unsqueeze(0).to("cuda")
             captured: list[Any] = []
 
@@ -50,6 +53,12 @@ def predict(views: Path, source: Path, checkpoint: Path, output: Path) -> dict[s
             hook = model.register_forward_hook(capture)
             try:
                 answer = helpers.inf_single_batch(model, inputs)
+                if verify_official:
+                    official = helpers.inf_single_case(model, rgba, None)
+                    np.testing.assert_allclose(captured[0], captured[1], rtol=1e-5, atol=1e-5)
+                    for key in ("ref_az_pred", "ref_el_pred", "ref_ro_pred", "ref_alpha_pred"):
+                        if float(answer[key]) != float(official[key]):
+                            raise ValueError(f"Official single-case decoding differs: {key}")
             finally:
                 hook.remove()
             logits = captured[0]
@@ -67,6 +76,7 @@ def predict(views: Path, source: Path, checkpoint: Path, output: Path) -> dict[s
     np.savez_compressed(output / "logits.npz", **raw_outputs)
     return {
         "predictions": predictions,
+        "official_single_case_parity": "passed" if verify_official else "not_checked",
         "metrics": {
             "load_seconds": load_seconds,
             "inference_seconds": time.perf_counter() - started,
@@ -76,7 +86,9 @@ def predict(views: Path, source: Path, checkpoint: Path, output: Path) -> dict[s
     }
 
 
-def run(views: Path, output: Path, source: Path, checkpoint: Path) -> Path:
+def run(
+    views: Path, output: Path, source: Path, checkpoint: Path, verify_official: bool = False
+) -> Path:
     views, output, source, checkpoint = (p.resolve() for p in (views, output, source, checkpoint))
     output.mkdir(parents=True, exist_ok=False)
     started = time.perf_counter()
@@ -88,6 +100,7 @@ def run(views: Path, output: Path, source: Path, checkpoint: Path) -> Path:
         "preprocessing": "Official pad-to-518; alpha composited onto white; no rembg call",
         "symmetry_note": "Fit 0 is unresolved azimuth, not proof of physical symmetry",
         "runner_sha256": sha256(Path(__file__)),
+        "verify_official": verify_official,
         "environment_lock_sha256": sha256(CONFIG_PATH.with_name("uv.lock")),
     }
     write_json(output / "predictions.json", report)
@@ -100,7 +113,7 @@ def run(views: Path, output: Path, source: Path, checkpoint: Path) -> Path:
         report["packages"] = {
             d.metadata["Name"]: d.version for d in importlib.metadata.distributions()
         }
-        report.update(predict(views, source, checkpoint_file, output))
+        report.update(predict(views, source, checkpoint_file, output, verify_official))
         report["logits_sha256"] = sha256(output / "logits.npz")
         report["status"] = "succeeded"
     except BaseException as error:
@@ -118,8 +131,9 @@ def main() -> None:
     parser.add_argument("output", type=Path)
     parser.add_argument("--source-dir", type=Path, default=Path("data/tools/Orient-Anything-V2"))
     parser.add_argument("--checkpoint-dir", type=Path, default=Path("weights/orientation"))
+    parser.add_argument("--verify-official", action="store_true")
     args = parser.parse_args()
-    print(run(args.views, args.output, args.source_dir, args.checkpoint_dir))
+    print(run(args.views, args.output, args.source_dir, args.checkpoint_dir, args.verify_official))
 
 
 if __name__ == "__main__":

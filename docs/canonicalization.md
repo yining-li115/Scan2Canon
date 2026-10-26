@@ -15,6 +15,9 @@ The [first GPU run](experiments/2026-10-26-orientation.md) completed on an A100 
 It produced reviewable meshes but conflicting orientation/symmetry predictions;
 the semantic decision remains `needs_evidence`.
 
+Use the [controlled diagnostics](orientation-diagnostics.md) to compare the official
+entry point, evaluate known rotations, and inspect support-surface upright candidates.
+
 ## Local preparation
 
 Install the small CPU geometry extra without GPU dependencies:

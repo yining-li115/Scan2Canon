@@ -20,6 +20,7 @@ from experiments.orientation.geometry import (  # noqa: E402
     symmetry_error,
 )
 from experiments.orientation.solve import hypotheses, solve  # noqa: E402
+from experiments.orientation.support import support_candidates  # noqa: E402
 
 
 def test_pose_recovery_for_arbitrarily_rotated_mesh() -> None:
@@ -167,3 +168,70 @@ def test_tampered_render_and_cross_bundle_predictions_fail(
     (views / "view-0.png").write_bytes(b"modified")
     with pytest.raises(ValueError, match="modified artifact"):
         verify_views(views)
+
+
+def test_support_planes_recover_resting_up_under_known_rotation() -> None:
+    mesh = trimesh.creation.box(extents=[2, 0.4, 1])
+    expected = np.array([0, 1.0, 0])
+    oa = OA_TO_CANONICAL.T
+    candidates = support_candidates(mesh, [oa, oa, oa])
+    np.testing.assert_allclose(candidates[0]["up_in_input_frame"], expected, atol=1e-7)
+    # An upside-down resting pose must remain a possible geometric solution.
+    assert any(np.dot(c["up_in_input_frame"], expected) < -0.99 for c in candidates)
+    q = axis_rotation(0, 41) @ axis_rotation(1, 67) @ axis_rotation(2, -23)
+    moved = mesh.copy()
+    transform = np.eye(4)
+    transform[:3, :3] = q
+    moved.apply_transform(transform)
+    rotated = support_candidates(moved, [oa @ q.T] * 3)
+    best = rotated[0]
+    np.testing.assert_allclose(best["up_in_input_frame"], q @ expected, atol=1e-7)
+    result = moved.copy()
+    result.apply_transform(best["transform"])
+    assert abs(result.bounds[0, 1]) < 1e-7
+    assert abs(result.extents[1] - 0.4) < 1e-7
+    np.testing.assert_array_equal(result.faces, mesh.faces)
+
+
+def test_control_evaluation_distinguishes_accuracy_from_equivariance(
+    portable_run: tuple[Path, Path], tmp_path: Path
+) -> None:
+    import shutil
+
+    from experiments.orientation.controls import evaluate
+
+    template_views, template_predictions = portable_run
+    controls, predictions = tmp_path / "controls", tmp_path / "predictions"
+    q = axis_rotation(0, 41) @ axis_rotation(1, 67)
+    cases = []
+    for category in ("chair", "punch"):
+        for variant, applied in (("base", np.eye(3)), ("rotated", q)):
+            name = f"{category}-{variant}"
+            views, run = controls / name, predictions / name
+            shutil.copytree(template_views, views)
+            shutil.copytree(template_predictions, run)
+            manifest = json.loads((views / "manifest.json").read_text())
+            camera = GLB_TO_BLENDER @ applied @ OA_TO_CANONICAL @ OA_CAMERA_TO_WORLD
+            for view in manifest["views"]:
+                view["camera_to_world"] = camera.tolist()
+            write_json(views / "manifest.json", manifest)
+            report = json.loads((run / "predictions.json").read_text())
+            report["views_manifest_sha256"] = sha256(views / "manifest.json")
+            write_json(run / "predictions.json", report)
+            cases.append(
+                {
+                    "name": name,
+                    "applied_rotation": applied.tolist(),
+                    "canonical_ground_truth": applied.T.tolist() if category == "chair" else None,
+                    "views_manifest_sha256": sha256(views / "manifest.json"),
+                }
+            )
+    write_json(controls / "controls.json", {"status": "succeeded", "cases": cases})
+    output = evaluate(controls, predictions, tmp_path / "metrics.json")
+    result = json.loads(output.read_text())
+    assert result["cases"][0]["median_up_error_degrees"] < 1e-5
+    assert result["cases"][1]["median_rotation_error_degrees"] < 1e-5
+    assert "median_rotation_error_degrees" not in result["cases"][2]
+    assert all(p["median_rotation_difference_degrees"] < 1e-5 for p in result["pairs"])
+    with pytest.raises(FileExistsError):
+        evaluate(controls, predictions, output)
