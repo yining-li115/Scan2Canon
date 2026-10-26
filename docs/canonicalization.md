@@ -152,13 +152,11 @@ or conflicting prediction must never be converted into automatic dataset approva
 ## Validation
 
 ```bash
-uv run --extra canonical pytest
-uv run ruff check .
-uv run ruff format --check .
-uv run --extra canonical mypy src tests experiments/orientation/geometry.py \
-  experiments/orientation/common.py experiments/orientation/render.py \
-  experiments/orientation/download.py experiments/orientation/infer.py \
-  experiments/orientation/solve.py
+uv sync --locked --extra canonical
+uv run --locked --extra canonical pytest
+uv run --locked --extra canonical ruff check .
+uv run --locked --extra canonical ruff format --check .
+uv run --locked --extra canonical mypy src tests experiments
 bash -n scripts/setup_orientation.sh
 ```
 

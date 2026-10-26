@@ -97,14 +97,16 @@ uv run scan2canon worker --once
 ## Development checks
 
 ```bash
-uv run ruff check .
-uv run ruff format --check .
-uv run mypy src tests experiments
-uv run pytest
+uv sync --locked --extra canonical
+uv run --locked --extra canonical ruff check .
+uv run --locked --extra canonical ruff format --check .
+uv run --locked --extra canonical mypy src tests experiments
+uv run --locked --extra canonical pytest
 ```
 
-Use `uv sync --extra canonical` and `uv run --extra canonical pytest` to include the
-CPU orientation geometry/export tests. The extra installs NumPy and trimesh, not CUDA.
+These commands match GitHub Actions and include the CPU orientation geometry/export
+tests. The `canonical` extra installs NumPy and trimesh, not CUDA. A base-only
+installation supports the backend, but not type-checking the optional geometry module.
 
 Backend dependency versions are recorded in `uv.lock`. Each Linux GPU experiment has its own `uv.lock`; it does not install CUDA packages into the backend environment. SAM 3D's compiled extensions use fixed versions/revisions in its setup script, and the installed package inventory is recorded with each run. Update the corresponding lockfile when changing dependencies. Keep runtime environments and captured data out of version control.
 
