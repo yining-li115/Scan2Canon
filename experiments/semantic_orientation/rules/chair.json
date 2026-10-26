@@ -1,0 +1,12 @@
+{
+  "id": "chair-seat-facing",
+  "version": 1,
+  "category": "chair with a backrest",
+  "status": "fixture",
+  "up": "From the feet toward the top of the backrest.",
+  "front": "Horizontally from the backrest toward the open front edge of the seat, the direction a seated person faces.",
+  "pointso_up": "top",
+  "pointso_front": "the direction a seated person faces",
+  "required_part": "backrest and open front edge of the seat",
+  "unique_front": true
+}

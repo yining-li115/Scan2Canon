@@ -11,6 +11,10 @@ runs pinned Orient Anything V2 inference, and exports ranked pose candidates wit
 explicit coordinate transforms and disagreement records. Candidates require review;
 successful export does not establish a category's semantic front or reconstruction accuracy.
 
+The [semantic front comparison](docs/semantic-orientation.md) adds isolated PointSO
+direction prediction and rule-grounded Qwen candidate selection, with shared inputs,
+raw evidence, abstentions, and separate accuracy/equivariance evaluation.
+
 For the first GPU experiment, follow [Server experiments](docs/server-experiments.md). The pinned environment and an eight-view inference/export smoke test were verified on an A100 40 GB on October 26, 2026. This confirms execution, not reconstruction accuracy or semantic canonicalization.
 
 ## Getting started

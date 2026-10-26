@@ -16,7 +16,7 @@ def main() -> None:
     parser.add_argument("output", type=Path)
     parser.add_argument("--views", type=int, default=12)
     parser.add_argument("--resolution", type=int, default=518)
-    parser.add_argument("--preset", choices=("sphere", "canonical"), default="sphere")
+    parser.add_argument("--preset", choices=("sphere", "canonical", "ring"), default="sphere")
     args = parser.parse_args(sys.argv[sys.argv.index("--") + 1 :])
     bpy.ops.wm.read_factory_settings(use_empty=True)
     bpy.ops.import_scene.gltf(filepath=str(args.mesh))
@@ -80,6 +80,10 @@ def main() -> None:
             ("Bottom (-Y)", (0, 0, -1)),
             ("Three-quarter", (1, -1, 1)),
         ]
+    elif args.preset == "ring":
+        for index in range(args.views):
+            yaw = 2 * math.pi * index / args.views
+            directions.append((f"Candidate {index:02d}", (math.sin(yaw), -math.cos(yaw), 0.35)))
     else:
         for index in range(args.views):
             z = 1 - 2 * (index + 0.5) / args.views

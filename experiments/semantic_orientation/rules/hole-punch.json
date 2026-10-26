@@ -1,0 +1,12 @@
+{
+  "id": "hole-punch-paper-entry-outward",
+  "version": 1,
+  "category": "desktop paper hole punch",
+  "status": "draft",
+  "up": "From the resting base toward the upper pressing lever.",
+  "front": "Horizontally outward from the paper-entry slot toward the user inserting paper. This is opposite to the direction paper travels when inserted. Do not use the logo or the lever alone to choose the front.",
+  "pointso_up": "top",
+  "pointso_front": "outward from the paper insertion opening",
+  "required_part": "paper-entry slot",
+  "unique_front": true
+}
