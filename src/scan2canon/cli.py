@@ -13,7 +13,7 @@ def parser() -> argparse.ArgumentParser:
     command = argparse.ArgumentParser(prog="scan2canon")
     command.add_argument("--data-dir", type=Path, default=None)
     commands = command.add_subparsers(dest="command", required=True)
-    capture = commands.add_parser("import", help="Import 3–200 JPEG/PNG images")
+    capture = commands.add_parser("import", help="Import 3–200 JPEG/PNG/HEIC/HEIF images")
     capture.add_argument("directory", type=Path)
     submit = commands.add_parser("submit", help="Queue an imported capture")
     submit.add_argument("capture_id", type=UUID)

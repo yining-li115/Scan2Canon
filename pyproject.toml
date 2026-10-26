@@ -11,6 +11,7 @@ requires-python = ">=3.12"
 dependencies = [
   "fastapi>=0.115,<1",
   "pillow>=11,<13",
+  "pillow-heif>=1,<2",
   "pydantic>=2.10,<3",
   "uvicorn>=0.34,<1",
 ]
@@ -26,6 +27,7 @@ packages = ["src/scan2canon"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 addopts = "-ra"
 
 [tool.ruff]
@@ -40,3 +42,7 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 python_version = "3.12"
 strict = true
 plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["huggingface_hub", "mapanything.*", "numpy", "torch", "trimesh"]
+ignore_missing_imports = true

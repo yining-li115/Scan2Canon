@@ -3,6 +3,7 @@
 import math
 from datetime import UTC, datetime
 from enum import StrEnum
+from typing import Literal
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -50,9 +51,13 @@ class Frame(Model):
     sha256: str
     width: int = Field(gt=0)
     height: int = Field(gt=0)
+    source_key: str | None = None
+    source_sha256: str | None = None
+    normalization_version: str | None = None
 
 
 class Capture(Model):
+    schema_version: Literal[1, 2] = 1
     id: UUID = Field(default_factory=uuid4)
     created_at: datetime = Field(default_factory=utc_now)
     frames: tuple[Frame, ...] = Field(min_length=3, max_length=200)

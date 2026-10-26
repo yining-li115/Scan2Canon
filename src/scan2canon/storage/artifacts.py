@@ -1,18 +1,14 @@
 import hashlib
 import os
-import warnings
-from io import BytesIO
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from uuid import UUID, uuid4
 
-from PIL import Image
-
 from scan2canon.domain import Capture, Frame
+from scan2canon.images import NORMALIZATION_VERSION, SUPPORTED_SUFFIXES, prepare_image
 
 MAX_IMAGE_BYTES = 25 * 1024 * 1024
 MAX_CAPTURE_BYTES = 512 * 1024 * 1024
-MAX_PIXELS = 50_000_000
 
 
 class LocalArtifacts:
@@ -52,49 +48,47 @@ class LocalArtifacts:
 
     def import_capture(self, source: Path) -> Capture:
         if not source.is_dir():
-            raise ValueError("Capture source must be a directory of JPEG or PNG images")
+            raise ValueError("Capture source must be a directory of JPEG, PNG, HEIC or HEIF images")
         paths = sorted(
             path
             for path in source.iterdir()
-            if path.is_file() and path.suffix.lower() in {".jpg", ".jpeg", ".png"}
+            if path.is_file() and path.suffix.lower() in SUPPORTED_SUFFIXES
         )
         if not 3 <= len(paths) <= 200:
-            raise ValueError("A capture requires 3 to 200 JPEG or PNG images")
+            raise ValueError("A capture requires 3 to 200 JPEG, PNG, HEIC or HEIF images")
         capture_id = uuid4()
         prefix = f"captures/{capture_id}"
         frames: list[Frame] = []
         total_bytes = 0
         with TemporaryDirectory(dir=self.root, prefix=".import-") as directory:
             staging = Path(directory)
+            (staging / "originals").mkdir()
+            (staging / "frames").mkdir()
             for index, path in enumerate(paths):
                 with path.open("rb") as handle:
                     content = handle.read(MAX_IMAGE_BYTES + 1)
                 total_bytes += len(content)
                 if len(content) > MAX_IMAGE_BYTES or total_bytes > MAX_CAPTURE_BYTES:
                     raise ValueError("Capture exceeds the 25 MiB/image or 512 MiB/capture limit")
-                with warnings.catch_warnings():
-                    warnings.simplefilter("error", Image.DecompressionBombWarning)
-                    with Image.open(BytesIO(content)) as image:
-                        if image.format not in {"JPEG", "PNG"}:
-                            raise ValueError("Only JPEG and PNG contents are supported")
-                        if image.width * image.height > MAX_PIXELS:
-                            raise ValueError("Images must not exceed 50 megapixels")
-                        image.load()
-                        width, height = image.size
-                        suffix = "jpg" if image.format == "JPEG" else "png"
-                name = f"{index:04d}.{suffix}"
-                (staging / name).write_bytes(content)
+                prepared = prepare_image(content)
+                source_name = f"originals/{index:04d}.{prepared.source_suffix}"
+                name = f"frames/{index:04d}.jpg"
+                (staging / source_name).write_bytes(content)
+                (staging / name).write_bytes(prepared.jpeg)
                 frames.append(
                     Frame(
                         key=f"{prefix}/{name}",
-                        sha256=hashlib.sha256(content).hexdigest(),
-                        width=width,
-                        height=height,
+                        sha256=hashlib.sha256(prepared.jpeg).hexdigest(),
+                        width=prepared.width,
+                        height=prepared.height,
+                        source_key=f"{prefix}/{source_name}",
+                        source_sha256=hashlib.sha256(content).hexdigest(),
+                        normalization_version=NORMALIZATION_VERSION,
                     )
                 )
             if len({frame.sha256 for frame in frames}) < 3:
                 raise ValueError("At least three distinct image files are required")
-            capture = Capture(id=capture_id, frames=tuple(frames))
+            capture = Capture(id=capture_id, schema_version=2, frames=tuple(frames))
             (staging / "manifest.json").write_text(capture.model_dump_json(indent=2))
             destination = self._path(prefix)
             destination.parent.mkdir(parents=True, exist_ok=True)

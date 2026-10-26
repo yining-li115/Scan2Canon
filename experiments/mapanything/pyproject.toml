@@ -1,0 +1,33 @@
+[project]
+name = "scan2canon-mapanything-experiment"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "mapanything",
+  "torch==2.7.1",
+  "torchvision==0.22.1",
+  "torchaudio==2.7.1",
+  "huggingface-hub==0.35.3",
+  "numpy==2.2.6",
+]
+
+[tool.uv]
+package = false
+environments = ["sys_platform == 'linux' and platform_machine == 'x86_64'"]
+
+[tool.uv.sources]
+mapanything = { git = "https://github.com/facebookresearch/map-anything.git", rev = "3d10cf7a3016fc0f9bb13a071ee66c47b10be0d9" }
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
+torchaudio = { index = "pytorch-cu128" }
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.scan2canon]
+checkpoint = "facebook/map-anything"
+checkpoint_revision = "a1d87e9086706fb9974f3be5a3e3a0ca5401c5aa"
+checkpoint_license = "CC-BY-NC-4.0"
+dinov2_revision = "7764ea0f912e53c92e82eb78a2a1631e92725fc8"

@@ -2,7 +2,9 @@
 
 Turn multi-view captures of real-world objects into 3D assets with consistent semantic orientations.
 
-This version provides a local backend scaffold for importing images, submitting jobs, checking inputs, recording events, recovering interrupted jobs, and querying status over HTTP. VGGT, COLMAP, VLMs, and mesh generation are not yet integrated. By default, jobs become `blocked` at the `reconstruct` stage; no placeholder geometry is presented as a real reconstruction.
+This version provides a local backend scaffold for importing images, submitting jobs, checking inputs, recording events, recovering interrupted jobs, and querying status over HTTP. A separate MapAnything experiment provides a pinned GPU environment and an image-only inference runner for server validation. Model inference is not yet connected to backend jobs: by default, jobs become `blocked` at the `reconstruct` stage; no placeholder geometry is presented as a real reconstruction.
+
+For the first GPU experiment, follow [Server experiments](docs/server-experiments.md). GPU installation and inference must still be verified on the target server.
 
 ## Getting started
 
@@ -17,7 +19,11 @@ uv run scan2canon status <job_id>
 uv run scan2canon events <job_id>
 ```
 
-`import` returns a capture ID, and `submit` returns a job ID. Provide 3–200 JPEG or PNG images of the same stationary object in one directory; subdirectories are not scanned. Each image must be no larger than 25 MiB and 50 megapixels, with a maximum of 512 MiB per capture. Three distinct files satisfy the input requirement but do not establish adequate viewpoint coverage. HEIC support, video frame extraction, and mobile uploads are not yet implemented.
+`import` returns a capture ID, and `submit` returns a job ID. Provide 3–200 JPEG, PNG, HEIC, or HEIF images of the same stationary object in one directory; subdirectories are not scanned. Each source image must be no larger than 25 MiB and 50 megapixels, with a maximum of 512 MiB of source data per capture. Three distinct normalized images satisfy the input requirement but do not establish adequate viewpoint coverage. Video frame extraction and mobile uploads are not yet implemented.
+
+iPhone HEIC photos can be imported directly using `pillow-heif`; no manual conversion or macOS-specific decoder is required. Import preserves source files byte-for-byte under `originals/` and creates upright, 8-bit RGB JPEGs under `frames/` for model input. Normalization applies orientation, converts embedded ICC profiles to sRGB, and uses JPEG quality 95 without resizing. Unprofiled RGB is assumed to be sRGB; transparent inputs are composited on white. Derived JPEGs omit EXIF/XMP metadata to prevent repeated orientation transforms. Metadata remains in the original files.
+
+The HEIF primary image is used. Auxiliary depth, additional spatial-photo views, Live Photo video, and HDR gain maps are not processed. The JPEG derivative is lossy and does not preserve the original HDR appearance. Keep the original for later processing. Capture manifests record both file hashes and the normalization version; existing version-1 manifests remain readable.
 
 Data is stored in `.scan2canon/` under the current directory by default and is excluded from version control. To use a different location, configure the same data directory for every command and the API:
 
@@ -41,6 +47,7 @@ The HTTP API accepts IDs of previously imported captures, not server filesystem 
 ```text
 src/scan2canon/
   domain.py          Data contracts, stages, states, and rigid pose validation
+  images.py          HEIC/JPEG/PNG decoding and model-input normalization
   ports.py           Interfaces for tools, policies, and storage
   service.py         Capture import and job submission
   policy.py          Reproducible fixed-sequence baseline
@@ -52,6 +59,8 @@ src/scan2canon/
   storage/           SQLite metadata and local artifacts without overwrites
   tools/             Independent compute adapters
 tests/               Recovery, contract, path isolation, and API tests
+experiments/mapanything/  Isolated paper baseline, GPU lockfile, and provenance
+scripts/setup_mapanything.sh  Linux CUDA environment installation and kernel check
 docs/architecture.md Architecture boundaries, limitations, and adapter contracts
 ```
 
@@ -78,10 +87,10 @@ uv run scan2canon worker --once
 ```bash
 uv run ruff check .
 uv run ruff format --check .
-uv run mypy src tests
+uv run mypy src tests experiments
 uv run pytest
 ```
 
-Dependency versions are recorded in `uv.lock`. Update the lockfile when changing dependencies. Keep runtime environments and captured data out of version control.
+Backend dependency versions are recorded in `uv.lock`. The Linux GPU experiment has its own `experiments/mapanything/uv.lock`; it does not install CUDA packages into the backend environment. Update the corresponding lockfile when changing dependencies. Keep runtime environments and captured data out of version control.
 
-The next step is to implement a real reconstruction adapter and measure runtime, memory usage, and failure rates on a small sample, followed by meshing and canonicalization. Future VLM policies should use the same tools and validation boundaries as the fixed-sequence baseline to support controlled comparisons.
+The next step is to run the MapAnything baseline on a small sample and inspect geometry, runtime, and memory usage before designing the production reconstruction adapter. VGGT is a planned independent comparison on identical input frames. Meshing, semantic orientation, and agent policies remain separate experiments and are not implied by a successful reconstruction run.
