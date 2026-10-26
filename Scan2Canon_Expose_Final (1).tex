@@ -1,0 +1,85 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{titlesec}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[hidelinks]{hyperref}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\renewcommand{\arraystretch}{1.18}
+
+\titleformat{\section}
+  {\large\bfseries}
+  {}
+  {0pt}
+  {}
+
+\begin{document}
+
+\begin{center}
+    {\Large \textbf{Exposé}}\\[0.15em]
+    {\large \textit{Interdisciplinary Project}}\\[0.8em]
+    {\LARGE \textbf{Scan2Canon: Turning Real-World Object Scans into Canonical 3D Assets}}
+\end{center}
+
+\section{1. Project Description}
+
+Large-scale 3D datasets are widely used in computer vision, robotics, simulation, and generative models. However, many existing datasets rely heavily on synthetic 3D assets. Building large collections of real-world objects is more difficult because physical objects first need to be captured, reconstructed, separated from their surroundings, and aligned to a consistent coordinate system.
+
+The goal of \textbf{Scan2Canon} is to investigate a scalable workflow for turning scans of real-world objects into standardized 3D assets. The main idea is to allow ordinary users to contribute objects from their everyday environment through a mobile application. A user scans an object from multiple viewpoints, and the captured observations are processed into a 3D representation with a canonical pose and coordinate frame.
+
+The project covers the complete pipeline from real-world acquisition to canonical 3D assets. This includes object extraction, 3D reconstruction, and canonicalization. A consistent canonical representation makes independently captured objects easier to compare, organize, and reuse in downstream applications.
+
+Another goal is to reduce manual processing. Depending on the requirements identified during the project, pretrained vision models, tracking methods, vision-language models, or other foundation models may be used to support object understanding, annotation, and canonicalization. The exact technical solution will be investigated during the project rather than fixed in advance.
+
+A prototype mobile acquisition and processing pipeline will be developed and evaluated on a collection of everyday objects. The evaluation will consider reconstruction quality, canonicalization consistency, robustness to different objects and scanning conditions, and the amount of manual interaction required.
+
+The broader motivation is to make the collection of real-world 3D assets more scalable. If object acquisition becomes simple enough for non-expert users, physical objects from everyday environments could be turned into reusable digital assets for a wide range of downstream applications.
+
+\section{2. Application Area and Accompanying Lecture}
+
+The application areas of Scan2Canon include robotics, embodied AI, digital engineering, simulation, and 3D object digitization.
+
+In robotics and embodied AI, standardized 3D object representations can support object recognition, pose estimation, manipulation, and robot learning. In digital engineering, scanned objects can serve as reusable digital representations of physical assets for simulation and digital-twin applications. The same representations may also support augmented reality, spatial computing, and large-scale real-world 3D datasets.
+
+The project combines methods from machine learning and computer vision with the engineering task of converting physical objects into structured digital representations. It therefore addresses a physical-to-digital workflow that goes beyond a purely algorithmic computer vision task.
+
+The accompanying lecture is \textbf{MW2474 -- Machine Learning in Engineering Mechanics}.
+
+The course provides relevant foundations in machine learning, optimization, neural networks, deep learning, model reduction, data preparation, classification, and feature extraction. These topics support the technical development of Scan2Canon, particularly the processing of real-world observations, the selection and evaluation of learning-based methods, and the representation of complex visual and geometric data.
+
+The relation between the lecture and the project is therefore both methodological and application-oriented. Machine-learning methods introduced in the course provide tools for analyzing and processing the acquired data, while the project applies these methods to the engineering problem of digitizing real-world physical objects for robotics and digital-engineering applications.
+
+\section{3. Milestones and Timetable}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{2.2cm} X}
+\toprule
+Period & Milestone \\
+\midrule
+Month 1 &
+Review related work on real-world 3D object acquisition and canonicalization. Define the target representation, system requirements, and evaluation criteria. \\
+
+Month 2 &
+Set up the mobile scanning workflow and collect an initial set of real-world object scans. Establish a baseline 3D reconstruction pipeline. \\
+
+Month 3 &
+Investigate methods for object extraction, semantic understanding, and canonical pose estimation. Integrate suitable pretrained vision or multimodal models where useful. \\
+
+Month 4 &
+Develop and integrate the canonicalization pipeline and connect it with the mobile acquisition workflow. \\
+
+Month 5 &
+Evaluate the prototype on different everyday objects and analyze reconstruction quality, canonicalization consistency, robustness, and required manual interaction. \\
+
+Month 6 &
+Refine the system, summarize results and limitations, and prepare the final documentation and presentation. \\
+\bottomrule
+\end{tabularx}
+
+\end{document}
