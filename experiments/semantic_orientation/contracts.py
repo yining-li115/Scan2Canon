@@ -28,13 +28,17 @@ class Selection(BaseModel):
     decision: Literal["selected", "needs_evidence", "no_unique_front"]
     candidate_id: int | None
     evidence_view_ids: list[int]
-    visible_evidence: str = Field(min_length=1)
+    visible_evidence: str
     missing_evidence: str
 
     @model_validator(mode="after")
     def check_decision(self) -> "Selection":
         if self.decision == "selected":
-            if self.candidate_id is None or not self.evidence_view_ids:
+            if (
+                self.candidate_id is None
+                or not self.evidence_view_ids
+                or not self.visible_evidence.strip()
+            ):
                 raise ValueError("A selection needs a candidate and cited visual evidence")
         elif self.candidate_id is not None:
             raise ValueError("Abstention must not carry a selected candidate")
@@ -69,6 +73,8 @@ def unit(value: Any) -> Matrix:
 def frame(up: Any, front: Any) -> Matrix:
     up = unit(up)
     front = unit(front)
+    if abs(float(np.dot(front, up))) > 0.5:
+        raise ValueError("Semantic up/front must be within 30 degrees of orthogonal")
     front = front - np.dot(front, up) * up
     if np.linalg.norm(front) < 0.1:
         raise ValueError("Up and front are nearly parallel")

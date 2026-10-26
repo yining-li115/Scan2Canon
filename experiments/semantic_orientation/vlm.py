@@ -29,9 +29,11 @@ def prompt(case: dict[str, Any]) -> str:
         "or clarification is needed. Use no_unique_front if no intrinsic front exists. "
         "Give short observable evidence, not speculation. Return only one JSON object "
         "with exactly these fields: decision (selected, needs_evidence, or no_unique_front), "
-        "candidate_id (integer or null), evidence_view_ids (array of image identifiers), "
+        "candidate_id (integer or null), evidence_view_ids (array of integers, e.g. [2], "
+        'never strings such as ["2"]), '
         "visible_evidence (string), missing_evidence (string). Abstentions must have "
-        "candidate_id null. A selection must cite at least one evidence_view_id."
+        "candidate_id null. A selection must cite at least one evidence_view_id and "
+        "describe visible evidence. For abstention, visible_evidence may be an empty string."
     )
 
 

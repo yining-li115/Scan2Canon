@@ -77,7 +77,17 @@ def evaluate(
                 raise ValueError("Mismatched cases, model results, or ground truth")
             estimates = methods(case, p, v)
             recovered[path.name] = estimates
-            entry: dict[str, Any] = {"case": path.name, "methods": {}, "vlm": v}
+            entry: dict[str, Any] = {
+                "case": path.name,
+                "methods": {},
+                "vlm": v,
+                "pointso_axis_separation_degrees": direction_error(
+                    p["queries"]["up"]["direction"], p["queries"]["front"]["direction"]
+                ),
+                "pointso_front_support_up_separation_degrees": direction_error(
+                    case["support"]["up_in_input_frame"], p["queries"]["front"]["direction"]
+                ),
+            }
             scene = trimesh.load_scene(path / case["mesh"], process=False)
             for name, estimate in estimates.items():
                 result: dict[str, Any] = {"rotation": None, "decision": "needs_evidence"}

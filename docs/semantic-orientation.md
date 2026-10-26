@@ -34,7 +34,10 @@ control annotations separately.
 - **PointSO raw / + support:** use the pinned official `pred_orientation` with one
   instruction per call and twelve votes; preserve all raw direction outputs. Query
   up and front independently. The support variant replaces predicted up with the
-  shared geometric candidate. Near-parallel or nonfinite axes are rejected.
+  shared geometric candidate. Nonfinite axes and up/front angles outside 60–120
+  degrees are rejected rather than projecting an almost vertical vector into an
+  arbitrary front. This provisional guard was added after the initial diagnostic
+  exposed contradictory directions; it is not a calibrated accuracy threshold.
 
 The pinned upstream PointSO helper repeats a list of multiple instructions while
 reshaping its output in contiguous vote groups. Single-instruction calls avoid
@@ -103,6 +106,14 @@ uv run --locked --extra canonical python -m experiments.semantic_orientation.eva
   data/experiments/inputs/orientation-controls-01 \
   data/experiments/runs/semantic-comparison-01 \
   data/experiments/inputs/semantic-controls-01/*/
+```
+
+Render the exported candidates with the same cameras:
+
+```bash
+uv run --locked --extra canonical python -m experiments.semantic_orientation.preview \
+  data/experiments/runs/semantic-comparison-01 \
+  --blender /Applications/Blender.app/Contents/MacOS/Blender
 ```
 
 ## Evaluation and next dataset

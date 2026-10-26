@@ -68,6 +68,30 @@ def test_semantic_directions_recover_known_rotation_and_handedness() -> None:
     assert direction_error(result[2], q[:, 2]) < 1e-6
 
 
+def test_no_visible_evidence_is_valid_only_for_abstention() -> None:
+    decision = parse_selection(
+        reply(
+            decision="needs_evidence",
+            candidate_id=None,
+            evidence_view_ids=[],
+            visible_evidence="",
+            missing_evidence="Show the paper-entry slot",
+        ),
+        set(range(8)),
+    )
+    assert decision.decision == "needs_evidence"
+    with pytest.raises(ValueError):
+        parse_selection(reply(visible_evidence=""), set(range(8)))
+
+
+def test_direction_pointing_almost_up_is_not_projected_into_a_false_front() -> None:
+    with pytest.raises(ValueError, match="orthogonal"):
+        frame([0, 1, 0], [0, 0.99, 0.1])
+    with pytest.raises(ValueError, match="orthogonal"):
+        frame([0, 1, 0], [0, -0.99, 0.1])
+    np.testing.assert_allclose(frame([0, 1, 0], [0, 0.2, 1]), np.eye(3), atol=1e-7)
+
+
 @pytest.mark.parametrize("front", [[0, 1, 0], [0, 0, 0], [np.nan, 0, 1]])
 def test_degenerate_semantic_axes_do_not_export_a_frame(front: list[float]) -> None:
     with pytest.raises(ValueError):
