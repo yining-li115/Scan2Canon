@@ -4,6 +4,9 @@ This experiment compares OA V2, rule-grounded VLM candidate selection, and Point
 semantic direction prediction. It is separate from the production harness. A
 successful inference or stable prediction never approves a dataset asset.
 
+The [first executed comparison](experiments/2026-10-26-semantic-orientation.md)
+records measured results, raw output limitations, and the observed abstentions.
+
 ## Scope and conventions
 
 The initial cases reuse the authored chair and generated hole-punch controls, each

@@ -1,17 +1,19 @@
 import json
 from typing import Any
 
-import numpy as np
 import pytest
 
-from experiments.orientation.geometry import angular_error, axis_rotation
-from experiments.semantic_orientation.contracts import (
+np = pytest.importorskip("numpy", reason="Install the canonical extra for geometry tests")
+pytest.importorskip("trimesh", reason="Install the canonical extra for mesh tests")
+
+from experiments.orientation.geometry import angular_error, axis_rotation  # noqa: E402
+from experiments.semantic_orientation.contracts import (  # noqa: E402
     direction_error,
     frame,
     parse_selection,
     selection_consensus,
 )
-from experiments.semantic_orientation.evaluate import methods
+from experiments.semantic_orientation.evaluate import methods  # noqa: E402
 
 
 def reply(**changes: Any) -> str:

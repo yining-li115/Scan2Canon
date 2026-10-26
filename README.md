@@ -14,6 +14,8 @@ successful export does not establish a category's semantic front or reconstructi
 The [semantic front comparison](docs/semantic-orientation.md) adds isolated PointSO
 direction prediction and rule-grounded Qwen candidate selection, with shared inputs,
 raw evidence, abstentions, and separate accuracy/equivariance evaluation.
+See the [first comparison results](docs/experiments/2026-10-26-semantic-orientation.md)
+for the two-object diagnostic; it does not establish open-world accuracy.
 
 For the first GPU experiment, follow [Server experiments](docs/server-experiments.md). The pinned environment and an eight-view inference/export smoke test were verified on an A100 40 GB on October 26, 2026. This confirms execution, not reconstruction accuracy or semantic canonicalization.
 
@@ -114,4 +116,4 @@ installation supports the backend, but not type-checking the optional geometry m
 
 Backend dependency versions are recorded in `uv.lock`. Each Linux GPU experiment has its own `uv.lock`; it does not install CUDA packages into the backend environment. SAM 3D's compiled extensions use fixed versions/revisions in its setup script, and the installed package inventory is recorded with each run. Update the corresponding lockfile when changing dependencies. Keep runtime environments and captured data out of version control.
 
-The first SAM 3D experiment generated a mesh from one masked video frame on an A100 40 GB: 20.4 seconds of inference and 17.8 GiB peak allocated memory. Other real views remain available for evaluation. MapAnything remains a geometric comparison; its successful smoke test did not establish acceptable object geometry. OA V2 integration has passed local coordinate and export checks; GPU inference and semantic correctness still require verification. Multi-view validation and agent policies remain separate work and are not implied by a successful generation run.
+The first SAM 3D experiment generated a mesh from one masked video frame on an A100 40 GB: 20.4 seconds of inference and 17.8 GiB peak allocated memory. Other real views remain available for evaluation. MapAnything remains a geometric comparison; its successful smoke test did not establish acceptable object geometry. OA V2 has passed coordinate checks, GPU inference, and official-entry-point parity controls. PointSO and Qwen have also executed on the same diagnostic objects; semantic correctness remains unresolved for the hole punch. Real-view validation and agent policies remain separate work and are not implied by a successful generation run.
