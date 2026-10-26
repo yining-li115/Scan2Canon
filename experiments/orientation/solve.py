@@ -9,28 +9,21 @@ from experiments.artifacts import read_json, sha256, write_json
 from experiments.orientation.common import verify_views
 
 
-def hypotheses(
-    manifest: dict[str, Any], predictions: list[dict[str, Any]], threshold: float = 25.0
-) -> dict[str, Any]:
+def rank_symmetry_group(
+    cameras: dict[int, Any], predictions: list[dict[str, Any]], order: int, threshold: float
+) -> list[dict[str, Any]]:
+    """Rank poses within one predicted symmetry convention, without mixing votes."""
     import numpy as np
 
     from experiments.orientation.geometry import mesh_to_oa, symmetry_error
 
-    if not np.isfinite(threshold) or not 0 < threshold < 90:
-        raise ValueError("Agreement threshold must be between 0 and 90 degrees")
-    cameras = {v["id"]: v["camera_to_world"] for v in manifest["views"]}
-    if len(predictions) != len(cameras) or {p["id"] for p in predictions} != set(cameras):
-        raise ValueError("Predictions must cover each view exactly once")
-    if any(p["symmetry_fit"] not in (0, 1, 2, 4) for p in predictions):
-        raise ValueError("Unsupported symmetry fit")
-    counts = Counter(p["symmetry_fit"] for p in predictions)
-    order = counts.most_common(1)[0][0]
-    selected = [p for p in predictions if p["symmetry_fit"] == order]
+    selected = sorted((p for p in predictions if p["symmetry_fit"] == order), key=lambda p: p["id"])
     rotations = [mesh_to_oa(p["angles_degrees"], cameras[p["id"]]) for p in selected]
     distances = np.array([[symmetry_error(a, b, order) for b in rotations] for a in rotations])
     support = (distances <= threshold).sum(axis=1)
     ranking = sorted(
-        range(len(rotations)), key=lambda i: (-int(support[i]), float(distances[i].sum()))
+        range(len(rotations)),
+        key=lambda i: (-int(support[i]), float(distances[i].sum()), selected[i]["id"]),
     )
     candidates = []
     representatives: list[int] = []
@@ -40,6 +33,10 @@ def hypotheses(
         representatives.append(index)
         candidates.append(
             {
+                "symmetry_fit": order,
+                "equivalent_yaw_offsets_degrees": (
+                    [360 * k / order for k in range(order)] if order else None
+                ),
                 "source_view": selected[index]["id"],
                 "mesh_to_oa": rotations[index].tolist(),
                 "supporting_views": [
@@ -53,26 +50,58 @@ def hypotheses(
         )
         if len(candidates) == 3:
             break
+    return candidates
+
+
+def hypotheses(
+    manifest: dict[str, Any], predictions: list[dict[str, Any]], threshold: float = 25.0
+) -> dict[str, Any]:
+    import numpy as np
+
+    if not np.isfinite(threshold) or not 0 < threshold < 90:
+        raise ValueError("Agreement threshold must be between 0 and 90 degrees")
+    cameras = {v["id"]: v["camera_to_world"] for v in manifest["views"]}
+    if (
+        not cameras
+        or len(predictions) != len(cameras)
+        or {p["id"] for p in predictions} != set(cameras)
+    ):
+        raise ValueError("Predictions must cover each view exactly once")
+    if any(p["symmetry_fit"] not in (0, 1, 2, 4) for p in predictions):
+        raise ValueError("Unsupported symmetry fit")
+    counts = Counter(p["symmetry_fit"] for p in predictions)
+    most_votes = max(counts.values())
+    modes = sorted(order for order, votes in counts.items() if votes == most_votes)
+    candidates = [
+        candidate
+        for mode in modes
+        for candidate in rank_symmetry_group(cameras, predictions, mode, threshold)
+    ]
+    order = modes[0] if len(modes) == 1 else None
     reasons = []
-    if order == 0:
+    if 0 in modes:
         reasons.append("azimuth_unresolved: front direction is not established")
-    if counts[order] / len(predictions) < 0.75:
+    if len(modes) > 1:
+        reasons.append("symmetry_fit_tie: all tied modes retained")
+    if most_votes / len(predictions) < 0.75:
         reasons.append("symmetry_fits_disagree")
-    if candidates[0]["support_fraction_all_views"] < 0.6:
+    if max(c["support_fraction_all_views"] for c in candidates) < 0.6:
         reasons.append("view_orientations_disagree")
-    if order in (2, 4):
+    if any(mode in (2, 4) for mode in modes):
         reasons.append("multiple_equivalent_fronts_predicted: requires symmetry review")
     return {
         "symmetry_fit": order,
+        "symmetry_fit_modes": modes,
         "equivalent_yaw_offsets_degrees": (
             [360 * k / order for k in range(order)] if order else None
         ),
-        "front_observable": order != 0,
-        "symmetry_fit_counts": dict(counts),
+        "front_observable": None if order is None else order != 0,
+        "symmetry_fit_counts": dict(sorted(counts.items())),
         "agreement_threshold_degrees": threshold,
         "decision": "needs_evidence" if reasons else "candidate_ready_for_review",
         "reasons": reasons,
         "candidates": candidates,
+        "candidate_order": "Grouped by symmetry fit; ranked only within each group",
         "score_note": "View agreement is a heuristic, not a calibrated correctness probability",
     }
 
@@ -105,6 +134,7 @@ def solve(views: Path, predictions: Path, output: Path, threshold: float = 25.0)
             {
                 "input_mesh_sha256": manifest["mesh_sha256"],
                 "predictions_sha256": sha256(predictions / "predictions.json"),
+                "solver_sha256": sha256(Path(__file__)),
                 "views_manifest_sha256": sha256(views / "manifest.json"),
                 "coordinate_convention": "scan2canon-y-up-z-front-v1; right-handed column vectors",
                 "transform_equation": "p_canonical = R @ p_glb + t",

@@ -11,6 +11,10 @@ complete CanoVerse or CANIS methods. It remains independent of the production wo
 LLM/VLM review, category-specific convention retrieval, and requests for additional
 user evidence are not implemented by this experiment.
 
+The [first GPU run](experiments/2026-10-26-orientation.md) completed on an A100 40GB.
+It produced reviewable meshes but conflicting orientation/symmetry predictions;
+the semantic decision remains `needs_evidence`.
+
 ## Local preparation
 
 Install the small CPU geometry extra without GPU dependencies:
@@ -126,7 +130,11 @@ uv run --extra canonical python -m experiments.orientation.render \
 ```
 
 The solver uses the modal symmetry fit and ranks actual view hypotheses by agreement,
-retaining up to three distinct hypotheses. It does not average conflicting Euler
+retaining up to three distinct hypotheses per mode. When modes tie, it preserves
+every tied mode and sets the global `symmetry_fit` and `front_observable` to null.
+Candidates record their own symmetry fit and equivalent yaw offsets; they are grouped
+by fit and ranked only within that group, not across incompatible conventions.
+It does not average conflicting Euler
 angles. The default agreement radius is 25 degrees; 60% view support and 75% symmetry
 agreement are provisional experiment heuristics, not calibrated confidence thresholds.
 They are stored in or described by the report and require evaluation on labeled data.
@@ -161,5 +169,5 @@ bash -n scripts/setup_orientation.sh
 ```
 
 Geometry tests require the `canonical` extra; without it they are explicitly skipped.
-GPU inference must be checked separately on the rented server before claiming the
-complete canonicalization experiment has run successfully.
+GPU inference must be checked separately from these CPU tests. The first measured
+run is documented above; successful execution does not establish semantic accuracy.

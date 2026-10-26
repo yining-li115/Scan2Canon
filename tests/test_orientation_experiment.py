@@ -73,6 +73,20 @@ def test_flat_azimuth_fit_never_becomes_unique_front() -> None:
     assert any("azimuth_unresolved" in reason for reason in result["reasons"])
 
 
+def test_tied_symmetry_modes_are_preserved_independently_of_input_order() -> None:
+    manifest, predictions = synthetic_views()
+    for prediction in predictions:
+        prediction["symmetry_fit"] = 2 if prediction["id"] < 2 else 4
+    result = hypotheses(manifest, predictions)
+    assert result == hypotheses(manifest, list(reversed(predictions)))
+    assert result["decision"] == "needs_evidence"
+    assert result["symmetry_fit"] is None
+    assert result["front_observable"] is None
+    assert result["symmetry_fit_modes"] == [2, 4]
+    assert [c["symmetry_fit"] for c in result["candidates"]] == [2, 4]
+    assert [c["supporting_views"] for c in result["candidates"]] == [[0, 1], [2, 3]]
+
+
 def test_missing_or_duplicated_views_cannot_inflate_consensus() -> None:
     manifest, predictions = synthetic_views()
     with pytest.raises(ValueError, match="exactly once"):
