@@ -8,7 +8,7 @@ dependencies = [
   "qwen-vl-utils==0.0.8", "timm==0.6.13", "easydict==1.13", "pyyaml==6.0.2",
   "ftfy==6.3.1", "regex>=2024.11", "plyfile==1.1.2", "setuptools==69.5.1",
   "pydantic>=2.10,<3", "trimesh>=4.6,<5", "scipy>=1.15,<1.16",
-  "networkx>=3.4,<4", "pillow>=11,<12", "tqdm>=4.67,<5",
+  "networkx>=3.4,<4", "pillow>=11,<12", "tqdm>=4.67,<5", "termcolor==2.5.0",
 ]
 
 [tool.uv]
