@@ -48,5 +48,5 @@ plugins = ["pydantic.mypy"]
 untyped_calls_exclude = ["trimesh"]
 
 [[tool.mypy.overrides]]
-module = ["huggingface_hub", "mapanything.*", "numpy", "torch", "trimesh"]
+module = ["huggingface_hub", "mapanything.*", "numpy", "torch", "trimesh", "bpy", "mathutils"]
 ignore_missing_imports = true

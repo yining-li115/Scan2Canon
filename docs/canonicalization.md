@@ -37,6 +37,21 @@ The earlier `-01` render was overexposed and is retained only for diagnostics.
 
 ## GPU installation and inference
 
+For the first OA-only inference run, budget one 24 GB NVIDIA GPU, 8 vCPUs,
+32 GB host RAM (64 GB preferred), and 100 GB of disk. This is a planning estimate
+for our sequential single-view runner, not a measured minimum or an upstream
+hardware guarantee. A 40/48 GB GPU provides additional headroom; multiple GPUs
+are not required by this runner. Record actual peak memory on the first run.
+The existing SAM 3D mesh is reused, so its environment and checkpoints are not
+needed on this instance.
+
+Maintain source code and documentation locally. Commit and push tested changes,
+then clone or fast-forward pull the same commit on the server. Configure the
+isolated GPU environment and download checkpoints on the server. If execution
+reveals a code problem, fix it locally and repeat that synchronization process.
+Use file transfers only for ignored input/output artifacts. Download and verify
+results before releasing an instance.
+
 The OA environment is separate from both the backend and SAM 3D. It targets Linux
 x86_64, Python 3.11, PyTorch 2.7.1 and CUDA 12.8 wheels; no driver installation is
 performed. Setup verifies the GPU kernel and upstream imports. Download size and

@@ -70,7 +70,7 @@ def main() -> None:
     distance = radius / math.sin(camera_data.angle_x / 2) * 1.12
     camera_data.clip_start = radius * 0.01
     camera_data.clip_end = radius * 20
-    directions = []
+    directions: list[tuple[str, tuple[float, float, float]]] = []
     if args.preset == "canonical":
         directions = [
             ("Front (+Z)", (0, -1, 0)),
