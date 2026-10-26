@@ -6,13 +6,29 @@ The first baseline uses the [official MapAnything implementation](https://github
 
 The runner exports per-view depth, intrinsics, camera-to-world poses, confidence, valid masks, RGB, and world points. A bounded point-cloud preview is provided as PLY and GLB. GLB is a file format here, not evidence of a fused or watertight mesh. Background points remain; semantic canonicalization, object segmentation, and scale verification are not performed.
 
-Local tests cover sample preparation, checksums, portability, failure records, and refusing to overwrite outputs. GPU installation, checkpoint loading, CUDA compatibility, and reconstruction quality still require validation on the server. A run marked `succeeded` means inference and exports completed, not that geometric accuracy or canonical orientation passed an evaluation.
+Local tests cover sample preparation, checksums, portability, failure records, and refusing to overwrite outputs. GPU installation, checkpoint loading, BF16 CUDA execution, and eight-view inference/export were verified on an A100 40 GB on October 26, 2026. Reconstruction quality still requires evaluation. A run marked `succeeded` means inference and exports completed, not that geometric accuracy or canonical orientation passed an evaluation.
+
+### First verified run
+
+Code revision: `52185d84dc584920d8dd92d6dfd7d3f0da8a4608`. Local run directory: `data/experiments/runs/mapanything-video-5573-8-01/` (excluded from Git). The inputs are eight uniformly sampled frames from a real phone video, normalized to JPEG; upstream preprocessing produced 294 × 518 pixels per view.
+
+| Measurement | Result |
+| --- | --- |
+| GPU / environment | A100 40 GB, compute capability 8.0, Python 3.12.3, PyTorch 2.7.1+cu128 |
+| Model loading | 24.18 s |
+| Synchronized model inference | 1.44 s |
+| Entire runner, including validation, loading, and export | 35.54 s |
+| Peak PyTorch allocated / reserved memory | 7.42 / 7.58 GiB |
+| Valid point samples across eight views | 1,170,791 (not deduplicated) |
+| Preview point count | 200,000 |
+
+All eight prediction files were readable. Valid depths were positive and finite; valid world points were finite; camera rotation matrices were orthonormal with determinant approximately +1. These are numeric integrity checks only. The scene includes the desk and background, and the object is not isolated or converted into a complete mesh. This single first-run measurement is not a steady-state performance benchmark. The predictions and logs were copied back to the development Mac.
 
 Planned comparisons remain independent: VGGT on the same frames, Orient Anything V2 for orientation, and SAM 3D Objects for single-image asset generation. They have no runnable adapters in this repository yet.
 
 ## Pinned environment
 
-- Linux x86_64, Python 3.12, NVIDIA GPU. The initial target is RTX PRO 5000 Blackwell with 48 GB VRAM and approximately 64 GB system RAM.
+- Linux x86_64, Python 3.12, NVIDIA GPU. Verified on A100 40 GB; RTX PRO 5000 Blackwell remains an untested target for this pinned environment.
 - PyTorch 2.7.1, torchvision 0.22.1, torchaudio 2.7.1, using the official CUDA 12.8 wheels. Torchaudio is a transitive UniCeption dependency.
 - MapAnything source: `3d10cf7a3016fc0f9bb13a071ee66c47b10be0d9`.
 - Research checkpoint: `facebook/map-anything`, revision `a1d87e9086706fb9974f3be5a3e3a0ca5401c5aa`, **CC-BY-NC-4.0**. This is a research baseline; do not assume this checkpoint is suitable for commercial app distribution. The Apache checkpoint is a different experiment and is not substituted silently.
@@ -20,7 +36,7 @@ Planned comparisons remain independent: VGGT on the same frames, Orient Anything
 
 Python dependencies are resolved in `experiments/mapanything/uv.lock`. The NVIDIA driver, OS image, and CUDA compiler are outside that lock. A host driver compatible with CUDA 12.8 is required; `nvidia-smi`'s CUDA field describes driver capability, not the installed Python runtime. The setup script exercises an actual BF16 CUDA matrix multiplication before checkpoint downloads.
 
-Use persistent storage for the checkout, environment, weights, and results. Around 200 GB disk gives room for dependencies, caches, captures, and later baselines. Start at 8 views; 48 GB does not guarantee arbitrary frame counts will fit.
+Use persistent storage for the checkout, environment, weights, and results. Around 200 GB disk gives room for dependencies, caches, captures, and later baselines. Start at 8 views; larger frame counts still require memory measurements. On Vast.ai, `/workspace` is not necessarily a persistent volume: container storage can disappear when the instance is destroyed or recycled, so copy results off the instance first.
 
 ## 1. Prepare the input on the Mac
 

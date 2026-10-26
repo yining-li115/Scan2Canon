@@ -4,7 +4,7 @@ Turn multi-view captures of real-world objects into 3D assets with consistent se
 
 This version provides a local backend scaffold for importing images, submitting jobs, checking inputs, recording events, recovering interrupted jobs, and querying status over HTTP. A separate MapAnything experiment provides a pinned GPU environment and an image-only inference runner for server validation. Model inference is not yet connected to backend jobs: by default, jobs become `blocked` at the `reconstruct` stage; no placeholder geometry is presented as a real reconstruction.
 
-For the first GPU experiment, follow [Server experiments](docs/server-experiments.md). GPU installation and inference must still be verified on the target server.
+For the first GPU experiment, follow [Server experiments](docs/server-experiments.md). The pinned environment and an eight-view inference/export smoke test were verified on an A100 40 GB on October 26, 2026. This confirms execution, not reconstruction accuracy or semantic canonicalization.
 
 ## Getting started
 
