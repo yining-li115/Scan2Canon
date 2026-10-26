@@ -3,6 +3,9 @@
 These experiments diagnose the first OA V2 run before changing its model or
 accepting a canonical orientation. They do not change the production worker.
 
+The [executed control and support-plane results](experiments/2026-10-26-orientation-diagnostics.md)
+record official-entry-point parity, known-pose errors, and the remaining front ambiguity.
+
 ## Known-pose and integration controls
 
 `experiments.orientation.controls` authors a simple chair with +Y up and +Z front,
