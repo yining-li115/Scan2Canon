@@ -1,0 +1,656 @@
+{
+  "schema_version": 1,
+  "id": "scan2canon-mini-v1",
+  "created_date": "2026-10-27",
+  "status": "selection_locked_annotations_pending",
+  "purpose": "37-object development pilot; not a statistically conclusive benchmark",
+  "counts": {
+    "nocs": 12,
+    "oo3d9d": 20,
+    "own": 5
+  },
+  "selection": {
+    "version": 1,
+    "seed": 17,
+    "ranking": "Ascending SHA-256 of UTF-8 scan2canon-mini-v1:17:<source-instance-key>; take first two in each selected category",
+    "nocs_instance_key": "Full real_test OBJ archive member name",
+    "oo3d9d_instance_key": "Key from name2oid.json",
+    "partition": "First ranked public instance per category is development; second is holdout. All captures of one object stay together. Own captures are diagnostic."
+  },
+  "annotation_policy": {
+    "status": "pending_review",
+    "canonical_frame": "right-handed; +Y up, +Z front, +X right",
+    "source_to_project_rotation": null,
+    "symmetry": "Reuse upstream evidence only after convention audit. Missing symmetry fields mean unreviewed, not identity symmetry. Do not infer labels from tested predictions.",
+    "reference_visibility": "Keep reference rotations and symmetry annotations out of inference inputs and prompts.",
+    "texture_policy": "NOCS selected OBJ files reference MTL files absent from the published archive; shape-only renders must be explicitly reported.",
+    "automatic_acceptance": "Not calibrated; no asset is dataset-approved by this catalog."
+  },
+  "sources": {
+    "nocs": {
+      "repository": "https://github.com/hughw19/NOCS_CVPR2019",
+      "revision": "dd58dbf68feede04c3d7bbafeb9212af1a43422f",
+      "mesh_archive": "https://download.cs.stanford.edu/orion/nocs/obj_models.zip",
+      "archive_bytes": 1153771494,
+      "index_path": "data/datasets/scan2canon-mini-v1/sources/nocs/archive-index.json",
+      "index_sha256": "724f88dfe9bed496f6f1e280fc227b919ad58c9de743d394b5d034a8a3194d4a",
+      "data_terms": "Official README: non-commercial use and paper citation; code license is separate.",
+      "upstream_partition": "real_test"
+    },
+    "oo3d9d": {
+      "repository": "https://github.com/caijunhao/ov9d",
+      "revision": "d1065c3ffdf2c959f9b6a553f9af4820ae85cf81",
+      "base_url": "https://virutalbuy-public.oss-cn-hangzhou.aliyuncs.com/share/aigc3d/ov9d",
+      "indexes": [
+        {
+          "file": "models_info_with_symmetry.json",
+          "sha256": "61862a0a977120a3fdca6a64e63fc46102f24a09505d395e01fc4f8a10b14a2b"
+        },
+        {
+          "file": "name2oid.json",
+          "sha256": "8f6cecf7935505ddeb8f4aefa9903335064edeb749925bf9958452af5bcc9e71"
+        },
+        {
+          "file": "oo3d9dsingle.txt",
+          "sha256": "11740942adac1e65f276f46f1757d9868d22ed7ae98ffe3d8f46d4889bdde379"
+        }
+      ],
+      "data_terms": "Record original OmniObject3D terms and derivative terms before redistribution; this catalog does not grant redistribution rights.",
+      "image_provenance": "Real-scanned source objects; OO3D-9D scene images are synthetic."
+    },
+    "own": {
+      "data_terms": "User-provided local captures; no public upload or redistribution performed.",
+      "reference_poses": "Not independently annotated."
+    }
+  },
+  "samples": [
+    {
+      "id": "nocs-bottle_red_stanford_norm",
+      "source": "nocs",
+      "category": "bottle",
+      "source_instance_id": "bottle_red_stanford_norm",
+      "partition": "development",
+      "mesh": {
+        "path": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/bottle_red_stanford_norm.obj",
+        "archive_member": "obj_models/real_test/bottle_red_stanford_norm.obj",
+        "sha256": "a96dac73a97559d5bf913abde85c789220414596b22739a745c6f9481f627a09"
+      },
+      "normalization_sidecar": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/bottle_red_stanford_norm.txt"
+    },
+    {
+      "id": "nocs-bottle_shampoo_norm",
+      "source": "nocs",
+      "category": "bottle",
+      "source_instance_id": "bottle_shampoo_norm",
+      "partition": "holdout",
+      "mesh": {
+        "path": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/bottle_shampoo_norm.obj",
+        "archive_member": "obj_models/real_test/bottle_shampoo_norm.obj",
+        "sha256": "b29da4566e99ccca2b55f3d4184d9a55a1ce0b4e044a7c5bc614721a855b0f5a"
+      },
+      "normalization_sidecar": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/bottle_shampoo_norm.txt"
+    },
+    {
+      "id": "nocs-bowl_shengjun_norm",
+      "source": "nocs",
+      "category": "bowl",
+      "source_instance_id": "bowl_shengjun_norm",
+      "partition": "development",
+      "mesh": {
+        "path": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/bowl_shengjun_norm.obj",
+        "archive_member": "obj_models/real_test/bowl_shengjun_norm.obj",
+        "sha256": "606fb3bc34f978e878b265eb06cc8003da97f96af7557d3afbdd2ae56e5d4438"
+      },
+      "normalization_sidecar": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/bowl_shengjun_norm.txt"
+    },
+    {
+      "id": "nocs-bowl_white_small_norm",
+      "source": "nocs",
+      "category": "bowl",
+      "source_instance_id": "bowl_white_small_norm",
+      "partition": "holdout",
+      "mesh": {
+        "path": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/bowl_white_small_norm.obj",
+        "archive_member": "obj_models/real_test/bowl_white_small_norm.obj",
+        "sha256": "7410cd6270b43a952cd0546d69185d3e0ad98078f17450295a71510395bdd0ee"
+      },
+      "normalization_sidecar": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/bowl_white_small_norm.txt"
+    },
+    {
+      "id": "nocs-camera_canon_len_norm",
+      "source": "nocs",
+      "category": "camera",
+      "source_instance_id": "camera_canon_len_norm",
+      "partition": "development",
+      "mesh": {
+        "path": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/camera_canon_len_norm.obj",
+        "archive_member": "obj_models/real_test/camera_canon_len_norm.obj",
+        "sha256": "cc76b5a5c067e67c61bbe6f6c6ac97018d28de9795688ea7ed5674bd19c19da3"
+      },
+      "normalization_sidecar": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/camera_canon_len_norm.txt"
+    },
+    {
+      "id": "nocs-camera_shengjun_norm",
+      "source": "nocs",
+      "category": "camera",
+      "source_instance_id": "camera_shengjun_norm",
+      "partition": "holdout",
+      "mesh": {
+        "path": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/camera_shengjun_norm.obj",
+        "archive_member": "obj_models/real_test/camera_shengjun_norm.obj",
+        "sha256": "6160500252ebf784e9853db85037b4d24d1c1b863500cdc4eca5178cb42c6fe1"
+      },
+      "normalization_sidecar": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/camera_shengjun_norm.txt"
+    },
+    {
+      "id": "nocs-can_arizona_tea_norm",
+      "source": "nocs",
+      "category": "can",
+      "source_instance_id": "can_arizona_tea_norm",
+      "partition": "development",
+      "mesh": {
+        "path": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/can_arizona_tea_norm.obj",
+        "archive_member": "obj_models/real_test/can_arizona_tea_norm.obj",
+        "sha256": "d8c8e84af657a84929251e13da195492715a81a62644056b180c1bacd411cb5f"
+      },
+      "normalization_sidecar": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/can_arizona_tea_norm.txt"
+    },
+    {
+      "id": "nocs-can_green_norm",
+      "source": "nocs",
+      "category": "can",
+      "source_instance_id": "can_green_norm",
+      "partition": "holdout",
+      "mesh": {
+        "path": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/can_green_norm.obj",
+        "archive_member": "obj_models/real_test/can_green_norm.obj",
+        "sha256": "b2c206f5f21a71d9d7b6e536259c3bdb7a36ea65d1365a3d0fdc6571b3ed841e"
+      },
+      "normalization_sidecar": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/can_green_norm.txt"
+    },
+    {
+      "id": "nocs-laptop_alienware_norm",
+      "source": "nocs",
+      "category": "laptop",
+      "source_instance_id": "laptop_alienware_norm",
+      "partition": "development",
+      "mesh": {
+        "path": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/laptop_alienware_norm.obj",
+        "archive_member": "obj_models/real_test/laptop_alienware_norm.obj",
+        "sha256": "c5590c4a5d2491abba431162569290ef9ec57e18e58f5db3a7f480c5d1564173"
+      },
+      "normalization_sidecar": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/laptop_alienware_norm.txt"
+    },
+    {
+      "id": "nocs-laptop_air_xin_norm",
+      "source": "nocs",
+      "category": "laptop",
+      "source_instance_id": "laptop_air_xin_norm",
+      "partition": "holdout",
+      "mesh": {
+        "path": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/laptop_air_xin_norm.obj",
+        "archive_member": "obj_models/real_test/laptop_air_xin_norm.obj",
+        "sha256": "57172556cd2a4e5321d1895ce10821919e07cc992ba6932af7439ca3ce1af82e"
+      },
+      "normalization_sidecar": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/laptop_air_xin_norm.txt"
+    },
+    {
+      "id": "nocs-mug_brown_starbucks_norm",
+      "source": "nocs",
+      "category": "mug",
+      "source_instance_id": "mug_brown_starbucks_norm",
+      "partition": "development",
+      "mesh": {
+        "path": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/mug_brown_starbucks_norm.obj",
+        "archive_member": "obj_models/real_test/mug_brown_starbucks_norm.obj",
+        "sha256": "754011d688ce8f3ec76e414c2a23b5d120490658549a308fa7adfee42cdf838d"
+      },
+      "normalization_sidecar": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/mug_brown_starbucks_norm.txt"
+    },
+    {
+      "id": "nocs-mug_anastasia_norm",
+      "source": "nocs",
+      "category": "mug",
+      "source_instance_id": "mug_anastasia_norm",
+      "partition": "holdout",
+      "mesh": {
+        "path": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/mug_anastasia_norm.obj",
+        "archive_member": "obj_models/real_test/mug_anastasia_norm.obj",
+        "sha256": "0a1324568b0c78bd33208fdeaad845aec1e7947c34ef6751cb6f9e9ad387ce80"
+      },
+      "normalization_sidecar": "data/datasets/scan2canon-mini-v1/assets/nocs/obj_models/real_test/mug_anastasia_norm.txt"
+    },
+    {
+      "id": "oo3d9d-ball_022",
+      "source": "oo3d9d",
+      "category": "ball",
+      "source_instance_id": "ball_022",
+      "source_object_id": 151,
+      "partition": "development",
+      "upstream_ov9d_partition": "train",
+      "mesh_member_basename": "obj_000151.ply",
+      "scene_archive": "ball_022_z1w5ajafitdxrhd5lcvjwxwdkb392m1i.tgz",
+      "upstream_symmetry": {}
+    },
+    {
+      "id": "oo3d9d-ball_010",
+      "source": "oo3d9d",
+      "category": "ball",
+      "source_instance_id": "ball_010",
+      "source_object_id": 141,
+      "partition": "holdout",
+      "upstream_ov9d_partition": "train",
+      "mesh_member_basename": "obj_000141.ply",
+      "scene_archive": "ball_010_sbrq92e0xkotff69i3vb3yn9k9gn8mgw.tgz",
+      "upstream_symmetry": {}
+    },
+    {
+      "id": "oo3d9d-bottle_041",
+      "source": "oo3d9d",
+      "category": "bottle",
+      "source_instance_id": "bottle_041",
+      "source_object_id": 353,
+      "partition": "development",
+      "upstream_ov9d_partition": "train",
+      "mesh_member_basename": "obj_000353.ply",
+      "scene_archive": "bottle_041_1i0yxyaa4viz2yaw29g4ms7u7ppzfn2l.tgz",
+      "upstream_symmetry": {
+        "symmetries_continuous": [
+          {
+            "axis": [
+              0,
+              1,
+              0
+            ],
+            "offset": [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "oo3d9d-bottle_052",
+      "source": "oo3d9d",
+      "category": "bottle",
+      "source_instance_id": "bottle_052",
+      "source_object_id": 364,
+      "partition": "holdout",
+      "upstream_ov9d_partition": "train",
+      "mesh_member_basename": "obj_000364.ply",
+      "scene_archive": "bottle_052_mfy8d9f8ww8un0jip0zfcrasz7rayapy.tgz",
+      "upstream_symmetry": {
+        "symmetries_continuous": [
+          {
+            "axis": [
+              0,
+              1,
+              0
+            ],
+            "offset": [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "oo3d9d-bowl_001",
+      "source": "oo3d9d",
+      "category": "bowl",
+      "source_instance_id": "bowl_001",
+      "source_object_id": 374,
+      "partition": "development",
+      "upstream_ov9d_partition": "test",
+      "mesh_member_basename": "obj_000374.ply",
+      "scene_archive": "bowl_001_8r1hcg3lygdev2a11dixk64tum676k97.tgz",
+      "upstream_symmetry": {
+        "symmetries_continuous": [
+          {
+            "axis": [
+              0,
+              1,
+              0
+            ],
+            "offset": [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "oo3d9d-bowl_007",
+      "source": "oo3d9d",
+      "category": "bowl",
+      "source_instance_id": "bowl_007",
+      "source_object_id": 377,
+      "partition": "holdout",
+      "upstream_ov9d_partition": "test",
+      "mesh_member_basename": "obj_000377.ply",
+      "scene_archive": "bowl_007_6h3edv06xg8uq3wu6gm4fdu8bbar22r0.tgz",
+      "upstream_symmetry": {
+        "symmetries_continuous": [
+          {
+            "axis": [
+              0,
+              1,
+              0
+            ],
+            "offset": [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "oo3d9d-chair_026",
+      "source": "oo3d9d",
+      "category": "chair",
+      "source_instance_id": "chair_026",
+      "source_object_id": 1000,
+      "partition": "development",
+      "upstream_ov9d_partition": "train",
+      "mesh_member_basename": "obj_001000.ply",
+      "scene_archive": "chair_026_vvt7girfsq9rt9c1zroj5lyr8tm5ud5k.tgz",
+      "upstream_symmetry": {}
+    },
+    {
+      "id": "oo3d9d-chair_017",
+      "source": "oo3d9d",
+      "category": "chair",
+      "source_instance_id": "chair_017",
+      "source_object_id": 991,
+      "partition": "holdout",
+      "upstream_ov9d_partition": "train",
+      "mesh_member_basename": "obj_000991.ply",
+      "scene_archive": "chair_017_v2g7063iy8yslpntxmz4lctab2uq40xv.tgz",
+      "upstream_symmetry": {}
+    },
+    {
+      "id": "oo3d9d-cup_013",
+      "source": "oo3d9d",
+      "category": "cup",
+      "source_instance_id": "cup_013",
+      "source_object_id": 1375,
+      "partition": "development",
+      "upstream_ov9d_partition": "train",
+      "mesh_member_basename": "obj_001375.ply",
+      "scene_archive": "cup_013_joy8pr682wyc4l79ygnlmkv3riv49jay.tgz",
+      "upstream_symmetry": {}
+    },
+    {
+      "id": "oo3d9d-cup_009",
+      "source": "oo3d9d",
+      "category": "cup",
+      "source_instance_id": "cup_009",
+      "source_object_id": 1371,
+      "partition": "holdout",
+      "upstream_ov9d_partition": "train",
+      "mesh_member_basename": "obj_001371.ply",
+      "scene_archive": "cup_009_8ydw0fs22ukkuajfe0e88p7l1f5ycafh.tgz",
+      "upstream_symmetry": {}
+    },
+    {
+      "id": "oo3d9d-handbag_004",
+      "source": "oo3d9d",
+      "category": "handbag",
+      "source_instance_id": "handbag_004",
+      "source_object_id": 2181,
+      "partition": "development",
+      "upstream_ov9d_partition": "test",
+      "mesh_member_basename": "obj_002181.ply",
+      "scene_archive": "handbag_004_6nxbi2yk615j87fh04jou14zt7lze8sg.tgz",
+      "upstream_symmetry": {
+        "symmetries_discrete": [
+          [
+            -1.0,
+            0.0,
+            1.2246467991473532e-16,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            -1.2246467991473532e-16,
+            0.0,
+            -1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    },
+    {
+      "id": "oo3d9d-handbag_005",
+      "source": "oo3d9d",
+      "category": "handbag",
+      "source_instance_id": "handbag_005",
+      "source_object_id": 2182,
+      "partition": "holdout",
+      "upstream_ov9d_partition": "test",
+      "mesh_member_basename": "obj_002182.ply",
+      "scene_archive": "handbag_005_sjr45n3qpr9poklsgd3w6uuilhc83hsf.tgz",
+      "upstream_symmetry": {
+        "symmetries_discrete": [
+          [
+            -1.0,
+            0.0,
+            1.2246467991473532e-16,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            -1.2246467991473532e-16,
+            0.0,
+            -1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    },
+    {
+      "id": "oo3d9d-mouse_018",
+      "source": "oo3d9d",
+      "category": "mouse",
+      "source_instance_id": "mouse_018",
+      "source_object_id": 2901,
+      "partition": "development",
+      "upstream_ov9d_partition": "test",
+      "mesh_member_basename": "obj_002901.ply",
+      "scene_archive": "mouse_018_79bqo21vieejt4lzviyjwyw38tu14v6k.tgz",
+      "upstream_symmetry": {}
+    },
+    {
+      "id": "oo3d9d-mouse_019",
+      "source": "oo3d9d",
+      "category": "mouse",
+      "source_instance_id": "mouse_019",
+      "source_object_id": 2902,
+      "partition": "holdout",
+      "upstream_ov9d_partition": "test",
+      "mesh_member_basename": "obj_002902.ply",
+      "scene_archive": "mouse_019_7ti02s5qmcdfpl9fffw2thh0uj5lzhpv.tgz",
+      "upstream_symmetry": {}
+    },
+    {
+      "id": "oo3d9d-scissor_007",
+      "source": "oo3d9d",
+      "category": "scissor",
+      "source_instance_id": "scissor_007",
+      "source_object_id": 3992,
+      "partition": "development",
+      "upstream_ov9d_partition": "train",
+      "mesh_member_basename": "obj_003992.ply",
+      "scene_archive": "scissor_007_rmeyusgxnlt1emaq9hrq473bhyvd8hev.tgz",
+      "upstream_symmetry": {}
+    },
+    {
+      "id": "oo3d9d-scissor_004",
+      "source": "oo3d9d",
+      "category": "scissor",
+      "source_instance_id": "scissor_004",
+      "source_object_id": 3989,
+      "partition": "holdout",
+      "upstream_ov9d_partition": "train",
+      "mesh_member_basename": "obj_003989.ply",
+      "scene_archive": "scissor_004_lymmedplvz3l638fp4jhiyg0fgzxpz4k.tgz",
+      "upstream_symmetry": {}
+    },
+    {
+      "id": "oo3d9d-speaker_001",
+      "source": "oo3d9d",
+      "category": "speaker",
+      "source_instance_id": "speaker_001",
+      "source_object_id": 4202,
+      "partition": "development",
+      "upstream_ov9d_partition": "train",
+      "mesh_member_basename": "obj_004202.ply",
+      "scene_archive": "speaker_001_5ws9rzclppzfw91yydl7vpicxhsbd1f7.tgz",
+      "upstream_symmetry": {}
+    },
+    {
+      "id": "oo3d9d-speaker_004",
+      "source": "oo3d9d",
+      "category": "speaker",
+      "source_instance_id": "speaker_004",
+      "source_object_id": 4205,
+      "partition": "holdout",
+      "upstream_ov9d_partition": "train",
+      "mesh_member_basename": "obj_004205.ply",
+      "scene_archive": "speaker_004_5jx54z3fbahxaxv543l4hgjf2yaez53y.tgz",
+      "upstream_symmetry": {}
+    },
+    {
+      "id": "oo3d9d-toy_truck_035",
+      "source": "oo3d9d",
+      "category": "toy_truck",
+      "source_instance_id": "toy_truck_035",
+      "source_object_id": 5058,
+      "partition": "development",
+      "upstream_ov9d_partition": "test",
+      "mesh_member_basename": "obj_005058.ply",
+      "scene_archive": "toy_truck_035_w6fs88lfmqesmosdxxnxhmnch1f0aj6y.tgz",
+      "upstream_symmetry": {}
+    },
+    {
+      "id": "oo3d9d-toy_truck_058",
+      "source": "oo3d9d",
+      "category": "toy_truck",
+      "source_instance_id": "toy_truck_058",
+      "source_object_id": 5069,
+      "partition": "holdout",
+      "upstream_ov9d_partition": "test",
+      "mesh_member_basename": "obj_005069.ply",
+      "scene_archive": "toy_truck_058_v3dyfhcznszwj35in05p42anpz8k8q0f.tgz",
+      "upstream_symmetry": {}
+    },
+    {
+      "id": "own-hole-punch-5573",
+      "source": "own",
+      "category": "hole_punch",
+      "source_instance_id": "IMG_5573",
+      "partition": "diagnostic",
+      "raw_capture": {
+        "path": "data/captures/video-5573/original/IMG_5573.MOV",
+        "sha256": "a2ce8fc7cce4e3a294ae864a5c172569846306fa577a1df599c2cccd41a8aa1a"
+      },
+      "frames_manifest": "data/captures/video-5573/extraction.json",
+      "generated_mesh": {
+        "path": "data/experiments/runs/sam3d-video-5573-01/mesh.glb",
+        "sha256": "77b8619356476cfb772ad024b962e52264027f8221ab8350419ff61c0b9d5344",
+        "role": "prediction_not_ground_truth"
+      },
+      "previously_used_for_development": true
+    },
+    {
+      "id": "own-img-5627",
+      "source": "own",
+      "category": "speaker",
+      "source_instance_id": "IMG_5627",
+      "partition": "diagnostic",
+      "raw_capture": {
+        "path": "data/captures/2026-10-26-user-videos/IMG_5627/IMG_5627.mov",
+        "sha256": "cf646c8064ca38c3b35bfcf8809b664194f7b15d0074badbb01737ded061221e"
+      },
+      "frames_manifest": "data/captures/2026-10-26-user-videos/IMG_5627/manifest.json",
+      "candidate_frame": {
+        "path": "data/captures/2026-10-26-user-videos/IMG_5627/frames/frame-03.png",
+        "sha256": "5b4ff6b4f9c0731c6b04b98754199d8cf3ed361de3ad1d8a13079ac23a7eb5fd"
+      },
+      "capture_limitation": "Top controls and grille visible; front/back convention remains unresolved.",
+      "previously_used_for_development": false
+    },
+    {
+      "id": "own-img-5628",
+      "source": "own",
+      "category": "mug",
+      "source_instance_id": "IMG_5628",
+      "partition": "diagnostic",
+      "raw_capture": {
+        "path": "data/captures/2026-10-26-user-videos/IMG_5628/IMG_5628.mov",
+        "sha256": "45c6dcf942e8842eb3a54e3efd90fe29793f9ff1b297c4b6c640d169eeb42db1"
+      },
+      "frames_manifest": "data/captures/2026-10-26-user-videos/IMG_5628/manifest.json",
+      "candidate_frame": {
+        "path": "data/captures/2026-10-26-user-videos/IMG_5628/frames/frame-01.png",
+        "sha256": "db769723435701eff9ca2106781718d919d9f63872ecb46c33dbaff344be1094"
+      },
+      "capture_limitation": "Opening and handle visible; later samples leave the frame; moderate blur.",
+      "previously_used_for_development": false
+    },
+    {
+      "id": "own-img-5629",
+      "source": "own",
+      "category": "chair",
+      "source_instance_id": "IMG_5629",
+      "partition": "diagnostic",
+      "raw_capture": {
+        "path": "data/captures/2026-10-26-user-videos/IMG_5629/IMG_5629.mov",
+        "sha256": "4cb728f566855617bfd2379346e3f00418b8091ef9ea21fa951722c1c28c66c7"
+      },
+      "frames_manifest": "data/captures/2026-10-26-user-videos/IMG_5629/manifest.json",
+      "candidate_frame": {
+        "path": "data/captures/2026-10-26-user-videos/IMG_5629/frames/frame-05.png",
+        "sha256": "f0c9837aeaa92e8c85df7cf62583b31b275870e163cd877914994d5e501c0a36"
+      },
+      "capture_limitation": "Seat and backrest visible; chair edges and wheel base are incompletely observed.",
+      "previously_used_for_development": false
+    },
+    {
+      "id": "own-img-5630",
+      "source": "own",
+      "category": "spray_bottle",
+      "source_instance_id": "IMG_5630",
+      "partition": "diagnostic",
+      "raw_capture": {
+        "path": "data/captures/2026-10-26-user-videos/IMG_5630/IMG_5630.mov",
+        "sha256": "58ad6e9a3b869c742e67880dbf6f4e87ed248fed786bfe1b794c6d6172991213"
+      },
+      "frames_manifest": "data/captures/2026-10-26-user-videos/IMG_5630/manifest.json",
+      "candidate_frame": {
+        "path": "data/captures/2026-10-26-user-videos/IMG_5630/frames/frame-06.png",
+        "sha256": "2ca096c0bd14372b0828188663def491a1da91cccdde0898b5838b6070b29742"
+      },
+      "capture_limitation": "Nozzle and trigger visible; label-facing and nozzle-facing directions differ.",
+      "previously_used_for_development": false
+    }
+  ]
+}

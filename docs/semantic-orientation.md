@@ -121,6 +121,10 @@ uv run --locked --extra canonical python -m experiments.semantic_orientation.pre
 
 ## Evaluation and next dataset
 
+The selected [37-object pilot](datasets/mini-v1.md) now records the next dataset's
+instances, partitions, acquisition status, and reference-annotation requirements.
+It does not change the measured results of the two-object diagnostic below.
+
 Report chair full-frame, up and front errors; both objects' rotation equivariance;
 VLM order agreement and abstentions; raw PointSO vote dispersion; and execution
 cost. No symmetry discount is inferred from model answers. An abstained case is

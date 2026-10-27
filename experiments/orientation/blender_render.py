@@ -16,7 +16,9 @@ def main() -> None:
     parser.add_argument("output", type=Path)
     parser.add_argument("--views", type=int, default=12)
     parser.add_argument("--resolution", type=int, default=518)
-    parser.add_argument("--preset", choices=("sphere", "canonical", "ring"), default="sphere")
+    parser.add_argument(
+        "--preset", choices=("sphere", "canonical", "ring", "axes"), default="sphere"
+    )
     args = parser.parse_args(sys.argv[sys.argv.index("--") + 1 :])
     bpy.ops.wm.read_factory_settings(use_empty=True)
     bpy.ops.import_scene.gltf(filepath=str(args.mesh))
@@ -71,7 +73,17 @@ def main() -> None:
     camera_data.clip_start = radius * 0.01
     camera_data.clip_end = radius * 20
     directions: list[tuple[str, tuple[float, float, float]]] = []
-    if args.preset == "canonical":
+    if args.preset == "axes":
+        directions = [
+            ("Source +Z", (0, -1, 0)),
+            ("Source -Z", (0, 1, 0)),
+            ("Source +X", (1, 0, 0)),
+            ("Source -X", (-1, 0, 0)),
+            ("Source +Y", (0, 0, 1)),
+            ("Source -Y", (0, 0, -1)),
+            ("Source oblique", (1, -1, 1)),
+        ]
+    elif args.preset == "canonical":
         directions = [
             ("Front (+Z)", (0, -1, 0)),
             ("Back (-Z)", (0, 1, 0)),

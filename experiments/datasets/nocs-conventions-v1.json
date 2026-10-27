@@ -1,0 +1,351 @@
+{
+  "schema_version": 1,
+  "id": "nocs-mini-source-conventions-v1",
+  "dataset_id": "scan2canon-mini-v1",
+  "catalog_sha256": "d2b01de383cc41ee22edd641f670348e416e81a53d1ef75f1b317188095b0691",
+  "status": "source_convention_checked",
+  "review_date": "2026-10-27",
+  "review_method": "Pinned upstream evaluation code plus seven known-axis source renders per mesh; no tested orientation-model predictions used. Not independent human annotation.",
+  "project_frame": "+Y up, +Z reference front, right-handed",
+  "dataset_approval": "not_granted",
+  "source_evidence": {
+    "repository_revision": "dd58dbf68feede04c3d7bbafeb9212af1a43422f",
+    "metric_url": "https://github.com/hughw19/NOCS_CVPR2019/blob/dd58dbf68feede04c3d7bbafeb9212af1a43422f/utils.py",
+    "function": "compute_RT_degree_cm_symmetry",
+    "symmetry_rule": "Bottle, bowl, can: compare transformed +Y axes. Mug: original image benchmark ignores yaw only when handle_visibility == 0.",
+    "mug_scope": "This pilot uses complete mesh multi-view evidence with visibly present handles in source audit, not a single occluded-image benchmark."
+  },
+  "audit": {
+    "path": "data/datasets/scan2canon-mini-v1/nocs-audit-02/audit.json",
+    "sha256": "81e5a3474f662dbe9d16d92d759b8d4882e0f52b30c65c5af0d18ec0299ae3bb",
+    "renderer_sha256": "c1aa9786476d6431b170cb30e0db8a525c2f968d9d0b9f7eeff71a5148080626"
+  },
+  "categories": {
+    "bottle": {
+      "metric": "up_only",
+      "source_to_project_rotation": [
+        [
+          0,
+          0,
+          -1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "source_up": [
+        0,
+        1,
+        0
+      ],
+      "source_reference_front": null,
+      "yaw_policy": "ignore",
+      "evidence_note": "Neck/cap lies toward +Y. Yaw is ignored under the published NOCS category metric, not a claim of exact mesh symmetry."
+    },
+    "bowl": {
+      "metric": "up_only",
+      "source_to_project_rotation": [
+        [
+          0,
+          0,
+          -1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "source_up": [
+        0,
+        1,
+        0
+      ],
+      "source_reference_front": null,
+      "yaw_policy": "ignore",
+      "evidence_note": "Opening faces +Y; yaw is ignored under the published NOCS category metric."
+    },
+    "can": {
+      "metric": "up_only",
+      "source_to_project_rotation": [
+        [
+          0,
+          0,
+          -1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "source_up": [
+        0,
+        1,
+        0
+      ],
+      "source_reference_front": null,
+      "yaw_policy": "ignore",
+      "evidence_note": "Top lies toward +Y; yaw is ignored under the published NOCS category metric, irrespective of missing label appearance."
+    },
+    "camera": {
+      "metric": "full_frame",
+      "source_to_project_rotation": [
+        [
+          0,
+          0,
+          -1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "source_up": [
+        0,
+        1,
+        0
+      ],
+      "source_reference_front": [
+        1,
+        0,
+        0
+      ],
+      "yaw_policy": "evaluate",
+      "evidence_note": "Lens-facing side is visible from source +X. Use source +Y as dataset up; this does not infer camera pose from gravity."
+    },
+    "laptop": {
+      "metric": "full_frame",
+      "source_to_project_rotation": [
+        [
+          0,
+          0,
+          -1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "source_up": [
+        0,
+        1,
+        0
+      ],
+      "source_reference_front": [
+        1,
+        0,
+        0
+      ],
+      "yaw_policy": "evaluate",
+      "evidence_note": "Keyboard edge toward the user is +X; base normal is +Y. The front is horizontal, not the tilted screen normal."
+    },
+    "mug": {
+      "metric": "full_frame",
+      "source_to_project_rotation": [
+        [
+          0,
+          0,
+          -1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "source_up": [
+        0,
+        1,
+        0
+      ],
+      "source_reference_front": [
+        1,
+        0,
+        0
+      ],
+      "yaw_policy": "evaluate",
+      "evidence_note": "Handle extends toward +X and opening faces +Y. Handleward +Z is an explicit reference convention, not a universal natural front."
+    }
+  },
+  "objects": [
+    {
+      "object_id": "nocs-bottle_red_stanford_norm",
+      "category": "bottle",
+      "source_mesh_sha256": "a96dac73a97559d5bf913abde85c789220414596b22739a745c6f9481f627a09",
+      "status": "source_convention_checked",
+      "audit_views_manifest_sha256": "2f570260261efe52350452b7aa18ea9357cbd5c2127492e0d70c83bfd981a8a4",
+      "limitations": [
+        "missing_materials",
+        "incomplete_bottom_surface",
+        "source_frame_is_dataset_reference_not_measured_physical_pose"
+      ]
+    },
+    {
+      "object_id": "nocs-bottle_shampoo_norm",
+      "category": "bottle",
+      "source_mesh_sha256": "b29da4566e99ccca2b55f3d4184d9a55a1ce0b4e044a7c5bc614721a855b0f5a",
+      "status": "source_convention_checked",
+      "audit_views_manifest_sha256": "a1fbb37815381196b6c0d2c418d2258c90dcdcd4f605be2629ae7ee7028ce132",
+      "limitations": [
+        "missing_materials",
+        "incomplete_bottom_surface",
+        "source_frame_is_dataset_reference_not_measured_physical_pose"
+      ]
+    },
+    {
+      "object_id": "nocs-bowl_shengjun_norm",
+      "category": "bowl",
+      "source_mesh_sha256": "606fb3bc34f978e878b265eb06cc8003da97f96af7557d3afbdd2ae56e5d4438",
+      "status": "source_convention_checked",
+      "audit_views_manifest_sha256": "500dcc10337b6007df4e3aa83189650a85d156cc6b8d48f291d15680ddabfea7",
+      "limitations": [
+        "missing_materials",
+        "incomplete_bottom_surface",
+        "source_frame_is_dataset_reference_not_measured_physical_pose"
+      ]
+    },
+    {
+      "object_id": "nocs-bowl_white_small_norm",
+      "category": "bowl",
+      "source_mesh_sha256": "7410cd6270b43a952cd0546d69185d3e0ad98078f17450295a71510395bdd0ee",
+      "status": "source_convention_checked",
+      "audit_views_manifest_sha256": "40490c18c7fd461c90020c53f05294f44e72ab0d0eb2c8969c097d868a6c8719",
+      "limitations": [
+        "missing_materials",
+        "incomplete_bottom_surface",
+        "source_frame_is_dataset_reference_not_measured_physical_pose"
+      ]
+    },
+    {
+      "object_id": "nocs-camera_canon_len_norm",
+      "category": "camera",
+      "source_mesh_sha256": "cc76b5a5c067e67c61bbe6f6c6ac97018d28de9795688ea7ed5674bd19c19da3",
+      "status": "source_convention_checked",
+      "audit_views_manifest_sha256": "704bbfee06e8a73d59fe58958414ffd0d46cec733d79471a90dcf7fbb8d655ef",
+      "limitations": [
+        "missing_materials",
+        "incomplete_bottom_surface",
+        "source_frame_is_dataset_reference_not_measured_physical_pose"
+      ]
+    },
+    {
+      "object_id": "nocs-camera_shengjun_norm",
+      "category": "camera",
+      "source_mesh_sha256": "6160500252ebf784e9853db85037b4d24d1c1b863500cdc4eca5178cb42c6fe1",
+      "status": "source_convention_checked",
+      "audit_views_manifest_sha256": "5ac9f0c4159a24ae420f1ea7d03214c841e16d809a94fcedad9318d7b249b125",
+      "limitations": [
+        "missing_materials",
+        "incomplete_bottom_surface",
+        "source_frame_is_dataset_reference_not_measured_physical_pose"
+      ]
+    },
+    {
+      "object_id": "nocs-can_arizona_tea_norm",
+      "category": "can",
+      "source_mesh_sha256": "d8c8e84af657a84929251e13da195492715a81a62644056b180c1bacd411cb5f",
+      "status": "source_convention_checked",
+      "audit_views_manifest_sha256": "4632091f3b756009da28b16f49e668b66dfdb9b6a6a20a432350983a8154a96c",
+      "limitations": [
+        "missing_materials",
+        "incomplete_bottom_surface",
+        "source_frame_is_dataset_reference_not_measured_physical_pose"
+      ]
+    },
+    {
+      "object_id": "nocs-can_green_norm",
+      "category": "can",
+      "source_mesh_sha256": "b2c206f5f21a71d9d7b6e536259c3bdb7a36ea65d1365a3d0fdc6571b3ed841e",
+      "status": "source_convention_checked",
+      "audit_views_manifest_sha256": "37d602e89ba9a4ffbd47b96da97b071fe641b05ab17d5cb4f51d6e5a6c016936",
+      "limitations": [
+        "missing_materials",
+        "incomplete_bottom_surface",
+        "source_frame_is_dataset_reference_not_measured_physical_pose"
+      ]
+    },
+    {
+      "object_id": "nocs-laptop_alienware_norm",
+      "category": "laptop",
+      "source_mesh_sha256": "c5590c4a5d2491abba431162569290ef9ec57e18e58f5db3a7f480c5d1564173",
+      "status": "source_convention_checked",
+      "audit_views_manifest_sha256": "e2768c4e2c97cd3bd6487f98c3f2a8c10d475be17ae8b7181f9ada2406654b3e",
+      "limitations": [
+        "missing_materials",
+        "incomplete_bottom_surface",
+        "source_frame_is_dataset_reference_not_measured_physical_pose"
+      ]
+    },
+    {
+      "object_id": "nocs-laptop_air_xin_norm",
+      "category": "laptop",
+      "source_mesh_sha256": "57172556cd2a4e5321d1895ce10821919e07cc992ba6932af7439ca3ce1af82e",
+      "status": "source_convention_checked",
+      "audit_views_manifest_sha256": "27e5743457f1d6a64bb152a35f186c88383354b89af2cae5a6cd81e6499f43ee",
+      "limitations": [
+        "missing_materials",
+        "incomplete_bottom_surface",
+        "source_frame_is_dataset_reference_not_measured_physical_pose"
+      ]
+    },
+    {
+      "object_id": "nocs-mug_brown_starbucks_norm",
+      "category": "mug",
+      "source_mesh_sha256": "754011d688ce8f3ec76e414c2a23b5d120490658549a308fa7adfee42cdf838d",
+      "status": "source_convention_checked",
+      "audit_views_manifest_sha256": "194cd8137ca74e067b4cd2269f48c32656fefe51024b2c4d7f449bf429561a82",
+      "limitations": [
+        "missing_materials",
+        "incomplete_bottom_surface",
+        "source_frame_is_dataset_reference_not_measured_physical_pose"
+      ]
+    },
+    {
+      "object_id": "nocs-mug_anastasia_norm",
+      "category": "mug",
+      "source_mesh_sha256": "0a1324568b0c78bd33208fdeaad845aec1e7947c34ef6751cb6f9e9ad387ce80",
+      "status": "source_convention_checked",
+      "audit_views_manifest_sha256": "24a69b8c18f732126cf4984b75a038e5fe90375af2f18c04c6e031fc6a3d2e27",
+      "limitations": [
+        "missing_materials",
+        "incomplete_bottom_surface",
+        "source_frame_is_dataset_reference_not_measured_physical_pose"
+      ]
+    }
+  ]
+}

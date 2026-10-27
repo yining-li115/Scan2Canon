@@ -30,7 +30,7 @@ def render(mesh: Path, output: Path, blender: str, views: int = 12, preset: str 
     mesh, output = mesh.resolve(), output.resolve()
     if not mesh.is_file() or mesh.suffix.lower() != ".glb" or not 3 <= views <= 64:
         raise ValueError("Expected an existing GLB and 3–64 views")
-    if preset not in ("sphere", "canonical", "ring"):
+    if preset not in ("sphere", "canonical", "ring", "axes"):
         raise ValueError("Unknown camera preset")
     output.mkdir(parents=True, exist_ok=False)
     started = time.perf_counter()
@@ -88,7 +88,9 @@ def main() -> None:
     parser.add_argument("output", type=Path)
     parser.add_argument("--blender", default="blender")
     parser.add_argument("--views", type=int, default=12)
-    parser.add_argument("--preset", choices=("sphere", "canonical", "ring"), default="sphere")
+    parser.add_argument(
+        "--preset", choices=("sphere", "canonical", "ring", "axes"), default="sphere"
+    )
     args = parser.parse_args()
     print(render(args.mesh, args.output, args.blender, args.views, args.preset))
 

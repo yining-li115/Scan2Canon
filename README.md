@@ -17,6 +17,14 @@ raw evidence, abstentions, and separate accuracy/equivariance evaluation.
 See the [first comparison results](docs/experiments/2026-10-26-semantic-orientation.md)
 for the two-object diagnostic; it does not establish open-world accuracy.
 
+The [37-object pilot](docs/datasets/mini-v1.md) fixes 12 NOCS, 20 OO3D-9D, and
+5 user-captured instances, with separate development, holdout, and diagnostic
+partitions. Its catalog distinguishes sample selection from asset availability
+and reviewed reference annotations.
+The [NOCS preparation](docs/experiments/2026-10-27-nocs-preparation.md) audits source
+axes and prepares deterministic rotation cases with scoring references kept out
+of model inputs.
+
 For the first GPU experiment, follow [Server experiments](docs/server-experiments.md). The pinned environment and an eight-view inference/export smoke test were verified on an A100 40 GB on October 26, 2026. This confirms execution, not reconstruction accuracy or semantic canonicalization.
 
 ## Getting started
