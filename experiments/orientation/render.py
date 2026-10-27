@@ -33,6 +33,7 @@ def render(
     views: int = 12,
     preset: str = "sphere",
     poses: list[Any] | None = None,
+    pose_camera: tuple[float, float, float] = (1, -2, 1),
 ) -> Path:
     mesh, output = mesh.resolve(), output.resolve()
     if not mesh.is_file() or mesh.suffix.lower() != ".glb" or not 3 <= views <= 64:
@@ -54,7 +55,7 @@ def render(
         script = Path(__file__).with_name("blender_render.py").resolve()
         extra = []
         if poses is not None:
-            write_json(output / "poses.json", {"rotations": poses})
+            write_json(output / "poses.json", {"rotations": poses, "camera_direction": pose_camera})
             extra = ["--poses", str(output / "poses.json")]
         with (output / "render.log").open("w") as log:
             subprocess.run(

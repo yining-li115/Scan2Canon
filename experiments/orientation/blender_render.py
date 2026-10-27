@@ -109,9 +109,13 @@ def main() -> None:
                 )
             )
     views = []
-    pose_values = json.loads(args.poses.read_text())["rotations"] if args.poses else None
-    if pose_values is not None:
-        directions = [(f"Pose {i:02d}", (1, -2, 1)) for i in range(len(pose_values))]
+    pose_config = json.loads(args.poses.read_text()) if args.poses else None
+    pose_values = pose_config["rotations"] if pose_config else None
+    if pose_values is not None and pose_config is not None:
+        directions = [
+            (f"Pose {i:02d}", pose_config.get("camera_direction", (1, -2, 1)))
+            for i in range(len(pose_values))
+        ]
     glb_to_blender = Matrix(((1, 0, 0), (0, 0, -1), (0, 1, 0)))
     for index, (label, direction_values) in enumerate(directions):
         direction = Vector(direction_values).normalized()
