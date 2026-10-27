@@ -20,7 +20,7 @@ from experiments.semantic_orientation.contracts import Selection, direction_erro
 class Decision(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
     schema_version: Literal[1]
-    actor: Literal["interactive_visual_agent", "local_vlm"]
+    actor: Literal["interactive_visual_agent", "local_vlm", "automated_model_policy"]
     case_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
     rules_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
     model_calls: int = Field(ge=1, le=2)

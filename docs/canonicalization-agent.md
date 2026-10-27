@@ -7,6 +7,11 @@ The interactive agent can execute the repository skill at
 `.agents/skills/mesh-canonicalization/SKILL.md`; the iOS/backend does not yet run
 that agent automatically.
 
+For automatic decision generation and resumable execution, use the
+[standalone worker](canonicalization-worker.md). It shares the validated tools
+below and records `automated_model_policy` plus the actual backend/model in its
+run provenance. Interactive, cloud and local-model results remain separate policies.
+
 ## Flow
 
 1. Preserve the source mesh and render a verified input bundle.

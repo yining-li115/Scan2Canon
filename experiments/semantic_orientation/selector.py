@@ -29,10 +29,21 @@ class LocalSelector:
         )
 
     def select(self, prompt: str, views: list[tuple[int, Path]]) -> dict[str, Any]:
-        import torch
-
         if not 3 <= len(views) <= 12:
             raise ValueError("Expected 3–12 labeled candidate images")
+        result = self.select_labeled(
+            prompt, [(f"Candidate {key}", path) for key, path in views], 512
+        )
+        result["order"] = [key for key, _ in views]
+        return result
+
+    def select_labeled(
+        self, prompt: str, views: list[tuple[str, Path]], max_new_tokens: int = 1024
+    ) -> dict[str, Any]:
+        import torch
+
+        if not 3 <= len(views) <= 32 or not 1 <= max_new_tokens <= 1024:
+            raise ValueError("Expected 3–32 labeled images and at most 1024 output tokens")
         content: list[dict[str, Any]] = [{"type": "text", "text": prompt}]
         images = []
         for key, path in views:
@@ -40,7 +51,7 @@ class LocalSelector:
                 rgba = Image.new("RGBA", source.size, "white")
                 rgba.alpha_composite(source.convert("RGBA"))
                 images.append(rgba.convert("RGB"))
-            content.extend([{"type": "text", "text": f"Candidate {key}:"}, {"type": "image"}])
+            content.extend([{"type": "text", "text": f"{key}:"}, {"type": "image"}])
         text = self.processor.apply_chat_template(
             [{"role": "user", "content": content}], tokenize=False, add_generation_prompt=True
         )
@@ -49,7 +60,9 @@ class LocalSelector:
         )
         started = time.perf_counter()
         with torch.inference_mode():
-            generated = self.model.generate(**inputs, max_new_tokens=512, do_sample=False)
+            generated = self.model.generate(
+                **inputs, max_new_tokens=max_new_tokens, do_sample=False
+            )
         torch.cuda.synchronize()
         reply = self.processor.batch_decode(
             generated[:, inputs.input_ids.shape[1] :],

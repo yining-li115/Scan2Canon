@@ -131,6 +131,10 @@ The first SAM 3D experiment generated a mesh from one masked video frame on an A
 The [mesh canonicalization experiment](docs/canonicalization-agent.md) now supports
 an interactive visual agent selecting geometry-derived up/front candidates and
 exporting reversible GLB proposals. It preserves unresolved axes and records the
-actual decision actor. This workflow is not yet integrated into the backend or
+actual decision actor. The [resumable canonicalization worker](docs/canonicalization-worker.md)
+automates these steps with a cloud visual-model API or an optional local policy,
+bounded extra-view requests, validated decisions and crash recovery. Cloud model
+accuracy still needs live evaluation; earlier interactive-agent scores do not
+measure this worker's model policy. This workflow is not yet integrated into the backend or
 iOS app. See the [pilot results](docs/experiments/2026-10-27-canonicalization-agent.md)
 for measured failures, abstentions and the small holdout evaluation.
