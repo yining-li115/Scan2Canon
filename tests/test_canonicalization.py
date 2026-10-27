@@ -6,10 +6,11 @@ import pytest
 np = pytest.importorskip("numpy")
 trimesh = pytest.importorskip("trimesh")
 
+from experiments.artifacts import read_json, sha256, write_json  # noqa: E402
 from experiments.canonicalization.evidence import direction_cluster  # noqa: E402
-from experiments.canonicalization.semantic import run  # noqa: E402
+from experiments.canonicalization.semantic import RULES, run  # noqa: E402
 from experiments.canonicalization.upright import candidates  # noqa: E402
-from experiments.canonicalization.workflow import Decision, export  # noqa: E402
+from experiments.canonicalization.workflow import Decision, export, finish  # noqa: E402
 from experiments.orientation.geometry import axis_rotation, rotation  # noqa: E402
 from experiments.semantic_orientation.contracts import direction_error  # noqa: E402
 
@@ -93,3 +94,96 @@ def test_agent_cannot_inject_rotation_or_skip_evidence_budget() -> None:
         Decision.model_validate(
             {**valid, "selection": {**valid["selection"], "evidence_view_ids": []}}
         )
+
+
+def make_case(root: Path, task: str, matrices: list[Any]) -> Path:
+    root.mkdir()
+    poses = root / "poses"
+    poses.mkdir()
+    trimesh.creation.box().export(poses / "source.glb")
+    views = []
+    for i in range(len(matrices)):
+        path = poses / f"{i}.png"
+        path.write_bytes(b"render fixture")
+        views.append({"id": i, "image": path.name, "sha256": sha256(path)})
+    write_json(
+        poses / "manifest.json",
+        {
+            "schema_version": 1,
+            "status": "succeeded",
+            "mesh": "source.glb",
+            "mesh_sha256": sha256(poses / "source.glb"),
+            "views": views,
+        },
+    )
+    write_json(poses / "poses.json", {"rotations": matrices})
+    path = root / ("upright.json" if task == "up" else "front.json")
+    write_json(
+        path,
+        {
+            "schema_version": 1,
+            "status": "succeeded",
+            "task": task,
+            "category": "mug",
+            "mesh_sha256": sha256(poses / "source.glb"),
+            "views_manifest_sha256": sha256(poses / "manifest.json"),
+            "candidates": [{"id": i, "rotation": r} for i, r in enumerate(matrices)],
+        },
+    )
+    return path
+
+
+def save_decision(path: Path, descriptor_path: Path, selection: int | None) -> Path:
+    write_json(
+        path,
+        {
+            "schema_version": 1,
+            "actor": "interactive_visual_agent",
+            "case_sha256": sha256(descriptor_path),
+            "rules_sha256": sha256(RULES),
+            "model_calls": 1,
+            "selection": {
+                "decision": "selected" if selection is not None else "needs_evidence",
+                "candidate_id": selection,
+                "evidence_view_ids": [0],
+                "visible_evidence": "Fixture evidence",
+                "missing_evidence": "Need a rim view" if selection is None else "",
+            },
+        },
+    )
+    return path
+
+
+def test_workflow_preserves_partial_axes_and_blocks_mismatched_front(tmp_path: Path) -> None:
+    identity = np.eye(3).tolist()
+    up = make_case(tmp_path / "up", "up", [identity] * 3)
+    decision = save_decision(tmp_path / "up-decision.json", up, 0)
+    partial = finish(up.parent, decision, tmp_path / "partial")
+    report = read_json(partial / "canonicalization.json")
+    assert report["scope"] == "up_only_front_pending"
+    assert report["yaw"] == "unspecified"
+    assert report["dataset_approval"] == "not_granted"
+    front = make_case(tmp_path / "front", "front", [axis_rotation(0, 35).tolist()] * 3)
+    content = read_json(front)
+    content.update(up_case_sha256=sha256(up), up_decision_sha256=sha256(decision))
+    write_json(front, content)
+    front_decision = save_decision(tmp_path / "front-decision.json", front, 0)
+    with pytest.raises(ValueError, match="changes the established up"):
+        finish(up.parent, decision, tmp_path / "bad", front.parent, front_decision)
+    assert not (tmp_path / "bad").exists()
+    evidence = read_json(decision)
+    evidence["selection"]["candidate_id"] = 99
+    write_json(decision, evidence)
+    with pytest.raises(ValueError, match="Unknown candidate"):
+        finish(up.parent, decision, tmp_path / "unknown")
+
+
+def test_abstention_exports_no_mesh_and_changed_evidence_is_rejected(tmp_path: Path) -> None:
+    up = make_case(tmp_path / "up", "up", [np.eye(3).tolist()] * 3)
+    decision = save_decision(tmp_path / "decision.json", up, None)
+    result = finish(up.parent, decision, tmp_path / "result")
+    assert read_json(result / "canonicalization.json")["scope"] == "unresolved"
+    assert not list(result.glob("*.glb"))
+    (up.parent / "poses/0.png").write_bytes(b"changed evidence")
+    with pytest.raises(ValueError, match="modified artifact"):
+        finish(up.parent, decision, tmp_path / "changed")

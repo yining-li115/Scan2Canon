@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "development_oa_30_rotations": {
+    "raw_rotation": {
+      "cases": 30,
+      "up_proposals": 30,
+      "full_frame_proposals": 15,
+      "up_within_15_degrees": 1,
+      "full_frame_within_15_degrees": 0,
+      "median_up_error_degrees": 91.18104688666902,
+      "median_frame_error_degrees": 153.61181777363817
+    },
+    "support_rotation": {
+      "cases": 30,
+      "up_proposals": 30,
+      "full_frame_proposals": 15,
+      "up_within_15_degrees": 3,
+      "full_frame_within_15_degrees": 0,
+      "median_up_error_degrees": 89.42475338230702,
+      "median_frame_error_degrees": 135.81661960090975
+    }
+  },
+  "development_oa_same_six_cases": {
+    "raw_rotation": {
+      "cases": 6,
+      "up_proposals": 6,
+      "full_frame_proposals": 3,
+      "up_within_15_degrees": 0,
+      "full_frame_within_15_degrees": 0,
+      "median_up_error_degrees": 89.98284907716194,
+      "median_frame_error_degrees": 119.52936601636009
+    },
+    "support_rotation": {
+      "cases": 6,
+      "up_proposals": 6,
+      "full_frame_proposals": 3,
+      "up_within_15_degrees": 0,
+      "full_frame_within_15_degrees": 0,
+      "median_up_error_degrees": 95.67856078476485,
+      "median_frame_error_degrees": 102.4582661497425
+    }
+  },
+  "local_qwen_development": {
+    "objects": 6,
+    "calls": 12,
+    "selected": 0,
+    "abstained": 6
+  },
+  "interactive_agent_development": {
+    "visual_agent": {
+      "cases": 6,
+      "up_proposals": 5,
+      "full_frame_proposals": 3,
+      "up_within_15_degrees": 4,
+      "full_frame_within_15_degrees": 2,
+      "median_up_error_degrees": 0.6344064855191068,
+      "median_frame_error_degrees": 10.331385574462729
+    }
+  },
+  "interactive_agent_holdout": {
+    "visual_agent": {
+      "cases": 6,
+      "up_proposals": 4,
+      "full_frame_proposals": 1,
+      "up_within_15_degrees": 4,
+      "full_frame_within_15_degrees": 1,
+      "median_up_error_degrees": 0.7249866061551146,
+      "median_frame_error_degrees": 6.183802375821002
+    }
+  },
+  "holdout_rows": [
+    {
+      "case_id": "case-06940288c3fa549a",
+      "object_id": "nocs-mug_anastasia_norm",
+      "category": "mug",
+      "partition": "holdout",
+      "scope": "full_frame",
+      "decision": "automatic_proposal",
+      "proposal_sha256": "f6aaddaa5497a035d28238a3826e4c73acb54e0fd0340d316af8517712c8816f",
+      "up_error_degrees": 0.28862427341605895,
+      "frame_error_degrees": 6.183802375821002
+    },
+    {
+      "case_id": "case-12fd1a35b6d86a3a",
+      "object_id": "nocs-laptop_air_xin_norm",
+      "category": "laptop",
+      "partition": "holdout",
+      "scope": "unresolved",
+      "decision": "needs_evidence",
+      "proposal_sha256": "67658a6d034e93a143d11f5928514bdfc60b75c759e29be7cd4a5a33c0dc6842"
+    },
+    {
+      "case_id": "case-34f0944d77b0d6ae",
+      "object_id": "nocs-bottle_shampoo_norm",
+      "category": "bottle",
+      "partition": "holdout",
+      "scope": "up_only",
+      "decision": "automatic_proposal",
+      "proposal_sha256": "2875172383a3d5d16d0353bdb3cd664d4e65b9076b115fde22651c0f51dea840",
+      "up_error_degrees": 1.153789735147542,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-653f2f89dd86a51f",
+      "object_id": "nocs-bowl_white_small_norm",
+      "category": "bowl",
+      "partition": "holdout",
+      "scope": "up_only",
+      "decision": "automatic_proposal",
+      "proposal_sha256": "25b61fd1a8874249089d993099227c309b489c2358a498a0e3ab361bc3cef616",
+      "up_error_degrees": 0.29618347716268717,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-73be7ee3481dd0d4",
+      "object_id": "nocs-can_green_norm",
+      "category": "can",
+      "partition": "holdout",
+      "scope": "up_only",
+      "decision": "automatic_proposal",
+      "proposal_sha256": "7dd2bbccc7cd0f3a709d78baf590b26b3e8e51ce94efc5a255e3b5e435ecc7de",
+      "up_error_degrees": 2.6671031170739865,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-f0dc37e9b60fe18b",
+      "object_id": "nocs-camera_shengjun_norm",
+      "category": "camera",
+      "partition": "holdout",
+      "scope": "unresolved",
+      "decision": "needs_evidence",
+      "proposal_sha256": "5e968d9b6ee42aeb2292eff1dffa40e44405e3e7451da915045017807526ecbb"
+    }
+  ],
+  "development_rows": [
+    {
+      "case_id": "case-210e8c817e016ab2",
+      "object_id": "nocs-bottle_red_stanford_norm",
+      "category": "bottle",
+      "partition": "development",
+      "scope": "up_only",
+      "decision": "automatic_proposal",
+      "proposal_sha256": "0a523a92d6d26987302c10c79ec69e47d4b0f34571dfc0c6d0a648b16552936d",
+      "up_error_degrees": 0.3226212983049842,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-283193973db490a6",
+      "object_id": "nocs-mug_brown_starbucks_norm",
+      "category": "mug",
+      "partition": "development",
+      "scope": "full_frame",
+      "decision": "automatic_proposal",
+      "proposal_sha256": "57b4c85af7c24faab3aa51621d1821348b7b37412c76e252a2fd2df8f9c4eda2",
+      "up_error_degrees": 1.1569477584956014,
+      "frame_error_degrees": 1.732121629234485
+    },
+    {
+      "case_id": "case-320cf3795539df2e",
+      "object_id": "nocs-laptop_alienware_norm",
+      "category": "laptop",
+      "partition": "development",
+      "scope": "full_frame",
+      "decision": "automatic_proposal",
+      "proposal_sha256": "08a547887855ff372bf13ae40387b4541d9a6e391c772fd0c9808f5319f38325",
+      "up_error_degrees": 48.9872161934005,
+      "frame_error_degrees": 178.86731634924232
+    },
+    {
+      "case_id": "case-c612b70338a602de",
+      "object_id": "nocs-camera_canon_len_norm",
+      "category": "camera",
+      "partition": "development",
+      "scope": "full_frame",
+      "decision": "automatic_proposal",
+      "proposal_sha256": "40cacfc1513124bebca77b9520625d9431bf1e5544d6534938e5b6150b1c7f6a",
+      "up_error_degrees": 0.6344064855191068,
+      "frame_error_degrees": 10.331385574462729
+    },
+    {
+      "case_id": "case-ebcd1dbd065b8815",
+      "object_id": "nocs-bowl_shengjun_norm",
+      "category": "bowl",
+      "partition": "development",
+      "scope": "up_only",
+      "decision": "automatic_proposal",
+      "proposal_sha256": "4f8d1d1c25568a79890ae7d387cf312bd49ae0298d83ca3f8ce32f1509978bc2",
+      "up_error_degrees": 0.267724778705471,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-fe16c6e6b58f1d16",
+      "object_id": "nocs-can_arizona_tea_norm",
+      "category": "can",
+      "partition": "development",
+      "scope": "unresolved",
+      "decision": "needs_evidence",
+      "proposal_sha256": "a7fa8c532ba12c8edfe8f38ec0caf2e4ae6682bb8e9577b4332ba4d05d3e1cdb"
+    }
+  ],
+  "holdout_protocol_sha256": "f6be8b867db12d6ff812f968f5ffb68f1095c8ee655755017e00fe29ea6a0194",
+  "scope": "Six development and six holdout objects; one rotation each for interactive agent. Only OA development baseline covers five rotations per object.",
+  "reference": "Audited NOCS source coordinates; not independent human semantic annotations",
+  "sources": {
+    "data/experiments/runs/nocs-development-evidence-01/evaluation.json": "7d5fa65756caf8215d771e355065f320b1dcd12899658fd960066d86d0821b55",
+    "data/experiments/runs/nocs-agent-development-probe-01/evaluation.json": "23c5ec195db02629f4217b392915941c4093706d406adf239546ae1c20c84b28",
+    "data/experiments/runs/nocs-agent-holdout-01/evaluation.json": "e9ba183a86be082b007dd3b1821f12628ac71917c0a3a50431fffc60bf433a2b",
+    "data/experiments/runs/nocs-upright-vlm-development-probe-01/predictions.json": "80c60b36b579db4c5489eb0648d7b375f5b700ed8dc83373e072a7061e853a58"
+  }
+}

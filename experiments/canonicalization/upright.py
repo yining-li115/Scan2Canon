@@ -43,8 +43,15 @@ def candidates(mesh: Any) -> list[dict[str, Any]]:
 
 
 def prepare(views: Path, category: str, output: Path, blender: str) -> Path:
-    manifest = verify_views(views)
-    mesh_path = views / manifest["mesh"]
+    if category not in read_json(Path(__file__).with_name("conventions.json"))["categories"]:
+        raise ValueError("Unsupported category; establish its convention before selecting axes")
+    if views.is_file() and views.suffix.lower() == ".glb":
+        mesh_path = views.resolve()
+        mesh_hash = sha256(mesh_path)
+    else:
+        manifest = verify_views(views)
+        mesh_path = views / manifest["mesh"]
+        mesh_hash = manifest["mesh_sha256"]
     mesh = trimesh.load_scene(mesh_path, process=False).to_mesh()
     choices = candidates(mesh)
     output.mkdir(parents=True, exist_ok=False)
@@ -52,7 +59,7 @@ def prepare(views: Path, category: str, output: Path, blender: str) -> Path:
         "schema_version": 1,
         "status": "running",
         "category": category,
-        "mesh_sha256": manifest["mesh_sha256"],
+        "mesh_sha256": mesh_hash,
         "candidates": choices,
         "runner_sha256": sha256(Path(__file__)),
     }

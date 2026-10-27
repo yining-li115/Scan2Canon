@@ -32,12 +32,13 @@ not an asserted semantic direction. Unknown physical scale stays unknown.
 Use the root locked environment with the `canonical` extra. Blender is needed for
 rendering, but GPU libraries are not needed for geometric tools or exports.
 
-```python
-from pathlib import Path
-from experiments.canonicalization.upright import prepare
-
-prepare(Path("renders/object"), "mug", Path("run/up"), "blender")
+```bash
+uv run --locked --extra canonical python -m experiments.canonicalization.workflow prepare \
+  object.glb mug run/up --blender blender
 ```
+
+This direct GLB path does not require OA inference or a separate input render pass.
+The Python preparation tool also accepts an existing verified render bundle.
 
 Inspect `run/up/poses/contact-sheet.jpg` and, when needed, its original PNGs.
 Use `experiments/canonicalization/conventions.json` as the semantic definition.

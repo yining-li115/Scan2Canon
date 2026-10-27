@@ -83,6 +83,8 @@ tests/               Recovery, contract, path isolation, and API tests
 experiments/mapanything/  Isolated paper baseline, GPU lockfile, and provenance
 experiments/sam3d/    Masked image preparation, generative inference, and GPU lockfile
 experiments/orientation/  Known-camera rendering, OA V2 inference, and canonical pose candidates
+experiments/canonicalization/  Geometry alternatives, semantic decisions, rigid export, and evaluation
+.agents/skills/mesh-canonicalization/  Visual-agent workflow over the validated experiment tools
 experiments/artifacts.py  Shared checksums and portable experiment manifests
 scripts/setup_mapanything.sh  Linux CUDA environment installation and kernel check
 scripts/setup_sam3d.sh  Isolated SAM 3D environment and CUDA extension setup
@@ -125,3 +127,10 @@ installation supports the backend, but not type-checking the optional geometry m
 Backend dependency versions are recorded in `uv.lock`. Each Linux GPU experiment has its own `uv.lock`; it does not install CUDA packages into the backend environment. SAM 3D's compiled extensions use fixed versions/revisions in its setup script, and the installed package inventory is recorded with each run. Update the corresponding lockfile when changing dependencies. Keep runtime environments and captured data out of version control.
 
 The first SAM 3D experiment generated a mesh from one masked video frame on an A100 40 GB: 20.4 seconds of inference and 17.8 GiB peak allocated memory. Other real views remain available for evaluation. MapAnything remains a geometric comparison; its successful smoke test did not establish acceptable object geometry. OA V2 has passed coordinate checks, GPU inference, and official-entry-point parity controls. PointSO and Qwen have also executed on the same diagnostic objects; semantic correctness remains unresolved for the hole punch. Real-view validation and agent policies remain separate work and are not implied by a successful generation run.
+
+The [mesh canonicalization experiment](docs/canonicalization-agent.md) now supports
+an interactive visual agent selecting geometry-derived up/front candidates and
+exporting reversible GLB proposals. It preserves unresolved axes and records the
+actual decision actor. This workflow is not yet integrated into the backend or
+iOS app. See the [pilot results](docs/experiments/2026-10-27-canonicalization-agent.md)
+for measured failures, abstentions and the small holdout evaluation.

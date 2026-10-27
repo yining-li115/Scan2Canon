@@ -11,6 +11,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from experiments.artifacts import read_json, sha256, write_json
 from experiments.canonicalization.front import prepare as prepare_front
 from experiments.canonicalization.semantic import RULES, descriptor, verify
+from experiments.canonicalization.upright import prepare as prepare_up
 from experiments.orientation.geometry import rotation
 from experiments.semantic_orientation.contracts import Selection, direction_error, parse_selection
 
@@ -188,6 +189,11 @@ def finish(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="action", required=True)
+    prepare_command = sub.add_parser("prepare")
+    prepare_command.add_argument("mesh", type=Path)
+    prepare_command.add_argument("category")
+    prepare_command.add_argument("output", type=Path)
+    prepare_command.add_argument("--blender", default="blender")
     for action in ("front", "finish"):
         command = sub.add_parser(action)
         for name in ("case", "decision", "output"):
@@ -198,7 +204,9 @@ if __name__ == "__main__":
             command.add_argument("--front-case", type=Path)
             command.add_argument("--front-decision", type=Path)
     args = parser.parse_args()
-    if args.action == "front":
+    if args.action == "prepare":
+        print(prepare_up(args.mesh, args.category, args.output, args.blender))
+    elif args.action == "front":
         print(next_front(args.case, args.decision, args.output, args.blender))
     else:
         print(finish(args.case, args.decision, args.output, args.front_case, args.front_decision))
