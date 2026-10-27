@@ -1,0 +1,12 @@
+{
+  "version": "pilot-semantic-v1",
+  "scope": "Known pilot category hypotheses; no instance coordinates or scoring references",
+  "categories": {
+    "bottle": {"up": "From the broad base toward the narrow neck and cap or mouth. A missing broad base in a scan is not the bottle mouth.", "front": null},
+    "bowl": {"up": "From the small bottom toward the wide open rim; the concave interior opens upward.", "front": null},
+    "can": {"up": "From the bottom toward the lid or pull-tab. If both ends are indistinguishable, abstain; axial shape alone cannot establish the sign.", "front": null},
+    "camera": {"up": "The normal operating upright orientation: controls and shutter button above, tripod/base below; do not use the lens axis as up.", "front": "Horizontally outward through the lens, toward the photographed subject."},
+    "laptop": {"up": "Keyboard/base rests below, screen extends upward from its hinge; screen normal is not up.", "front": "Horizontally from the screen hinge toward the front keyboard edge and seated user."},
+    "mug": {"up": "From the closed base toward the open rim, with the cavity opening upward.", "front": "Horizontally from the cup body toward the center of the handle. This is the project reference convention, not a claim that a mug has a universal front."}
+  }
+}

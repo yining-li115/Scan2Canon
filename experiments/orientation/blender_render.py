@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 import bpy
-from mathutils import Vector
+from mathutils import Matrix, Vector
 
 
 def main() -> None:
@@ -16,6 +16,7 @@ def main() -> None:
     parser.add_argument("output", type=Path)
     parser.add_argument("--views", type=int, default=12)
     parser.add_argument("--resolution", type=int, default=518)
+    parser.add_argument("--poses", type=Path)
     parser.add_argument(
         "--preset", choices=("sphere", "canonical", "ring", "axes"), default="sphere"
     )
@@ -108,10 +109,22 @@ def main() -> None:
                 )
             )
     views = []
+    pose_values = json.loads(args.poses.read_text())["rotations"] if args.poses else None
+    if pose_values is not None:
+        directions = [(f"Pose {i:02d}", (1, -2, 1)) for i in range(len(pose_values))]
+    glb_to_blender = Matrix(((1, 0, 0), (0, 0, -1), (0, 1, 0)))
     for index, (label, direction_values) in enumerate(directions):
         direction = Vector(direction_values).normalized()
         camera.location = center + direction * distance
         camera.rotation_euler = (center - camera.location).to_track_quat("-Z", "Y").to_euler()
+        if pose_values is not None:
+            inverse_pose = (
+                glb_to_blender
+                @ Matrix(pose_values[index]).transposed()
+                @ glb_to_blender.transposed()
+            )
+            camera.location = center + inverse_pose @ (camera.location - center)
+            camera.rotation_euler = (inverse_pose @ camera.rotation_euler.to_matrix()).to_euler()
         bpy.context.view_layer.update()
         filename = f"view-{index:02d}.png"
         scene.render.filepath = str(args.output / filename)
