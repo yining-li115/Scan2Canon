@@ -8,6 +8,11 @@ admission, or connect the experiment to the capture HTTP API.
 
 ## Run with a cloud visual model
 
+For Gemini, start with [environment setup](environment.md): fill `GEMINI_API_KEY`
+in `.env.local`, keep `GEMINI_MODEL` configured, and use `--backend gemini`.
+The worker uses Gemini's native `generateContent` endpoint. The OpenAI configuration
+below is an alternative; the two providers use different credentials and adapters.
+
 Run from the repository checkout with Python 3.12+, the root `uv.lock`, the
 `canonical` extra and Blender. This route does not need CUDA or a rented GPU.
 
@@ -132,7 +137,7 @@ fresh cloud inference is not guaranteed to produce identical decisions.
 ## Code boundaries and validation
 
 - `model_policy.py`: request/reply contract and the model boundary.
-- `responses_policy.py`, `local_policy.py`: concrete model adapters.
+- `gemini_policy.py`, `responses_policy.py`, `local_policy.py`: concrete model adapters.
 - `compute.py`: existing geometry/render/export tools plus supplemental evidence.
 - `controller.py`: bounded execution, checkpoints, provenance and recovery.
 - `runtime.py`: explicit composition; `worker.py`: thin CLI.
@@ -152,3 +157,5 @@ requires credentials and a separate run; no live cloud accuracy is claimed here.
 
 API formats follow the official [image input guide](https://developers.openai.com/api/docs/guides/images-vision)
 and [structured output guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+
+Gemini request formats follow the official [structured output guide](https://ai.google.dev/gemini-api/docs/generate-content/structured-output) and [image input guide](https://ai.google.dev/gemini-api/docs/image-understanding).
