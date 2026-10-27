@@ -11,7 +11,9 @@ NOCS provides 12 selected meshes across six categories. Each has five prepared
 random rotations. We ran OA on all 30 development rotations, then evaluated the
 interactive visual agent on the first rotation of each development object and
 the first rotation of each of six different holdout objects. The remaining 24
-holdout rotations were not evaluated. The selected OO3D-9D objects and five user
+holdout rotations were not evaluated in this initial experiment; they are covered
+in the later [rotation-consistency experiment](2026-10-27-rotation-consistency.md).
+The selected OO3D-9D objects and five user
 captures are not covered by these results.
 
 These meshes are gray, untextured scans, often with missing bottoms. The scoring

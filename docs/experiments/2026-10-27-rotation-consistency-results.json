@@ -1,0 +1,1422 @@
+{
+  "schema_version": 1,
+  "status": "succeeded",
+  "protocol_sha256": "a48753b47f807e3f2fdab74f9089f4d74c440d73966faf1c34a3680019e62546",
+  "known_rotations_sha256": "f330ba64339ae7bb0cfe7b2a8f4516edae979a32ebc4e007f7e9ed905ad5a7db",
+  "scoring_references_sha256": "1598d153d20b65efa3913bf48180c1b32f3f43109f473179c3006bb9eb51cd84",
+  "runner_sha256": "daaf543df7cb7d63fe475574408b157414fa6b38e96ff290c2b5af5432d2e1b7",
+  "angle_tolerance_degrees": 15,
+  "formula": "common_rotation = predicted_input_to_canonical @ source_to_input_rotation",
+  "scope": "Rotational equivariance; translation is not compared. Up-only yaw is unspecified.",
+  "accuracy_note": "Agreement can be consistently wrong; reference accuracy is reported separately.",
+  "history": "First rotation per object reuses the previously saved decision; four remaining rotations are new decisions by the same interactive agent with prior session context. This is not an independent blinded model evaluation.",
+  "objects": [
+    {
+      "object_id": "nocs-bottle_shampoo_norm",
+      "category": "bottle",
+      "cases": 5,
+      "up_proposals": 5,
+      "full_frame_proposals": 0,
+      "decision_scopes_consistent": true,
+      "up_pair_count": 10,
+      "full_frame_pair_count": 0,
+      "max_up_difference_degrees": 1.8131386516320817e-05,
+      "max_frame_difference_degrees": null,
+      "all_rotations_up_consistent": true,
+      "all_rotations_frame_consistent": false,
+      "measurement": "pairwise",
+      "pairs": [
+        {
+          "first": "case-34f0944d77b0d6ae",
+          "second": "case-2bea95a4a07ee4b7",
+          "up_degrees": 1.2313298636799924e-05,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-34f0944d77b0d6ae",
+          "second": "case-3f61d2a4b1d7d6c0",
+          "up_degrees": 1.277811388052082e-05,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-34f0944d77b0d6ae",
+          "second": "case-fba6f98695573e0f",
+          "up_degrees": 8.2776426154535e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-34f0944d77b0d6ae",
+          "second": "case-50c3b80eaa33a315",
+          "up_degrees": 6.883343194785022e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-2bea95a4a07ee4b7",
+          "second": "case-3f61d2a4b1d7d6c0",
+          "up_degrees": 6.331754823653221e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-2bea95a4a07ee4b7",
+          "second": "case-fba6f98695573e0f",
+          "up_degrees": 1.4614250772341616e-05,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-2bea95a4a07ee4b7",
+          "second": "case-50c3b80eaa33a315",
+          "up_degrees": 5.533085616490783e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-3f61d2a4b1d7d6c0",
+          "second": "case-fba6f98695573e0f",
+          "up_degrees": 1.8131386516320817e-05,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-3f61d2a4b1d7d6c0",
+          "second": "case-50c3b80eaa33a315",
+          "up_degrees": 6.722620413208828e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-fba6f98695573e0f",
+          "second": "case-50c3b80eaa33a315",
+          "up_degrees": 1.1358719589327519e-05,
+          "frame_degrees": null
+        }
+      ],
+      "up_within_reference_tolerance": 5,
+      "full_frame_within_reference_tolerance": 0,
+      "max_up_reference_error_degrees": 1.1538024367411215,
+      "max_frame_reference_error_degrees": null
+    },
+    {
+      "object_id": "nocs-bowl_white_small_norm",
+      "category": "bowl",
+      "cases": 5,
+      "up_proposals": 5,
+      "full_frame_proposals": 0,
+      "decision_scopes_consistent": true,
+      "up_pair_count": 10,
+      "full_frame_pair_count": 0,
+      "max_up_difference_degrees": 7.040397847728103e-06,
+      "max_frame_difference_degrees": null,
+      "all_rotations_up_consistent": true,
+      "all_rotations_frame_consistent": false,
+      "measurement": "pairwise",
+      "pairs": [
+        {
+          "first": "case-653f2f89dd86a51f",
+          "second": "case-5e239118bcbbabe0",
+          "up_degrees": 5.533085616490783e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-653f2f89dd86a51f",
+          "second": "case-8b08626e3379658f",
+          "up_degrees": 4.00455336570039e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-653f2f89dd86a51f",
+          "second": "case-62a4daf2bc0251aa",
+          "up_degrees": 7.040397847728103e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-653f2f89dd86a51f",
+          "second": "case-4ae0900bd032017e",
+          "up_degrees": 4.517745487845102e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-5e239118bcbbabe0",
+          "second": "case-8b08626e3379658f",
+          "up_degrees": 3.818191820832846e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-5e239118bcbbabe0",
+          "second": "case-62a4daf2bc0251aa",
+          "up_degrees": 5.598568198963992e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-5e239118bcbbabe0",
+          "second": "case-4ae0900bd032017e",
+          "up_degrees": 5.193302344775284e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-8b08626e3379658f",
+          "second": "case-62a4daf2bc0251aa",
+          "up_degrees": 2.9575586669421963e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-8b08626e3379658f",
+          "second": "case-4ae0900bd032017e",
+          "up_degrees": 1.4787793334710982e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-62a4daf2bc0251aa",
+          "second": "case-4ae0900bd032017e",
+          "up_degrees": 2.4148365394514667e-06,
+          "frame_degrees": null
+        }
+      ],
+      "up_within_reference_tolerance": 5,
+      "full_frame_within_reference_tolerance": 0,
+      "max_up_reference_error_degrees": 0.2961863468500811,
+      "max_frame_reference_error_degrees": null
+    },
+    {
+      "object_id": "nocs-camera_shengjun_norm",
+      "category": "camera",
+      "cases": 5,
+      "up_proposals": 0,
+      "full_frame_proposals": 0,
+      "decision_scopes_consistent": true,
+      "up_pair_count": 0,
+      "full_frame_pair_count": 0,
+      "max_up_difference_degrees": null,
+      "max_frame_difference_degrees": null,
+      "all_rotations_up_consistent": false,
+      "all_rotations_frame_consistent": false,
+      "measurement": "not_measurable",
+      "pairs": [],
+      "up_within_reference_tolerance": 0,
+      "full_frame_within_reference_tolerance": 0,
+      "max_up_reference_error_degrees": null,
+      "max_frame_reference_error_degrees": null
+    },
+    {
+      "object_id": "nocs-can_green_norm",
+      "category": "can",
+      "cases": 5,
+      "up_proposals": 5,
+      "full_frame_proposals": 0,
+      "decision_scopes_consistent": true,
+      "up_pair_count": 10,
+      "full_frame_pair_count": 0,
+      "max_up_difference_degrees": 1.1390761175093017e-05,
+      "max_frame_difference_degrees": null,
+      "all_rotations_up_consistent": true,
+      "all_rotations_frame_consistent": false,
+      "measurement": "pairwise",
+      "pairs": [
+        {
+          "first": "case-73be7ee3481dd0d4",
+          "second": "case-c95fe1443a7b79e1",
+          "up_degrees": 8.45192788808014e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-73be7ee3481dd0d4",
+          "second": "case-75889071ed384b9a",
+          "up_degrees": 4.26886823125797e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-73be7ee3481dd0d4",
+          "second": "case-69a0b144610252cc",
+          "up_degrees": 9.77188602642399e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-73be7ee3481dd0d4",
+          "second": "case-b18191e8873aae6b",
+          "up_degrees": 6.445849674396954e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-c95fe1443a7b79e1",
+          "second": "case-75889071ed384b9a",
+          "up_degrees": 6.3890569402604e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-c95fe1443a7b79e1",
+          "second": "case-69a0b144610252cc",
+          "up_degrees": 1.1390761175093017e-05,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-c95fe1443a7b79e1",
+          "second": "case-b18191e8873aae6b",
+          "up_degrees": 5.853177225625916e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-75889071ed384b9a",
+          "second": "case-69a0b144610252cc",
+          "up_degrees": 6.2155659652833185e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-75889071ed384b9a",
+          "second": "case-b18191e8873aae6b",
+          "up_degrees": 2.091309789151873e-06,
+          "frame_degrees": null
+        },
+        {
+          "first": "case-69a0b144610252cc",
+          "second": "case-b18191e8873aae6b",
+          "up_degrees": 5.72728773124927e-06,
+          "frame_degrees": null
+        }
+      ],
+      "up_within_reference_tolerance": 5,
+      "full_frame_within_reference_tolerance": 0,
+      "max_up_reference_error_degrees": 2.667105074520323,
+      "max_frame_reference_error_degrees": null
+    },
+    {
+      "object_id": "nocs-laptop_air_xin_norm",
+      "category": "laptop",
+      "cases": 5,
+      "up_proposals": 0,
+      "full_frame_proposals": 0,
+      "decision_scopes_consistent": true,
+      "up_pair_count": 0,
+      "full_frame_pair_count": 0,
+      "max_up_difference_degrees": null,
+      "max_frame_difference_degrees": null,
+      "all_rotations_up_consistent": false,
+      "all_rotations_frame_consistent": false,
+      "measurement": "not_measurable",
+      "pairs": [],
+      "up_within_reference_tolerance": 0,
+      "full_frame_within_reference_tolerance": 0,
+      "max_up_reference_error_degrees": null,
+      "max_frame_reference_error_degrees": null
+    },
+    {
+      "object_id": "nocs-mug_anastasia_norm",
+      "category": "mug",
+      "cases": 5,
+      "up_proposals": 5,
+      "full_frame_proposals": 5,
+      "decision_scopes_consistent": true,
+      "up_pair_count": 10,
+      "full_frame_pair_count": 10,
+      "max_up_difference_degrees": 8.79013768592829e-06,
+      "max_frame_difference_degrees": 8.79013768592829e-06,
+      "all_rotations_up_consistent": true,
+      "all_rotations_frame_consistent": true,
+      "measurement": "pairwise",
+      "pairs": [
+        {
+          "first": "case-06940288c3fa549a",
+          "second": "case-59e553521a5e4e9e",
+          "up_degrees": 8.537736462515939e-07,
+          "frame_degrees": 0.0
+        },
+        {
+          "first": "case-06940288c3fa549a",
+          "second": "case-facee43ab2a881d8",
+          "up_degrees": 3.078324659199975e-06,
+          "frame_degrees": 3.1945284701301985e-06
+        },
+        {
+          "first": "case-06940288c3fa549a",
+          "second": "case-8b8032a4ec48d187",
+          "up_degrees": 5.533085616490783e-06,
+          "frame_degrees": 5.663293681020318e-06
+        },
+        {
+          "first": "case-06940288c3fa549a",
+          "second": "case-5c6125cfc35a7c4b",
+          "up_degrees": 2.4148365394514667e-06,
+          "frame_degrees": 1.7075472925031877e-06
+        },
+        {
+          "first": "case-59e553521a5e4e9e",
+          "second": "case-facee43ab2a881d8",
+          "up_degrees": 3.306651113363206e-06,
+          "frame_degrees": 2.9575586669421963e-06
+        },
+        {
+          "first": "case-59e553521a5e4e9e",
+          "second": "case-8b8032a4ec48d187",
+          "up_degrees": 5.4668187275950014e-06,
+          "frame_degrees": 5.399738656763834e-06
+        },
+        {
+          "first": "case-59e553521a5e4e9e",
+          "second": "case-5c6125cfc35a7c4b",
+          "up_degrees": 1.7075472925031877e-06,
+          "frame_degrees": 0.0
+        },
+        {
+          "first": "case-facee43ab2a881d8",
+          "second": "case-8b8032a4ec48d187",
+          "up_degrees": 8.79013768592829e-06,
+          "frame_degrees": 8.79013768592829e-06
+        },
+        {
+          "first": "case-facee43ab2a881d8",
+          "second": "case-5c6125cfc35a7c4b",
+          "up_degrees": 5.263014220319208e-06,
+          "frame_degrees": 4.9783130603797145e-06
+        },
+        {
+          "first": "case-8b8032a4ec48d187",
+          "second": "case-5c6125cfc35a7c4b",
+          "up_degrees": 3.306651113363206e-06,
+          "frame_degrees": 2.9575586669421963e-06
+        }
+      ],
+      "up_within_reference_tolerance": 5,
+      "full_frame_within_reference_tolerance": 5,
+      "max_up_reference_error_degrees": 0.2886294118568467,
+      "max_frame_reference_error_degrees": 6.183802699317437
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "case-34f0944d77b0d6ae",
+      "object_id": "nocs-bottle_shampoo_norm",
+      "category": "bottle",
+      "rotation_index": 0,
+      "scope": "up_only",
+      "reused_previous_decision": true,
+      "result": "data/experiments/runs/nocs-agent-holdout-01/case-34f0944d77b0d6ae/canonicalization.json",
+      "result_sha256": "2875172383a3d5d16d0353bdb3cd664d4e65b9076b115fde22651c0f51dea840",
+      "common_rotation": [
+        [
+          -0.6158578078881332,
+          -0.01710042996410967,
+          -0.7876717182673667
+        ],
+        [
+          -0.0021555087317984443,
+          0.9997972488131617,
+          -0.02002036582432812
+        ],
+        [
+          0.7878543737552838,
+          -0.010631865343173235,
+          -0.6157698021127654
+        ]
+      ],
+      "up_error_degrees": 1.153789735147542,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-2bea95a4a07ee4b7",
+      "object_id": "nocs-bottle_shampoo_norm",
+      "category": "bottle",
+      "rotation_index": 1,
+      "scope": "up_only",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-2bea95a4a07ee4b7/canonicalization.json",
+      "result_sha256": "f4395f74b1bd5e14b170fc106e7aebdcfff01f8e4cebee8dcbb66ee29054bc71",
+      "common_rotation": [
+        [
+          0.6158577960384102,
+          0.01710055541200342,
+          0.7876717248088275
+        ],
+        [
+          -0.002155448367291745,
+          0.9997972448140746,
+          -0.0200205720328274
+        ],
+        [
+          -0.7878543831832427,
+          0.010632039634364198,
+          0.6157697870407133
+        ]
+      ],
+      "up_error_degrees": 1.1538011142151121,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-3f61d2a4b1d7d6c0",
+      "object_id": "nocs-bottle_shampoo_norm",
+      "category": "bottle",
+      "rotation_index": 2,
+      "scope": "up_only",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-3f61d2a4b1d7d6c0/canonicalization.json",
+      "result_sha256": "d06f5862d40609c565b716e4100de88209851be46f92ba7e67aa00cbc2cd700d",
+      "common_rotation": [
+        [
+          0.6158578100772025,
+          0.017100632068536365,
+          0.7876717121680636
+        ],
+        [
+          -0.0021555586633269868,
+          0.9997972443492803,
+          -0.020020583369000526
+        ],
+        [
+          -0.7878543719075,
+          0.010631960047079296,
+          0.6157698028417731
+        ]
+      ],
+      "up_error_degrees": 1.1538024367411215,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-fba6f98695573e0f",
+      "object_id": "nocs-bottle_shampoo_norm",
+      "category": "bottle",
+      "rotation_index": 3,
+      "scope": "up_only",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-fba6f98695573e0f/canonicalization.json",
+      "result_sha256": "3de5a5981ebb9ca9c4b9b9af43f445250ee549107007995a57a690df60d10071",
+      "common_rotation": [
+        [
+          -0.6158577941112089,
+          -0.017100315323014273,
+          -0.7876717315280076
+        ],
+        [
+          -0.0021553677346433926,
+          0.9997972498290106,
+          -0.0200203302738965
+        ],
+        [
+          0.7878543849103111,
+          -0.010631954204233568,
+          -0.6157697863060472
+        ]
+      ],
+      "up_error_degrees": 1.1537868446171762,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-50c3b80eaa33a315",
+      "object_id": "nocs-bottle_shampoo_norm",
+      "category": "bottle",
+      "rotation_index": 4,
+      "scope": "up_only",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-50c3b80eaa33a315/canonicalization.json",
+      "result_sha256": "049e8374e9500676c352eec8a36b41009a929a9a0e7ed69fdc507c981663ba00",
+      "common_rotation": [
+        [
+          0.6158578153221931,
+          0.01710051394932772,
+          0.787671710631558
+        ],
+        [
+          -0.0021554921918056904,
+          0.999797246452738,
+          -0.02002048548199201
+        ],
+        [
+          -0.7878543679894064,
+          0.010631952228656755,
+          0.6157698079898208
+        ]
+      ],
+      "up_error_degrees": 1.15379645154916,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-653f2f89dd86a51f",
+      "object_id": "nocs-bowl_white_small_norm",
+      "category": "bowl",
+      "rotation_index": 0,
+      "scope": "up_only",
+      "reused_previous_decision": true,
+      "result": "data/experiments/runs/nocs-agent-holdout-01/case-653f2f89dd86a51f/canonicalization.json",
+      "result_sha256": "25b61fd1a8874249089d993099227c309b489c2358a498a0e3ab361bc3cef616",
+      "common_rotation": [
+        [
+          0.9710610322575147,
+          0.0034597339267341586,
+          -0.23880641086898444
+        ],
+        [
+          -0.0024423672327366407,
+          0.9999866388011597,
+          0.004555991819520639
+        ],
+        [
+          0.23881898264851242,
+          -0.003840893166346563,
+          0.9710565076587533
+        ]
+      ],
+      "up_error_degrees": 0.29618347716268717,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-5e239118bcbbabe0",
+      "object_id": "nocs-bowl_white_small_norm",
+      "category": "bowl",
+      "rotation_index": 1,
+      "scope": "up_only",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-5e239118bcbbabe0/canonicalization.json",
+      "result_sha256": "e5814c3ad184e2cb610944601699daf4506aece60fe7af7d7f4de69fa2f20c6d",
+      "common_rotation": [
+        [
+          -0.9712032509537071,
+          -0.0034574148453418905,
+          0.23822739477133645
+        ],
+        [
+          -0.0024423175031028127,
+          0.999986638542249,
+          0.0045560753053054594
+        ],
+        [
+          -0.23823996394846306,
+          0.003843048212133925,
+          -0.9711987183672941
+        ]
+      ],
+      "up_error_degrees": 0.2961863468500811,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-8b08626e3379658f",
+      "object_id": "nocs-bowl_white_small_norm",
+      "category": "bowl",
+      "rotation_index": 2,
+      "scope": "up_only",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-8b08626e3379658f/canonicalization.json",
+      "result_sha256": "57cc8455c56b1d68477433de2709b01833888cd97b9ad6e748ad47b9d9966c53",
+      "common_rotation": [
+        [
+          0.9710610284910142,
+          0.003459673063145794,
+          -0.23880642706650437
+        ],
+        [
+          -0.0024422994037986293,
+          0.9999866388725958,
+          0.004556012501181693
+        ],
+        [
+          0.2388189986571331,
+          -0.003840929390767658,
+          0.9710565035783548
+        ]
+      ],
+      "up_error_degrees": 0.2961826853838535,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-62a4daf2bc0251aa",
+      "object_id": "nocs-bowl_white_small_norm",
+      "category": "bowl",
+      "rotation_index": 3,
+      "scope": "up_only",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-62a4daf2bc0251aa/canonicalization.json",
+      "result_sha256": "8033d75da86e530aa8bc1a35523ff2f3c021b5ff825a8b6a8122a91788019a66",
+      "common_rotation": [
+        [
+          -0.9712032492886409,
+          -0.003457328148613581,
+          0.2382274028176847
+        ],
+        [
+          -0.002442244467441155,
+          0.9999866390226861,
+          0.004556009007180363
+        ],
+        [
+          -0.23823997148494594,
+          0.0038430011950375304,
+          -0.9711987167046029
+        ]
+      ],
+      "up_error_degrees": 0.2961810218117745,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-4ae0900bd032017e",
+      "object_id": "nocs-bowl_white_small_norm",
+      "category": "bowl",
+      "rotation_index": 4,
+      "scope": "up_only",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-4ae0900bd032017e/canonicalization.json",
+      "result_sha256": "6211b5ab0107469595208cf88660892b18ec9baf6a57ad49a55740422b39c3ac",
+      "common_rotation": [
+        [
+          -0.9712032459136564,
+          -0.003457364278197648,
+          0.23822741605244707
+        ],
+        [
+          -0.0024422871864971563,
+          0.999986639021854,
+          0.004555986290052983
+        ],
+        [
+          -0.2382399848053987,
+          0.003842968907540351,
+          -0.971198713564788
+        ]
+      ],
+      "up_error_degrees": 0.29618103103722765,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-f0dc37e9b60fe18b",
+      "object_id": "nocs-camera_shengjun_norm",
+      "category": "camera",
+      "rotation_index": 0,
+      "scope": "unresolved",
+      "reused_previous_decision": true,
+      "result": "data/experiments/runs/nocs-agent-holdout-01/case-f0dc37e9b60fe18b/canonicalization.json",
+      "result_sha256": "5e968d9b6ee42aeb2292eff1dffa40e44405e3e7451da915045017807526ecbb",
+      "common_rotation": null
+    },
+    {
+      "case_id": "case-04cb979b6eb79da8",
+      "object_id": "nocs-camera_shengjun_norm",
+      "category": "camera",
+      "rotation_index": 1,
+      "scope": "unresolved",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-04cb979b6eb79da8/canonicalization.json",
+      "result_sha256": "f6a4869a5eb7d3b84a79793001ee3cb999c5564264c01b733ae11bacc24fe8d3",
+      "common_rotation": null
+    },
+    {
+      "case_id": "case-9ef84e2d942a888f",
+      "object_id": "nocs-camera_shengjun_norm",
+      "category": "camera",
+      "rotation_index": 2,
+      "scope": "unresolved",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-9ef84e2d942a888f/canonicalization.json",
+      "result_sha256": "313817efec2a29edebf1ddbacad1ffd184cafadd7b5fd115db49436d3c871486",
+      "common_rotation": null
+    },
+    {
+      "case_id": "case-c6a962cb0c5006b3",
+      "object_id": "nocs-camera_shengjun_norm",
+      "category": "camera",
+      "rotation_index": 3,
+      "scope": "unresolved",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-c6a962cb0c5006b3/canonicalization.json",
+      "result_sha256": "a09f0c0aa03cdf7c4a9a188c168544780ebb450bbfe69c70cdeff5c73eee87a1",
+      "common_rotation": null
+    },
+    {
+      "case_id": "case-d3cfa093aa42b827",
+      "object_id": "nocs-camera_shengjun_norm",
+      "category": "camera",
+      "rotation_index": 4,
+      "scope": "unresolved",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-d3cfa093aa42b827/canonicalization.json",
+      "result_sha256": "3f5e7892538d38044b1710c4e036a93a3b9646dfa59d0e0c51941f73f4530c35",
+      "common_rotation": null
+    },
+    {
+      "case_id": "case-73be7ee3481dd0d4",
+      "object_id": "nocs-can_green_norm",
+      "category": "can",
+      "rotation_index": 0,
+      "scope": "up_only",
+      "reused_previous_decision": true,
+      "result": "data/experiments/runs/nocs-agent-holdout-01/case-73be7ee3481dd0d4/canonicalization.json",
+      "result_sha256": "7dd2bbccc7cd0f3a709d78baf590b26b3e8e51ce94efc5a255e3b5e435ecc7de",
+      "common_rotation": [
+        [
+          -0.9574623954915943,
+          -0.0378859142128832,
+          0.28606016626533753
+        ],
+        [
+          -0.02854725657768167,
+          0.9989167569031342,
+          0.03674733895146002
+        ],
+        [
+          -0.28714250009600895,
+          0.027017962217375614,
+          -0.9575067698748841
+        ]
+      ],
+      "up_error_degrees": 2.6671031170739865,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-c95fe1443a7b79e1",
+      "object_id": "nocs-can_green_norm",
+      "category": "can",
+      "rotation_index": 1,
+      "scope": "up_only",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-c95fe1443a7b79e1/canonicalization.json",
+      "result_sha256": "99c40820188bcb7eead1ef4c9f5c17481f159b25714564ae47a1af5b0c800f5d",
+      "common_rotation": [
+        [
+          -0.9574623862605083,
+          -0.037886025975488256,
+          0.2860601823604932
+        ],
+        [
+          -0.02854739108073753,
+          0.9989167553133884,
+          0.03674727767680527
+        ],
+        [
+          -0.287142517504492,
+          0.027017864274539453,
+          -0.957506767417978
+        ]
+      ],
+      "up_error_degrees": 2.667105074520323,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-75889071ed384b9a",
+      "object_id": "nocs-can_green_norm",
+      "category": "can",
+      "rotation_index": 2,
+      "scope": "up_only",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-75889071ed384b9a/canonicalization.json",
+      "result_sha256": "44000cfd13c0a273b8d590f11f7964305b37bf6c411b44c965c11d19160b65a4",
+      "common_rotation": [
+        [
+          0.9574623961168931,
+          0.03788591379470328,
+          -0.28606016422780445
+        ],
+        [
+          -0.028547277861508714,
+          0.9989167589519417,
+          0.03674726672348399
+        ],
+        [
+          0.2871424958949755,
+          -0.027017887054493643,
+          0.9575067732555814
+        ]
+      ],
+      "up_error_degrees": 2.6671005943851345,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-69a0b144610252cc",
+      "object_id": "nocs-can_green_norm",
+      "category": "can",
+      "rotation_index": 3,
+      "scope": "up_only",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-69a0b144610252cc/canonicalization.json",
+      "result_sha256": "ca47ecdfa7819b0a478d470830f491b2f1965498d201ad9be8b11688fa50d83b",
+      "common_rotation": [
+        [
+          -0.9574624022717865,
+          -0.037885832148702454,
+          0.28606015444018235
+        ],
+        [
+          -0.028547221096136142,
+          0.9989167640245978,
+          0.036747172929561756
+        ],
+        [
+          -0.28714248101531226,
+          0.02701781399423625,
+          -0.9575067797793103
+        ]
+      ],
+      "up_error_degrees": 2.6670943484331655,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-b18191e8873aae6b",
+      "object_id": "nocs-can_green_norm",
+      "category": "can",
+      "rotation_index": 4,
+      "scope": "up_only",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-b18191e8873aae6b/canonicalization.json",
+      "result_sha256": "746330209bda8dcc49c8850595c110a0f3f2707eca54b404ee160a6795e391c1",
+      "common_rotation": [
+        [
+          -0.9574623907100223,
+          -0.03788592424634734,
+          0.2860601809407401
+        ],
+        [
+          -0.028547297609816055,
+          0.9989167595328396,
+          0.036747235591102684
+        ],
+        [
+          -0.28714251196056917,
+          0.0270178509214085,
+          -0.9575067694573043
+        ]
+      ],
+      "up_error_degrees": 2.667099879127103,
+      "frame_error_degrees": null
+    },
+    {
+      "case_id": "case-12fd1a35b6d86a3a",
+      "object_id": "nocs-laptop_air_xin_norm",
+      "category": "laptop",
+      "rotation_index": 0,
+      "scope": "unresolved",
+      "reused_previous_decision": true,
+      "result": "data/experiments/runs/nocs-agent-holdout-01/case-12fd1a35b6d86a3a/canonicalization.json",
+      "result_sha256": "67658a6d034e93a143d11f5928514bdfc60b75c759e29be7cd4a5a33c0dc6842",
+      "common_rotation": null
+    },
+    {
+      "case_id": "case-66426bb2660f08a0",
+      "object_id": "nocs-laptop_air_xin_norm",
+      "category": "laptop",
+      "rotation_index": 1,
+      "scope": "unresolved",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-66426bb2660f08a0/canonicalization.json",
+      "result_sha256": "cbf20d1f22861ebf82a95543bd39a7db922eb1df1fcf37566ace29c65d7b29d6",
+      "common_rotation": null
+    },
+    {
+      "case_id": "case-e58985233f0b2541",
+      "object_id": "nocs-laptop_air_xin_norm",
+      "category": "laptop",
+      "rotation_index": 2,
+      "scope": "unresolved",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-e58985233f0b2541/canonicalization.json",
+      "result_sha256": "9b789dbacbf297a2d8429542b1016fd343729d95885dac95ec85632da5184dfd",
+      "common_rotation": null
+    },
+    {
+      "case_id": "case-14a2794b9432a7e0",
+      "object_id": "nocs-laptop_air_xin_norm",
+      "category": "laptop",
+      "rotation_index": 3,
+      "scope": "unresolved",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-14a2794b9432a7e0/canonicalization.json",
+      "result_sha256": "bbf12fef2c437cba3fea6b41ea7147968884c7b49af2b1c6d5a62e85b0858e46",
+      "common_rotation": null
+    },
+    {
+      "case_id": "case-9411d97e08bbf879",
+      "object_id": "nocs-laptop_air_xin_norm",
+      "category": "laptop",
+      "rotation_index": 4,
+      "scope": "unresolved",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-9411d97e08bbf879/canonicalization.json",
+      "result_sha256": "ec976cc1a498dc0b744680ce469ac30621b1c296131fe70415adecba05e51064",
+      "common_rotation": null
+    },
+    {
+      "case_id": "case-06940288c3fa549a",
+      "object_id": "nocs-mug_anastasia_norm",
+      "category": "mug",
+      "rotation_index": 0,
+      "scope": "full_frame",
+      "reused_previous_decision": true,
+      "result": "data/experiments/runs/nocs-agent-holdout-01/case-06940288c3fa549a/canonicalization.json",
+      "result_sha256": "f6aaddaa5497a035d28238a3826e4c73acb54e0fd0340d316af8517712c8816f",
+      "common_rotation": [
+        [
+          0.10760706757281417,
+          0.0030765544881318787,
+          -0.9941887415480327
+        ],
+        [
+          0.0036345888264091184,
+          0.9999873121064473,
+          0.0034878919400952463
+        ],
+        [
+          0.9941868580767113,
+          -0.0039887891150565645,
+          0.1075945202552289
+        ]
+      ],
+      "up_error_degrees": 0.28862427341605895,
+      "frame_error_degrees": 6.183802375821002
+    },
+    {
+      "case_id": "case-59e553521a5e4e9e",
+      "object_id": "nocs-mug_anastasia_norm",
+      "category": "mug",
+      "rotation_index": 1,
+      "scope": "full_frame",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-59e553521a5e4e9e/canonicalization.json",
+      "result_sha256": "7ba42cf4fe56909d5e54617c148a9447ca09b309b9a8d28ff1fa16987ca93dd6",
+      "common_rotation": [
+        [
+          0.10760707057258684,
+          0.0030765490140514918,
+          -0.9941887412402892
+        ],
+        [
+          0.003634611115166633,
+          0.9999873120361846,
+          0.0034878888583636247
+        ],
+        [
+          0.9941868576705428,
+          -0.003988810952016644,
+          0.10759452319872631
+        ]
+      ],
+      "up_error_degrees": 0.28862507258713854,
+      "frame_error_degrees": 6.183802584373715
+    },
+    {
+      "case_id": "case-facee43ab2a881d8",
+      "object_id": "nocs-mug_anastasia_norm",
+      "category": "mug",
+      "rotation_index": 2,
+      "scope": "full_frame",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-facee43ab2a881d8/canonicalization.json",
+      "result_sha256": "7c380ec74a651a3ada9383866fa042cc8838696e1664d3e0f3f60c699405164e",
+      "common_rotation": [
+        [
+          0.10760707494936804,
+          0.0030764985908347674,
+          -0.9941887409225986
+        ],
+        [
+          0.0036345873298761033,
+          0.9999873123084494,
+          0.0034878355845870397
+        ],
+        [
+          0.9941868572837717,
+          -0.0039887815864244275,
+          0.10759452786119386
+        ]
+      ],
+      "up_error_degrees": 0.28862197582981375,
+      "frame_error_degrees": 6.183802699317437
+    },
+    {
+      "case_id": "case-8b8032a4ec48d187",
+      "object_id": "nocs-mug_anastasia_norm",
+      "category": "mug",
+      "rotation_index": 3,
+      "scope": "full_frame",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-8b8032a4ec48d187/canonicalization.json",
+      "result_sha256": "7843539885b1ead963c7c74e2ab67dc1a462821d5ef4f4cd1ead019547d0d9e1",
+      "common_rotation": [
+        [
+          0.10760705846197792,
+          0.0030766421352134443,
+          -0.9941887422629229
+        ],
+        [
+          0.003634624819098521,
+          0.9999873116546736,
+          0.0034879839568677596
+        ],
+        [
+          0.9941868589312498,
+          -0.003988834771058252,
+          0.10759451066659644
+        ]
+      ],
+      "up_error_degrees": 0.2886294118568467,
+      "frame_error_degrees": 6.1838020785785375
+    },
+    {
+      "case_id": "case-5c6125cfc35a7c4b",
+      "object_id": "nocs-mug_anastasia_norm",
+      "category": "mug",
+      "rotation_index": 4,
+      "scope": "full_frame",
+      "reused_previous_decision": false,
+      "result": "data/experiments/runs/nocs-rotation-consistency-01/case-5c6125cfc35a7c4b/canonicalization.json",
+      "result_sha256": "8a3bb8cf38fcc7a9aa648f81ef0474d55216094310edea5163118bbd63e6f1e3",
+      "common_rotation": [
+        [
+          0.10760706797417564,
+          0.0030765797989796215,
+          -0.9941887414262659
+        ],
+        [
+          0.0036346243138524804,
+          0.9999873118752638,
+          0.0034879212407676126
+        ],
+        [
+          0.9941868579035326,
+          -0.003988827550190206,
+          0.1075945204305338
+        ]
+      ],
+      "up_error_degrees": 0.28862690289413284,
+      "frame_error_degrees": 6.183802515745998
+    }
+  ],
+  "source_report_sha256": "a77c42b2457cd36b1c65c96080db081ed9211b2f93eb68187022eb357a87dcf4",
+  "protocol": {
+    "schema_version": 1,
+    "status": "frozen_before_new_candidate_inspection",
+    "git_commit": "6dbe053f4cbab460fc25d0900ecb782b7dcf2c7f",
+    "actor": "interactive_visual_agent",
+    "cases": [
+      {
+        "case_id": "case-34f0944d77b0d6ae",
+        "partition": "holdout",
+        "category": "bottle",
+        "mesh": "case-34f0944d77b0d6ae.glb",
+        "mesh_sha256": "e3567be2d5fcbb37f2c341413290e55892c2e6e9c9478f88a5ae2c542b58a430",
+        "views_directory": "case-34f0944d77b0d6ae",
+        "views_manifest_sha256": "0d55e67df8854f2c05c092bf41c76028a4610e94d8c2a2ec27c1a3ca4876824b",
+        "prior_result": "data/experiments/runs/nocs-agent-holdout-01/case-34f0944d77b0d6ae/canonicalization.json",
+        "prior_result_sha256": "2875172383a3d5d16d0353bdb3cd664d4e65b9076b115fde22651c0f51dea840"
+      },
+      {
+        "case_id": "case-2bea95a4a07ee4b7",
+        "partition": "holdout",
+        "category": "bottle",
+        "mesh": "case-2bea95a4a07ee4b7.glb",
+        "mesh_sha256": "f994375f9c5045b7882343dee5c90c1ecc5c372e70ca697223a1b61552140a45",
+        "views_directory": "case-2bea95a4a07ee4b7",
+        "views_manifest_sha256": "ac2aac476ef26386093e55a8cb18d9464953a8d34a8a16ed2c2f88250ca986be",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-3f61d2a4b1d7d6c0",
+        "partition": "holdout",
+        "category": "bottle",
+        "mesh": "case-3f61d2a4b1d7d6c0.glb",
+        "mesh_sha256": "80d91dad70c57983b49ff24baec35394b9511024c48af67566009d6d9ef80780",
+        "views_directory": "case-3f61d2a4b1d7d6c0",
+        "views_manifest_sha256": "16bdc77052c28f68021622c0a9e8549a9e420a750afb9288ef8fedd599fdbf96",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-fba6f98695573e0f",
+        "partition": "holdout",
+        "category": "bottle",
+        "mesh": "case-fba6f98695573e0f.glb",
+        "mesh_sha256": "85c63c28a109a43e2213e4918e14348b83f67fca6a904eeb4da3abf19d04d083",
+        "views_directory": "case-fba6f98695573e0f",
+        "views_manifest_sha256": "b920f18d1a18377bd329ad82b0afd3bc5529f359d6d3d6d2840dbd82b2faf5b6",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-50c3b80eaa33a315",
+        "partition": "holdout",
+        "category": "bottle",
+        "mesh": "case-50c3b80eaa33a315.glb",
+        "mesh_sha256": "5a8c121b3bd7674a07f0db07a33ca84a62c04f9f0c6940a6c0a39cc9618c7f9c",
+        "views_directory": "case-50c3b80eaa33a315",
+        "views_manifest_sha256": "a65ee18b3c97d1b424f6b76ef689b9ee25fbe567a9125eb64dba939999d23759",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-653f2f89dd86a51f",
+        "partition": "holdout",
+        "category": "bowl",
+        "mesh": "case-653f2f89dd86a51f.glb",
+        "mesh_sha256": "13019e83b3a25654ebd1de56b358da3a76d849ce46239fc8ba4ff4519f4430f1",
+        "views_directory": "case-653f2f89dd86a51f",
+        "views_manifest_sha256": "4201def50005d603ae5ac5b33aa03c1c191a7352cb6db994505232619ed40eda",
+        "prior_result": "data/experiments/runs/nocs-agent-holdout-01/case-653f2f89dd86a51f/canonicalization.json",
+        "prior_result_sha256": "25b61fd1a8874249089d993099227c309b489c2358a498a0e3ab361bc3cef616"
+      },
+      {
+        "case_id": "case-5e239118bcbbabe0",
+        "partition": "holdout",
+        "category": "bowl",
+        "mesh": "case-5e239118bcbbabe0.glb",
+        "mesh_sha256": "9866ad0eff79b7e8679f4ed6f249c0ba4f9fcb3f72c8173e17f8bd887de7e152",
+        "views_directory": "case-5e239118bcbbabe0",
+        "views_manifest_sha256": "58fb03109670ee09954b3bcacf022d9437f9e8998b34e34140e0779d5e9d44b2",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-8b08626e3379658f",
+        "partition": "holdout",
+        "category": "bowl",
+        "mesh": "case-8b08626e3379658f.glb",
+        "mesh_sha256": "a16fd7332929267b45036884041e1c9ffa68d2935c310659cb03fc9bff02e7cc",
+        "views_directory": "case-8b08626e3379658f",
+        "views_manifest_sha256": "4df5d74cc98d7de5a97e4fbb0491c9a04e2722d02fb5c1ae54bc23486a2c1bf4",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-62a4daf2bc0251aa",
+        "partition": "holdout",
+        "category": "bowl",
+        "mesh": "case-62a4daf2bc0251aa.glb",
+        "mesh_sha256": "6ba3cc520ba4595ee585124795e909813d9925987559300d8929f411437efaea",
+        "views_directory": "case-62a4daf2bc0251aa",
+        "views_manifest_sha256": "6aeb643900ff96adc740e29f73cf0a7fdf11349fd91b8737469c77a6586ed0e7",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-4ae0900bd032017e",
+        "partition": "holdout",
+        "category": "bowl",
+        "mesh": "case-4ae0900bd032017e.glb",
+        "mesh_sha256": "64bde73068b340bbf83a0d0a6ebc6958ef6118e59d76be29f7f2d7220b9d4e0c",
+        "views_directory": "case-4ae0900bd032017e",
+        "views_manifest_sha256": "d0cd7619168888a6d77c5b87ba4b30bea72df7db266ee65893d5e6ee1630211c",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-f0dc37e9b60fe18b",
+        "partition": "holdout",
+        "category": "camera",
+        "mesh": "case-f0dc37e9b60fe18b.glb",
+        "mesh_sha256": "84fc49fe30fab9fd5ce6bf6bc7188c1a849d3107f7f609da478ec68151b7f6bf",
+        "views_directory": "case-f0dc37e9b60fe18b",
+        "views_manifest_sha256": "85e7aced2d42fd7a1ba4783cece76aa7616d53d03a6e0d6ee3b2f300facadd58",
+        "prior_result": "data/experiments/runs/nocs-agent-holdout-01/case-f0dc37e9b60fe18b/canonicalization.json",
+        "prior_result_sha256": "5e968d9b6ee42aeb2292eff1dffa40e44405e3e7451da915045017807526ecbb"
+      },
+      {
+        "case_id": "case-04cb979b6eb79da8",
+        "partition": "holdout",
+        "category": "camera",
+        "mesh": "case-04cb979b6eb79da8.glb",
+        "mesh_sha256": "411dc2e6ab7bbb361361dc729b6da096f7ba383f364ff4bc7be69f7ef2aaa812",
+        "views_directory": "case-04cb979b6eb79da8",
+        "views_manifest_sha256": "b348531e43a68e5b0d5aad23cd324dc16f5dc82df20989156bf73dd05c68fc5d",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-9ef84e2d942a888f",
+        "partition": "holdout",
+        "category": "camera",
+        "mesh": "case-9ef84e2d942a888f.glb",
+        "mesh_sha256": "dd3025b89c250cc63c62cbf4b6145638bf66b86239d0e7561c2372b3c0c10158",
+        "views_directory": "case-9ef84e2d942a888f",
+        "views_manifest_sha256": "c1010fa294e7e03005ab602db6c658d247a9f7955e6c1c5695aab5f93cd909c0",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-c6a962cb0c5006b3",
+        "partition": "holdout",
+        "category": "camera",
+        "mesh": "case-c6a962cb0c5006b3.glb",
+        "mesh_sha256": "aa09be72bf2939f175029770ae944880e8863d335f4011cdb8b896818b424454",
+        "views_directory": "case-c6a962cb0c5006b3",
+        "views_manifest_sha256": "d8946fb9d0c2cb77f73796f9b4fd6aa973becab222511b24e586d872b75af0ab",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-d3cfa093aa42b827",
+        "partition": "holdout",
+        "category": "camera",
+        "mesh": "case-d3cfa093aa42b827.glb",
+        "mesh_sha256": "ed0cd494bd6474c5e545d4c104714e58f97583a2e92676a4a51af9d655c6a075",
+        "views_directory": "case-d3cfa093aa42b827",
+        "views_manifest_sha256": "fd185ebb7b17ebd3c36003022e2746d3accc0b4a575ceca9fbc88224346573de",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-73be7ee3481dd0d4",
+        "partition": "holdout",
+        "category": "can",
+        "mesh": "case-73be7ee3481dd0d4.glb",
+        "mesh_sha256": "2235520ce16db8847b7d1f128859cd1f8a8c29ec0bc5f2aff595a0bf2152ff69",
+        "views_directory": "case-73be7ee3481dd0d4",
+        "views_manifest_sha256": "42ca05ef6a14e24bca880ca2a5fdd3cdf3c88dc870f1218d742a4e5b92760e7b",
+        "prior_result": "data/experiments/runs/nocs-agent-holdout-01/case-73be7ee3481dd0d4/canonicalization.json",
+        "prior_result_sha256": "7dd2bbccc7cd0f3a709d78baf590b26b3e8e51ce94efc5a255e3b5e435ecc7de"
+      },
+      {
+        "case_id": "case-c95fe1443a7b79e1",
+        "partition": "holdout",
+        "category": "can",
+        "mesh": "case-c95fe1443a7b79e1.glb",
+        "mesh_sha256": "4dd6c690a3f0396d17f3887f78e4b3cd43475b2bdfd44a145a7948df95d0e988",
+        "views_directory": "case-c95fe1443a7b79e1",
+        "views_manifest_sha256": "dfd578ffde20c4335dee2a872afb0cb2eda3754aa4ce47e5d7549a9413aeca79",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-75889071ed384b9a",
+        "partition": "holdout",
+        "category": "can",
+        "mesh": "case-75889071ed384b9a.glb",
+        "mesh_sha256": "d0068b4fb8240f5a376ea556b0ff93183cd0a279010643322cbef74eed437e5a",
+        "views_directory": "case-75889071ed384b9a",
+        "views_manifest_sha256": "124aa40bcb7135830a22169754d018c4f3a88183486cc319a86914d5db3af050",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-69a0b144610252cc",
+        "partition": "holdout",
+        "category": "can",
+        "mesh": "case-69a0b144610252cc.glb",
+        "mesh_sha256": "67425afc10769b75b323cd4206acb86d8af3d15b02b0d96a45656e648df2a8a6",
+        "views_directory": "case-69a0b144610252cc",
+        "views_manifest_sha256": "1afd1e3fd74c08eb1f738225622236fd0adae6f14b1b0c6824e47f787d04ee2c",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-b18191e8873aae6b",
+        "partition": "holdout",
+        "category": "can",
+        "mesh": "case-b18191e8873aae6b.glb",
+        "mesh_sha256": "6070de7431f0f78432b80bdfcea9ac7aad067dda460b3153cbd67b55ec37463d",
+        "views_directory": "case-b18191e8873aae6b",
+        "views_manifest_sha256": "ec0e9d06ad4052bd85a2638e8ae0ff9da3ee2c5fbb40a880346a7510ab16eedd",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-12fd1a35b6d86a3a",
+        "partition": "holdout",
+        "category": "laptop",
+        "mesh": "case-12fd1a35b6d86a3a.glb",
+        "mesh_sha256": "46df960cf261be46d6d8f380b687b65b8a8a4a6ae69e849d2403239592935ed7",
+        "views_directory": "case-12fd1a35b6d86a3a",
+        "views_manifest_sha256": "1f71bc3d84ce73fd1383198a6b5179a24def639d247349a0550f34faab004e8b",
+        "prior_result": "data/experiments/runs/nocs-agent-holdout-01/case-12fd1a35b6d86a3a/canonicalization.json",
+        "prior_result_sha256": "67658a6d034e93a143d11f5928514bdfc60b75c759e29be7cd4a5a33c0dc6842"
+      },
+      {
+        "case_id": "case-66426bb2660f08a0",
+        "partition": "holdout",
+        "category": "laptop",
+        "mesh": "case-66426bb2660f08a0.glb",
+        "mesh_sha256": "40fb0176328c11201d4f29e18ca27718a36b92e29f9736d3a821cdb9f233ae95",
+        "views_directory": "case-66426bb2660f08a0",
+        "views_manifest_sha256": "99e089ddae1d82a369f773973202abd30c841d805e4e7e663b943048665783b1",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-e58985233f0b2541",
+        "partition": "holdout",
+        "category": "laptop",
+        "mesh": "case-e58985233f0b2541.glb",
+        "mesh_sha256": "2c1d78da622b399c60eb48e496b2e316721105baec32accc41fc3554a7531b96",
+        "views_directory": "case-e58985233f0b2541",
+        "views_manifest_sha256": "a6111d2c31e3b584767fa562b07fa58b1a4aad5f789c3e280bd8428bfcc6faf6",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-14a2794b9432a7e0",
+        "partition": "holdout",
+        "category": "laptop",
+        "mesh": "case-14a2794b9432a7e0.glb",
+        "mesh_sha256": "91e861e8ba4cc0d369ae65b66b861f4054b70f760dc7bf603d29a18a68d5312d",
+        "views_directory": "case-14a2794b9432a7e0",
+        "views_manifest_sha256": "20c1705f66793058a1c225479a9f4e321397689d25ac218a36bb1386a108386d",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-9411d97e08bbf879",
+        "partition": "holdout",
+        "category": "laptop",
+        "mesh": "case-9411d97e08bbf879.glb",
+        "mesh_sha256": "71cdd6078b30c513eaee299c958a2b98e562aa36c1dc16469bb1ebe15b654fb9",
+        "views_directory": "case-9411d97e08bbf879",
+        "views_manifest_sha256": "490f30e77e4dc061112dc621f21347cf0cca2783dea4333bb5b1b4104d7fff05",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-06940288c3fa549a",
+        "partition": "holdout",
+        "category": "mug",
+        "mesh": "case-06940288c3fa549a.glb",
+        "mesh_sha256": "4eeaae198c1a38157ba07ff688c88502dae4dccab0613547d13be25222bea703",
+        "views_directory": "case-06940288c3fa549a",
+        "views_manifest_sha256": "05027854e2f1c5c5459bfd8ccaa2682903127c1957637d265304da5132094efa",
+        "prior_result": "data/experiments/runs/nocs-agent-holdout-01/case-06940288c3fa549a/canonicalization.json",
+        "prior_result_sha256": "f6aaddaa5497a035d28238a3826e4c73acb54e0fd0340d316af8517712c8816f"
+      },
+      {
+        "case_id": "case-59e553521a5e4e9e",
+        "partition": "holdout",
+        "category": "mug",
+        "mesh": "case-59e553521a5e4e9e.glb",
+        "mesh_sha256": "73d839854c8109288b8a33f8d27c884c5afaa3cdd0de59b53cd5096e352b9cbb",
+        "views_directory": "case-59e553521a5e4e9e",
+        "views_manifest_sha256": "898b30efbcf04bebb23bce72a60e302ee9b1644419e164830bda55b44ac0f1ec",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-facee43ab2a881d8",
+        "partition": "holdout",
+        "category": "mug",
+        "mesh": "case-facee43ab2a881d8.glb",
+        "mesh_sha256": "a8655382e754d6d60bb9b39ee2305777475524945c1ad05dccaa4bcfe290a78f",
+        "views_directory": "case-facee43ab2a881d8",
+        "views_manifest_sha256": "162fb50487f9f5cb399fbaa79384b36d310533efd2f44b5b56618fd7cda8326a",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-8b8032a4ec48d187",
+        "partition": "holdout",
+        "category": "mug",
+        "mesh": "case-8b8032a4ec48d187.glb",
+        "mesh_sha256": "67321c2a27f3755f927cfb46c7267067681d643374565bbf021fcfde5d331904",
+        "views_directory": "case-8b8032a4ec48d187",
+        "views_manifest_sha256": "06ffa1ba0a40bd3b8a6e1f7406da52afec64f7998574bec1580fe4a1079071dd",
+        "prior_result": null,
+        "prior_result_sha256": null
+      },
+      {
+        "case_id": "case-5c6125cfc35a7c4b",
+        "partition": "holdout",
+        "category": "mug",
+        "mesh": "case-5c6125cfc35a7c4b.glb",
+        "mesh_sha256": "d606c205e0c79b09ba387dc530d8e8c09b14fb15ff1d7b4168e5b57836c0499e",
+        "views_directory": "case-5c6125cfc35a7c4b",
+        "views_manifest_sha256": "d4a1d8972ef8d705e7d2eb28968caecc3f242b1306cb39a67c6e9e392859f1b4",
+        "prior_result": null,
+        "prior_result_sha256": null
+      }
+    ],
+    "files": {
+      ".agents/skills/mesh-canonicalization/SKILL.md": "459b654e4001f276e691a4ad1f3dd042d76d29ab018aaedd82d5e8c9642eaf7c",
+      "experiments/canonicalization/conventions.json": "ac8f668509680954c8cb70cb89208c89c01271d58a9325ce6fc9372a0be1e5bf",
+      "experiments/canonicalization/upright.py": "bd539b001217b1b1c7b82ec08a0dad7392e9ececa71e76b7f49ba24051aa9233",
+      "experiments/canonicalization/front.py": "3f80680bdf56906659b28dce4dd2af45cdc17721cce08bbacebcc28f5d37a9ce",
+      "experiments/canonicalization/workflow.py": "0aa9183703e431f7a5d5a409a0974296bfd234f6cf0a7e1764d2db56be452abe",
+      "experiments/orientation/render.py": "b7ba521a96e14faab689be0478857d627cffd05a96da17b353b46123cfb33f86",
+      "experiments/orientation/blender_render.py": "5168014e1a62304eab2857e345aef92c077559b1d1e9e7ff39806124fe9c9fba"
+    },
+    "angle_tolerance_degrees": 15,
+    "comparison": "Compare selected rotations in a common source frame; ignore yaw for up-only categories; report abstention separately.",
+    "history": "First rotation per object reuses the previously saved decision; four remaining rotations are new decisions by the same interactive agent with prior session context. This is not an independent blinded model evaluation."
+  }
+}

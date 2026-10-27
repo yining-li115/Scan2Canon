@@ -105,6 +105,12 @@ independent real-world semantic ground truth. Keep development and holdout
 objects separate, count repeated rotations as correlated observations, and do
 not replace original failed decisions after inspecting their errors.
 
+For repeated input rotations, use `experiments.canonicalization.consistency`
+after saving every decision. It compares recovered frames as `R @ Q`, separates
+up-only and full-frame agreement, and does not count abstention as a successful
+orientation recovery. See the [rotation-consistency experiment](experiments/2026-10-27-rotation-consistency.md)
+for the frozen protocol, invocation and measured limitations.
+
 Geometry-only candidates have limits: support poses depend on a uniform-density
 convex hull; surface PCA can miss the true functional direction; scans can lose
 the parts needed to distinguish upright signs or front. The agent should request
