@@ -152,8 +152,9 @@ A local Blender integration smoke test under
 `data/experiments/runs/canonical-worker-smoke-01` uses a real NOCS mesh and previously
 recorded decisions to exercise an extra-view round, rigid export and zero-call
 resume. Its policy is recorded as `recorded_fixture_not_live_inference`. It is
-software integration evidence, not a new holdout score. Cloud model evaluation
-requires credentials and a separate run; no live cloud accuracy is claimed here.
+software integration evidence, not a new holdout score. The separate [first live Gemini diagnostic](experiments/2026-10-27-gemini-canonicalization.md)
+completed one mug using two model calls and checked its result against an audited
+reference. It does not establish general accuracy or ambiguous-object behavior.
 
 API formats follow the official [image input guide](https://developers.openai.com/api/docs/guides/images-vision)
 and [structured output guide](https://developers.openai.com/api/docs/guides/structured-outputs).

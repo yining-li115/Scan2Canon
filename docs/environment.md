@@ -91,5 +91,6 @@ Google's [data-use terms](https://ai.google.dev/gemini-api/terms) vary by tier a
 region; free access does not by itself specify data handling.
 
 Transport and configuration tests use mocked responses and do not consume quota.
-Live Gemini connectivity and canonicalization accuracy have not yet been
-verified; they require a configured key and a separate inference run.
+A [first live Gemini diagnostic](experiments/2026-10-27-gemini-canonicalization.md)
+completed one mug with two generation calls on a user-confirmed Free Tier project.
+This verifies that path and one object, not general canonicalization accuracy.
