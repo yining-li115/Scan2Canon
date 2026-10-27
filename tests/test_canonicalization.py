@@ -187,3 +187,41 @@ def test_abstention_exports_no_mesh_and_changed_evidence_is_rejected(tmp_path: P
     (up.parent / "poses/0.png").write_bytes(b"changed evidence")
     with pytest.raises(ValueError, match="modified artifact"):
         finish(up.parent, decision, tmp_path / "changed")
+
+
+def test_supporting_observations_are_bound_and_cannot_replace_candidates(tmp_path: Path) -> None:
+    up = make_case(tmp_path / "up", "up", [np.eye(3).tolist()] * 3)
+    decision = save_decision(tmp_path / "decision.json", up, 0)
+    observation = up.parent / "photo.png"
+    observation.write_bytes(b"identity-matched photo fixture")
+    bundle = {
+        "schema_version": 1,
+        "status": "succeeded",
+        "mesh_sha256": read_json(up)["mesh_sha256"],
+        "category": "mug",
+        "registration": "unregistered",
+        "assets": [{"path": "photo.png", "sha256": sha256(observation)}],
+        "images": [{"id": "photo-1", "image": "photo.png", "sha256": sha256(observation)}],
+    }
+    manifest = up.parent / "observations.json"
+    write_json(manifest, bundle)
+    content = read_json(decision)
+    content["supporting_evidence"] = {
+        "manifest": manifest.name,
+        "sha256": sha256(manifest),
+        "image_ids": ["photo-1"],
+        "mesh_correspondence": "The handle location agrees with the candidate render",
+    }
+    write_json(decision, content)
+    result = finish(up.parent, decision, tmp_path / "supported")
+    assert read_json(result / "canonicalization.json")["scope"] == "up_only_front_pending"
+    observation.write_bytes(b"substituted photo")
+    with pytest.raises(ValueError, match="modified artifact"):
+        finish(up.parent, decision, tmp_path / "changed-photo")
+    assert not (tmp_path / "changed-photo").exists()
+    bundle["mesh_sha256"] = "f" * 64
+    write_json(manifest, bundle)
+    content["supporting_evidence"]["sha256"] = sha256(manifest)
+    write_json(decision, content)
+    with pytest.raises(ValueError, match="do not match"):
+        finish(up.parent, decision, tmp_path / "wrong-mesh")

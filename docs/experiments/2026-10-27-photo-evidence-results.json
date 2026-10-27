@@ -1,0 +1,306 @@
+{
+  "schema_version": 1,
+  "status": "succeeded",
+  "references_sha256": "1598d153d20b65efa3913bf48180c1b32f3f43109f473179c3006bb9eb51cd84",
+  "reference_scope": "Audited dataset coordinates, not independent human labels",
+  "warning": "Repeated rotations are correlated; count distinct objects, not only cases",
+  "distinct_objects": 2,
+  "summaries": {
+    "visual_agent": {
+      "cases": 2,
+      "up_proposals": 1,
+      "full_frame_proposals": 1,
+      "up_within_15_degrees": 1,
+      "full_frame_within_15_degrees": 1,
+      "median_up_error_degrees": 2.225728985236746,
+      "median_frame_error_degrees": 5.900213750178734
+    }
+  },
+  "cases": [
+    {
+      "case_id": "case-12fd1a35b6d86a3a",
+      "object_id": "nocs-laptop_air_xin_norm",
+      "category": "laptop",
+      "partition": "holdout",
+      "scope": "unresolved",
+      "decision": "needs_evidence",
+      "proposal_sha256": "2268a788643f32bc75c55ec57121871c46b8f4bbf7977ea75a13d72e2b7bf2de"
+    },
+    {
+      "case_id": "case-f0dc37e9b60fe18b",
+      "object_id": "nocs-camera_shengjun_norm",
+      "category": "camera",
+      "partition": "holdout",
+      "scope": "full_frame",
+      "decision": "automatic_proposal",
+      "proposal_sha256": "ba434d77a95d2f536a231c1cf97c43a84a4b646bf26000cde2c0a28ab8340d97",
+      "up_error_degrees": 2.225728985236746,
+      "frame_error_degrees": 5.900213750178734
+    }
+  ],
+  "runner_sha256": "9776e079ee58a89a44a9f262a5f075f9fa796b9bb1f15f0d30cfcf23dba4d196",
+  "protocol": {
+    "schema_version": 1,
+    "status": "frozen_before_supplemented_candidate_selection",
+    "cases": [
+      {
+        "category": "camera",
+        "case_id": "case-f0dc37e9b60fe18b",
+        "instance": "camera_shengjun_norm",
+        "mesh_sha256": "84fc49fe30fab9fd5ce6bf6bc7188c1a849d3107f7f609da478ec68151b7f6bf",
+        "up_descriptor_sha256": "768b0db2fee3a6e125bc22e14bf568df16a5d8699786a6399e7d3513683f6d82",
+        "prior_decision": "data/experiments/runs/nocs-agent-holdout-01/case-f0dc37e9b60fe18b-up.json",
+        "prior_decision_sha256": "85baa9689b9d0abb9de795940d1b8e8a9a56d2609f4c5ef673d3713170305775",
+        "observations_sha256": "6dec44a0e632418de8afdec64121d594ad090cd9c93d0f5fef438bf277961b6f"
+      },
+      {
+        "category": "laptop",
+        "case_id": "case-12fd1a35b6d86a3a",
+        "instance": "laptop_air_xin_norm",
+        "mesh_sha256": "46df960cf261be46d6d8f380b687b65b8a8a4a6ae69e849d2403239592935ed7",
+        "up_descriptor_sha256": "fcbbc838de031581367a5e5c99822494e71df656ae250ac57e59f4134968c59c",
+        "prior_decision": "data/experiments/runs/nocs-agent-holdout-01/case-12fd1a35b6d86a3a-up.json",
+        "prior_decision_sha256": "8e8555119fae0608f40b760baa695ddbccd24fa5d8cafa44bdbc461b1e1b2c54",
+        "observations_sha256": "b4d5158cc70fdb885dd6c117d4366ff39398179592fa0028fd78605b520a7f20"
+      }
+    ],
+    "files": {
+      ".agents/skills/mesh-canonicalization/SKILL.md": "459b654e4001f276e691a4ad1f3dd042d76d29ab018aaedd82d5e8c9642eaf7c",
+      "experiments/canonicalization/conventions.json": "ac8f668509680954c8cb70cb89208c89c01271d58a9325ce6fc9372a0be1e5bf",
+      "experiments/canonicalization/workflow.py": "9d9bf502e607308bea066285acb76f6717eafeed95149973b564f74df1d04332",
+      "experiments/canonicalization/observations.py": "0e4df4e4fecb0080d4b63c89df9c2ba178a47bd9cde683514a186f5b4765d364",
+      "experiments/datasets/nocs_photos.py": "0837a336b2ca88d742e9910ef320b96ed498e86be4a3fe8e8b516e558434e910"
+    },
+    "scope": "Diagnostic evidence enrichment of two known unresolved cases, not independent holdout testing",
+    "photo_selection": "Scene 2 first/middle/last available RGB frames; middle frame of scene 5 camera and scene 1 laptop. RGB, masks and identity metadata only. No pose or coordinate-map files.",
+    "history": "Prior failures and one full scene photograph were inspected before this protocol. Existing geometric candidates retained unchanged.",
+    "budget": "One additional up selection round (two cumulative); at most two front rounds.",
+    "angle_tolerance_degrees": 15
+  },
+  "selection_audit": {
+    "status": "succeeded",
+    "protocol_sha256": "ec695021d4e7137523a685bb7bdc9a744b40f5f9f03b50b3a6a2370cce3e058f",
+    "all_decisions_saved_before_scoring": true,
+    "cases": [
+      {
+        "case_id": "case-f0dc37e9b60fe18b",
+        "current_observations_sha256": "494461d836ebe971fa14aa51174cddcfbbca279ff73de5abda7363e1dd00e92b",
+        "initial_observations_sha256": "6dec44a0e632418de8afdec64121d594ad090cd9c93d0f5fef438bf277961b6f",
+        "result_sha256": "ba434d77a95d2f536a231c1cf97c43a84a4b646bf26000cde2c0a28ab8340d97"
+      },
+      {
+        "case_id": "case-12fd1a35b6d86a3a",
+        "current_observations_sha256": "6023343bfbfcd58dd2b9abe962d060bce4085789fb9e172db0077d0d182daa6e",
+        "initial_observations_sha256": "b4d5158cc70fdb885dd6c117d4366ff39398179592fa0028fd78605b520a7f20",
+        "result_sha256": "2268a788643f32bc75c55ec57121871c46b8f4bbf7977ea75a13d72e2b7bf2de"
+      }
+    ],
+    "additional_evidence": "Opposite-view render of every unchanged candidate was added before the new selections; photos and extra render are a joint intervention."
+  },
+  "decisions": [
+    {
+      "case_id": "case-12fd1a35b6d86a3a",
+      "prior": {
+        "schema_version": 1,
+        "actor": "interactive_visual_agent",
+        "case_sha256": "fcbbc838de031581367a5e5c99822494e71df656ae250ac57e59f4134968c59c",
+        "rules_sha256": "ac8f668509680954c8cb70cb89208c89c01271d58a9325ce6fc9372a0be1e5bf",
+        "model_calls": 1,
+        "selection": {
+          "decision": "needs_evidence",
+          "candidate_id": null,
+          "evidence_view_ids": [
+            0,
+            6,
+            7
+          ],
+          "visible_evidence": "Several candidates form an open-laptop silhouette, but the gray surfaces do not show keyboard details and the panel identity is not unambiguous.",
+          "missing_evidence": "Need the keyboard/trackpad or reliable panel-thickness evidence to distinguish the base from the lid before choosing up."
+        }
+      },
+      "supplemented": [
+        {
+          "schema_version": 1,
+          "actor": "interactive_visual_agent",
+          "case_sha256": "fcbbc838de031581367a5e5c99822494e71df656ae250ac57e59f4134968c59c",
+          "rules_sha256": "ac8f668509680954c8cb70cb89208c89c01271d58a9325ce6fc9372a0be1e5bf",
+          "model_calls": 2,
+          "selection": {
+            "decision": "needs_evidence",
+            "candidate_id": null,
+            "evidence_view_ids": [
+              0,
+              6,
+              7
+            ],
+            "visible_evidence": "The photographs clearly show a black display above a silver keyboard/trackpad base. The gray candidate meshes retain two nearly featureless panels. Poses 06 and 07 can each form an open-laptop silhouette by swapping the supporting panel. Their scan borders do not establish a reliable keyboard-to-mesh correspondence.",
+            "missing_evidence": "A registered RGB-to-mesh view or a mesh-surface landmark identifying the keyboard/base panel."
+          },
+          "supporting_evidence": {
+            "manifest": "observations/manifest.json",
+            "sha256": "6023343bfbfcd58dd2b9abe962d060bce4085789fb9e172db0077d0d182daa6e",
+            "image_ids": [
+              "scene_2-0000",
+              "scene_2-0291",
+              "scene_2-0629",
+              "scene_1-0187",
+              "alternate-pose-06",
+              "alternate-pose-07"
+            ],
+            "mesh_correspondence": "Instance metadata matches laptop_air_xin_norm, but keyboard/display identity cannot yet be transferred to the two untextured mesh panels. The photograph alone does not establish a 3D axis."
+          }
+        }
+      ],
+      "declared_cumulative_model_calls": 2,
+      "export_verification": null
+    },
+    {
+      "case_id": "case-f0dc37e9b60fe18b",
+      "prior": {
+        "schema_version": 1,
+        "actor": "interactive_visual_agent",
+        "case_sha256": "768b0db2fee3a6e125bc22e14bf568df16a5d8699786a6399e7d3513683f6d82",
+        "rules_sha256": "ac8f668509680954c8cb70cb89208c89c01271d58a9325ce6fc9372a0be1e5bf",
+        "model_calls": 1,
+        "selection": {
+          "decision": "needs_evidence",
+          "candidate_id": null,
+          "evidence_view_ids": [
+            0,
+            1,
+            7,
+            9
+          ],
+          "visible_evidence": "The rounded box has major missing patches, and the available views do not establish shutter controls, top housing or a tripod base clearly enough.",
+          "missing_evidence": "Need an image or textured mesh showing the camera top controls and base; a box silhouette is insufficient to select up."
+        }
+      },
+      "supplemented": [
+        {
+          "schema_version": 1,
+          "actor": "interactive_visual_agent",
+          "case_sha256": "768b0db2fee3a6e125bc22e14bf568df16a5d8699786a6399e7d3513683f6d82",
+          "rules_sha256": "ac8f668509680954c8cb70cb89208c89c01271d58a9325ce6fc9372a0be1e5bf",
+          "model_calls": 2,
+          "selection": {
+            "decision": "selected",
+            "candidate_id": 7,
+            "evidence_view_ids": [
+              7,
+              6
+            ],
+            "visible_evidence": "The matching photographs show a portrait instant camera with the circular lens below the top flash/ejection strip. Alternate pose 07 exposes the same broad front, with the circular lens low on the body and a raised band above it. Alternate pose 06 places the lens high. The original pose 07 shows the plain back; the opposite render supplies the missing part evidence.",
+            "missing_evidence": ""
+          },
+          "supporting_evidence": {
+            "manifest": "observations/manifest.json",
+            "sha256": "494461d836ebe971fa14aa51174cddcfbbca279ff73de5abda7363e1dd00e92b",
+            "image_ids": [
+              "scene_2-0000",
+              "scene_2-0291",
+              "scene_2-0629",
+              "scene_5-0265",
+              "alternate-pose-06",
+              "alternate-pose-07"
+            ],
+            "mesh_correspondence": "Instance metadata matches camera_shengjun_norm. The lower circular lens bulge and broad upper strip map to alternate candidate 07. No photographic camera pose is transferred."
+          }
+        },
+        {
+          "schema_version": 1,
+          "actor": "interactive_visual_agent",
+          "case_sha256": "b49a79130fe0ab5114f6bfb1cff31721c1b8794148a74281eff24bafa8d1c9cc",
+          "rules_sha256": "ac8f668509680954c8cb70cb89208c89c01271d58a9325ce6fc9372a0be1e5bf",
+          "model_calls": 1,
+          "selection": {
+            "decision": "selected",
+            "candidate_id": 0,
+            "evidence_view_ids": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "visible_evidence": "Pose 00 shows the broad camera front and low circular lens projection facing the viewer. Pose 01 shows the smooth back without the lens circle; 02 and 03 show thin side profiles.",
+            "missing_evidence": ""
+          },
+          "supporting_evidence": {
+            "manifest": "observations/manifest.json",
+            "sha256": "494461d836ebe971fa14aa51174cddcfbbca279ff73de5abda7363e1dd00e92b",
+            "image_ids": [
+              "scene_2-0000",
+              "scene_2-0291",
+              "scene_5-0265"
+            ],
+            "mesh_correspondence": "The photos show the broad face with a low circular lens. Candidate 00 exposes that circular lens bulge head-on; 01 is the plain back and 02/03 are side profiles. No photo camera transform is used."
+          }
+        }
+      ],
+      "declared_cumulative_model_calls": 3,
+      "export_verification": {
+        "mesh": "canonical.glb",
+        "sha256": "ccc34d68d730f015027397120005d38aec1eacf3196df5ce4b7128da47ec8d15",
+        "transform": [
+          [
+            0.6969803907234289,
+            0.19448825158467814,
+            0.6902120362197051,
+            0.0010487636912085052
+          ],
+          [
+            0.10534396221044255,
+            0.9243050457798294,
+            -0.36682806868034573,
+            0.0558861047132239
+          ],
+          [
+            -0.7093102174456684,
+            0.32838164129786934,
+            0.6237343289299508,
+            0.004111288668824473
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "inverse_transform": [
+          [
+            0.6969803907234289,
+            0.10534396221044247,
+            -0.7093102174456682,
+            -0.003702052370607936
+          ],
+          [
+            0.1944882515846781,
+            0.9243050457798293,
+            0.3283816412978694,
+            -0.053209852512959295
+          ],
+          [
+            0.6902120362197052,
+            -0.3668280686803458,
+            0.6237343289299511,
+            0.017212370656310635
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "inverse_vertex_error": 2.3273757686693185e-17,
+        "tolerance": 2.380496636033058e-07,
+        "vertices": 7166,
+        "faces": 10337,
+        "scale": "unchanged",
+        "origin": "Bounding-box XZ center; lowest vertex at Y=0"
+      }
+    }
+  ],
+  "photo_download_manifest_sha256": "fa8085daa331e11f0e00d4730951bb604a213d05fc5e7d55cc1e5fa37054eae1",
+  "source_report_sha256": "c3a1e777112d61fc2773972fd50064835c2cd9bcb2d4be15fc947a9ea2e1f7aa"
+}

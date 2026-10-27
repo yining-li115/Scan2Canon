@@ -66,6 +66,41 @@ The ID above illustrates the schema; it is not a recommended candidate. A
 evidence description. Unknown IDs, arbitrary matrices, missing cited evidence,
 changed inputs and inconsistent up/front choices are rejected.
 
+### Supplemental photographs
+
+An unresolved case can use identity-matched photographs as additional part
+evidence. Keep its previous decision intact and start a new diagnostic run.
+Unregistered photographs identify parts but do not supply a mesh-space rotation:
+the agent must explain how those parts correspond to the rendered mesh candidates.
+If that correspondence is missing, keep the case unresolved.
+
+`experiments.datasets.nocs_photos.prepare` creates a local evidence bundle from
+explicit NOCS RGB frame stems, instance masks and identity metadata. It checks the
+instance/category match and visible mask pixels, preserves the source files and
+creates crops with recorded bounds. It does not open coordinate maps or pose labels.
+Only use an instance association established by the dataset catalog; the helper's
+hash binding is not an automatic identity-recognition model.
+
+Store the bundle inside the candidate directory and include this optional field
+in the decision:
+
+```json
+{
+  "supporting_evidence": {
+    "manifest": "observations/manifest.json",
+    "sha256": "<manifest SHA-256>",
+    "image_ids": ["scene_2-0000"],
+    "mesh_correspondence": "Explain the visible part correspondence, or why it remains missing."
+  }
+}
+```
+
+The controller verifies the manifest, mesh/category binding, cited image IDs and
+every recorded source/crop hash before accepting the decision. The selected
+rotation must still come from the geometric candidates. Count the earlier
+selection round in `model_calls`; additional evidence does not reset its budget.
+See the [photo-evidence diagnostic](experiments/2026-10-27-photo-evidence.md).
+
 ```bash
 uv run --locked --extra canonical python -m experiments.canonicalization.workflow front \
   run/up run/up-decision.json run/front --blender blender

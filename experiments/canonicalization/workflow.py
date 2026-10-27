@@ -10,6 +10,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from experiments.artifacts import read_json, sha256, write_json
 from experiments.canonicalization.front import prepare as prepare_front
+from experiments.canonicalization.observations import SupportingEvidence, verify_support
 from experiments.canonicalization.semantic import RULES, descriptor, verify
 from experiments.canonicalization.upright import prepare as prepare_up
 from experiments.orientation.geometry import rotation
@@ -24,6 +25,7 @@ class Decision(BaseModel):
     rules_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
     model_calls: int = Field(ge=1, le=2)
     selection: Selection
+    supporting_evidence: SupportingEvidence | None = None
 
 
 def chosen(case_path: Path, decision_path: Path) -> tuple[dict[str, Any], Decision, Any]:
@@ -34,6 +36,8 @@ def chosen(case_path: Path, decision_path: Path) -> tuple[dict[str, Any], Decisi
     ):
         raise ValueError("Decision belongs to different evidence or conventions")
     selection = parse_selection(decision.selection.model_dump_json(), {key for key, _ in images})
+    if decision.supporting_evidence is not None:
+        verify_support(case_path, case, decision.supporting_evidence)
     if selection.decision != "selected":
         return case, decision, None
     if selection.candidate_id not in selection.evidence_view_ids:
