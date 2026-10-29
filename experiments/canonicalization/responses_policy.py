@@ -1,6 +1,7 @@
 """One bounded Responses API request; no implicit retries or tool execution."""
 
 import base64
+import copy
 import io
 import json
 import urllib.error
@@ -53,7 +54,7 @@ class ResponsesPolicy:
                     },
                 ]
             )
-        schema = PolicyReply.model_json_schema()
+        schema = copy.deepcopy(request.response_schema or PolicyReply.model_json_schema())
         schema["required"] = list(schema["properties"])
         for field in schema["properties"].values():
             field.pop("default", None)

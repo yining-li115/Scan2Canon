@@ -7,10 +7,11 @@ from pathlib import Path
 from scan2canon.domain import Stage
 from scan2canon.harness import Harness
 from scan2canon.policy import BaselinePolicy
-from scan2canon.ports import Tool
+from scan2canon.ports import ObjectLibrary, Tool
 from scan2canon.service import ScanService
 from scan2canon.storage.artifacts import LocalArtifacts
 from scan2canon.storage.jobs import SQLiteJobs
+from scan2canon.storage.library import SQLiteLibrary
 from scan2canon.tools.inspect import InspectCapture
 
 
@@ -21,6 +22,7 @@ class Runtime:
     artifacts: LocalArtifacts
     service: ScanService
     harness: Harness
+    library: ObjectLibrary
 
 
 def build_runtime(root: Path | None = None, tools: dict[Stage, Tool] | None = None) -> Runtime:
@@ -32,6 +34,7 @@ def build_runtime(root: Path | None = None, tools: dict[Stage, Tool] | None = No
         registry.update(tools)
     return Runtime(
         root=root,
+        library=SQLiteLibrary(root / "library.sqlite3"),
         jobs=jobs,
         artifacts=artifacts,
         service=ScanService(jobs, artifacts),

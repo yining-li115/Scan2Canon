@@ -8,6 +8,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+from experiments.appearance import describe, require_color
 from experiments.artifacts import sha256, write_json
 from experiments.orientation.common import CONFIG_PATH, config, verify_source, verify_views
 from experiments.orientation.download import verify_checkpoint
@@ -87,7 +88,12 @@ def predict(
 
 
 def run(
-    views: Path, output: Path, source: Path, checkpoint: Path, verify_official: bool = False
+    views: Path,
+    output: Path,
+    source: Path,
+    checkpoint: Path,
+    verify_official: bool = False,
+    require_appearance: bool = False,
 ) -> Path:
     views, output, source, checkpoint = (p.resolve() for p in (views, output, source, checkpoint))
     output.mkdir(parents=True, exist_ok=False)
@@ -106,7 +112,14 @@ def run(
     write_json(output / "predictions.json", report)
     try:
         verify_source(source)
-        verify_views(views)
+        manifest = verify_views(views)
+        appearance = describe(views / manifest["mesh"])
+        if manifest.get("appearance") is not None and manifest["appearance"] != appearance:
+            raise ValueError("Render appearance inventory does not match its mesh")
+        if require_appearance:
+            require_color(appearance)
+        report["appearance"] = appearance
+        report["require_appearance"] = require_appearance
         checkpoint_file, checkpoint_manifest = verify_checkpoint(checkpoint)
         report["views_manifest_sha256"] = sha256(views / "manifest.json")
         write_json(output / "checkpoint-manifest.json", checkpoint_manifest)
@@ -132,8 +145,18 @@ def main() -> None:
     parser.add_argument("--source-dir", type=Path, default=Path("data/tools/Orient-Anything-V2"))
     parser.add_argument("--checkpoint-dir", type=Path, default=Path("weights/orientation"))
     parser.add_argument("--verify-official", action="store_true")
+    parser.add_argument("--require-appearance", action="store_true")
     args = parser.parse_args()
-    print(run(args.views, args.output, args.source_dir, args.checkpoint_dir, args.verify_official))
+    print(
+        run(
+            args.views,
+            args.output,
+            args.source_dir,
+            args.checkpoint_dir,
+            args.verify_official,
+            args.require_appearance,
+        )
+    )
 
 
 if __name__ == "__main__":

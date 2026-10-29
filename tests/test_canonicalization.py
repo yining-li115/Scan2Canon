@@ -8,7 +8,7 @@ trimesh = pytest.importorskip("trimesh")
 
 from experiments.artifacts import read_json, sha256, write_json  # noqa: E402
 from experiments.canonicalization.evidence import direction_cluster  # noqa: E402
-from experiments.canonicalization.semantic import RULES, run  # noqa: E402
+from experiments.canonicalization.semantic import run  # noqa: E402
 from experiments.canonicalization.upright import candidates  # noqa: E402
 from experiments.canonicalization.workflow import Decision, export, finish  # noqa: E402
 from experiments.orientation.geometry import axis_rotation, rotation  # noqa: E402
@@ -72,10 +72,9 @@ def test_export_is_rigid_reversible_and_does_not_overwrite(tmp_path: Path) -> No
 
 def test_agent_cannot_inject_rotation_or_skip_evidence_budget() -> None:
     valid: dict[str, Any] = {
-        "schema_version": 1,
+        "schema_version": 2,
         "actor": "interactive_visual_agent",
         "case_sha256": "a" * 64,
-        "rules_sha256": "b" * 64,
         "model_calls": 1,
         "selection": {
             "decision": "selected",
@@ -137,10 +136,9 @@ def save_decision(path: Path, descriptor_path: Path, selection: int | None) -> P
     write_json(
         path,
         {
-            "schema_version": 1,
+            "schema_version": 2,
             "actor": "interactive_visual_agent",
             "case_sha256": sha256(descriptor_path),
-            "rules_sha256": sha256(RULES),
             "model_calls": 1,
             "selection": {
                 "decision": "selected" if selection is not None else "needs_evidence",

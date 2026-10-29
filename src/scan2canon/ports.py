@@ -6,6 +6,7 @@ from typing import Protocol
 from uuid import UUID
 
 from scan2canon.domain import Capture, Event, Job, Stage, StageResult
+from scan2canon.library import Assessment, MatchProposal, ObjectRecord
 
 
 class ArtifactStore(Protocol):
@@ -65,3 +66,21 @@ class ToolUnavailable(RuntimeError):
 
 class ReviewRequired(RuntimeError):
     """Evidence requires review before this stage may complete."""
+
+
+class ObjectLibrary(Protocol):
+    """Immutable evidence-backed proposals; no automatic category admission."""
+
+    def ingest(self, item: "ObjectRecord", assessment: "Assessment") -> None: ...
+
+    def objects(self, limit: int = 100, offset: int = 0) -> list["ObjectRecord"]: ...
+
+    def get_object(self, object_id: UUID) -> "ObjectRecord": ...
+
+    def assessments(self, object_id: UUID) -> list["Assessment"]: ...
+
+    def get_assessment(self, assessment_id: UUID) -> "Assessment": ...
+
+    def propose_match(self, proposal: "MatchProposal") -> None: ...
+
+    def matches(self, object_id: UUID) -> list["MatchProposal"]: ...

@@ -23,6 +23,14 @@ def parser() -> argparse.ArgumentParser:
         operation.add_argument("job_id", type=UUID)
     worker = commands.add_parser("worker", help="Process queued jobs, then exit")
     worker.add_argument("--once", action="store_true", help="Process at most one job")
+    catalog = commands.add_parser("library", help="Inspect stored object and direction proposals")
+    operations = catalog.add_subparsers(dest="library_command", required=True)
+    listing = operations.add_parser("list")
+    listing.add_argument("--limit", type=int, default=100)
+    listing.add_argument("--offset", type=int, default=0)
+    for name in ("show", "assessments", "matches"):
+        operation = operations.add_parser(name)
+        operation.add_argument("object_id", type=UUID)
     return command
 
 
@@ -48,6 +56,19 @@ def main() -> None:
                     emit(event)
             case "retry":
                 emit(runtime.jobs.retry(args.job_id))
+            case "library":
+                match args.library_command:
+                    case "list":
+                        for item in runtime.library.objects(args.limit, args.offset):
+                            emit(item)
+                    case "show":
+                        emit(runtime.library.get_object(args.object_id))
+                    case "assessments":
+                        for assessment in runtime.library.assessments(args.object_id):
+                            emit(assessment)
+                    case "matches":
+                        for proposal in runtime.library.matches(args.object_id):
+                            emit(proposal)
             case "worker":
                 while (job := run_once(runtime)) is not None:
                     emit(job)

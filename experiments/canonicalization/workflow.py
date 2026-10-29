@@ -8,10 +8,11 @@ import numpy as np
 import trimesh
 from pydantic import BaseModel, ConfigDict, Field
 
+from experiments.appearance import describe
 from experiments.artifacts import read_json, sha256, write_json
 from experiments.canonicalization.front import prepare as prepare_front
 from experiments.canonicalization.observations import SupportingEvidence, verify_support
-from experiments.canonicalization.semantic import RULES, descriptor, verify
+from experiments.canonicalization.semantic import descriptor, verify
 from experiments.canonicalization.upright import prepare as prepare_up
 from experiments.orientation.geometry import rotation
 from experiments.semantic_orientation.contracts import Selection, direction_error, parse_selection
@@ -19,10 +20,9 @@ from experiments.semantic_orientation.contracts import Selection, direction_erro
 
 class Decision(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
-    schema_version: Literal[1]
+    schema_version: Literal[2]
     actor: Literal["interactive_visual_agent", "local_vlm", "automated_model_policy"]
     case_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
-    rules_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
     model_calls: int = Field(ge=1, le=2)
     selection: Selection
     supporting_evidence: SupportingEvidence | None = None
@@ -31,10 +31,8 @@ class Decision(BaseModel):
 def chosen(case_path: Path, decision_path: Path) -> tuple[dict[str, Any], Decision, Any]:
     case, images = verify(case_path)
     decision = Decision.model_validate(read_json(decision_path))
-    if decision.case_sha256 != sha256(descriptor(case_path)) or decision.rules_sha256 != sha256(
-        RULES
-    ):
-        raise ValueError("Decision belongs to different evidence or conventions")
+    if decision.case_sha256 != sha256(descriptor(case_path)):
+        raise ValueError("Decision belongs to different evidence")
     selection = parse_selection(decision.selection.model_dump_json(), {key for key, _ in images})
     if decision.supporting_evidence is not None:
         verify_support(case_path, case, decision.supporting_evidence)
@@ -50,6 +48,7 @@ def export(mesh_path: Path, matrix: Any, output: Path) -> dict[str, Any]:
     from scipy.spatial import cKDTree  # type: ignore[import-untyped]
 
     matrix = rotation(matrix)
+    appearance = describe(mesh_path)
     original = trimesh.load_scene(mesh_path, process=False)
     mesh = original.to_mesh()
     if not len(mesh.faces) or not np.isfinite(mesh.vertices).all():
@@ -65,6 +64,9 @@ def export(mesh_path: Path, matrix: Any, output: Path) -> dict[str, Any]:
     if output.exists():
         raise FileExistsError(output)
     moved.export(output)
+    exported_appearance = describe(output)
+    if exported_appearance != appearance:
+        raise ValueError("Export changed mesh colors, UVs or materials")
     loaded = trimesh.load_scene(output, process=False).to_mesh()
     if len(mesh.vertices) != len(loaded.vertices) or len(mesh.faces) != len(loaded.faces):
         raise ValueError("Export changed mesh topology counts")
@@ -78,6 +80,8 @@ def export(mesh_path: Path, matrix: Any, output: Path) -> dict[str, Any]:
         raise ValueError("Export failed inverse-transform geometry verification")
     return {
         "mesh": output.name,
+        "appearance_preserved": True,
+        "appearance": exported_appearance,
         "sha256": sha256(output),
         "transform": transform.tolist(),
         "inverse_transform": np.linalg.inv(transform).tolist(),
@@ -94,9 +98,6 @@ def next_front(case_path: Path, decision_path: Path, output: Path, blender: str)
     case, decision, matrix = chosen(case_path, decision_path)
     if case.get("task", "up") != "up" or matrix is None:
         raise ValueError("Front preparation requires a selected upright candidate")
-    rule = read_json(RULES)["categories"][case["category"]]
-    if rule["front"] is None:
-        raise ValueError("This convention leaves yaw unspecified; no front call is needed")
     prepare_front(case_path / "poses", case["category"], matrix, output, blender)
     path = output / "front.json"
     record = read_json(path)
@@ -119,13 +120,11 @@ def finish(
     case, decision, matrix = chosen(up_case, up_decision)
     if case.get("task", "up") != "up":
         raise ValueError("Expected an upright case")
-    rule = read_json(RULES)["categories"][case["category"]]
     record: dict[str, Any] = {
         "schema_version": 1,
         "status": "running",
         "category": case["category"],
         "input_mesh_sha256": case["mesh_sha256"],
-        "rules_sha256": sha256(RULES),
         "up_case_sha256": sha256(descriptor(up_case)),
         "up_decision_sha256": sha256(up_decision),
         "decisions": [decision.model_dump()],
@@ -138,10 +137,8 @@ def finish(
     }
     if bool(front_case) != bool(front_decision):
         raise ValueError("Both front evidence and decision are required")
-    scope = "up_only" if rule["front"] is None else "up_only_front_pending"
+    scope = "up_only_front_pending"
     if front_case is not None and front_decision is not None:
-        if rule["front"] is None:
-            raise ValueError("This convention leaves yaw unspecified")
         front, choice, selected = chosen(front_case, front_decision)
         if (
             matrix is None
@@ -160,6 +157,8 @@ def finish(
             front_case_sha256=sha256(descriptor(front_case)),
             front_decision_sha256=sha256(front_decision),
         )
+        if choice.selection.decision == "no_unique_front":
+            scope = "up_only"
         if selected is not None:
             if direction_error(matrix[1], selected[1]) > 1e-3:
                 raise ValueError("Front decision changes the established up direction")
@@ -179,7 +178,7 @@ def finish(
             record.update(
                 decision="automatic_proposal",
                 scope=scope,
-                yaw="established_by_convention" if scope == "full_frame" else "unspecified",
+                yaw="instance_proposal" if scope == "full_frame" else "unspecified",
             )
         record["status"] = "succeeded"
     except BaseException as error:

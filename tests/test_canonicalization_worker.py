@@ -148,11 +148,11 @@ def test_extra_evidence_rounds_survive_resume_at_exhausted_budget(
 @pytest.mark.parametrize(
     ("category", "choice", "scope", "calls"),
     [
-        ("bottle", 0, "up_only", 1),
+        ("unseen-object", 0, "up_only_front_pending", 1),
         ("mug", None, "unresolved", 2),
     ],
 )
-def test_symmetry_and_abstention_do_not_create_a_full_frame(
+def test_budget_and_abstention_do_not_create_a_full_frame(
     mesh: Path,
     renders: list[Path],
     tmp_path: Path,
@@ -162,7 +162,9 @@ def test_symmetry_and_abstention_do_not_create_a_full_frame(
     calls: int,
 ) -> None:
     policy = FixturePolicy([reply(choice)] * calls)
-    result = Controller(policy, GeometryTools("fixture")).run(mesh, category, tmp_path / "job")
+    result = Controller(policy, GeometryTools("fixture")).run(
+        mesh, category, tmp_path / "job", max_calls=calls
+    )
     assert read_json(result / "canonicalization.json")["scope"] == scope
     assert (result / "canonical.glb").exists() == (choice is not None)
     assert len(policy.requests) == len(renders) == calls
@@ -191,9 +193,9 @@ def test_interrupted_provider_call_is_counted_on_resume(
     controller = Controller(policy, GeometryTools("fixture"))
     root = tmp_path / "job"
     with pytest.raises(TimeoutError):
-        controller.run(mesh, "bottle", root)
+        controller.run(mesh, "bottle", root, max_calls=2)
     assert read_json(root / "calls/up-1.json")["status"] == "started"
-    result = controller.run(mesh, "bottle", root, resume=True)
+    result = controller.run(mesh, "bottle", root, resume=True, max_calls=2)
     assert read_json(result / "canonicalization.json")["model_calls"] == 2
     assert len(policy.requests) == 2
     assert len(renders) == 1
@@ -217,10 +219,10 @@ def test_crash_after_export_preserves_artifacts_and_recovers_without_model_calls
 
     monkeypatch.setattr(tools, "export", interrupted)
     with pytest.raises(RuntimeError, match="interruption"):
-        controller.run(mesh, "bottle", root)
+        controller.run(mesh, "bottle", root, max_calls=1)
     saved = sha256(root / "work/export-1/canonical.glb")
     monkeypatch.setattr(tools, "export", original)
-    result = controller.run(mesh, "bottle", root, resume=True)
+    result = controller.run(mesh, "bottle", root, resume=True, max_calls=1)
     assert result.name == "export-2"
     assert sha256(root / "work/export-1/canonical.glb") == saved
     assert len(policy.requests) == len(renders) == 1
@@ -262,8 +264,8 @@ def test_resume_rejects_changed_inputs_or_completed_artifacts(
     policy = FixturePolicy([reply()])
     controller = Controller(policy, GeometryTools("fixture"))
     root = tmp_path / "job"
-    controller.run(mesh, "bottle", root)
-    budget = 4
+    controller.run(mesh, "bottle", root, max_calls=1)
+    budget = 1
     if change == "mesh":
         trimesh.creation.box(extents=[2, 3, 4]).export(mesh)
     elif change == "budget":
@@ -407,11 +409,11 @@ def test_response_saved_before_interruption_is_validated_without_another_call(
 
     monkeypatch.setattr(controller, "_validate_reply", interrupted)
     with pytest.raises(RuntimeError, match="Interrupted"):
-        controller.run(mesh, "bottle", root)
+        controller.run(mesh, "bottle", root, max_calls=1)
     assert read_json(root / "calls/up-1.json")["status"] == "responded"
     monkeypatch.setattr(controller, "_validate_reply", original)
-    result = controller.run(mesh, "bottle", root, resume=True)
-    assert read_json(result / "canonicalization.json")["scope"] == "up_only"
+    result = controller.run(mesh, "bottle", root, resume=True, max_calls=1)
+    assert read_json(result / "canonicalization.json")["scope"] == "up_only_front_pending"
     assert len(policy.requests) == len(renders) == 1
 
 
@@ -425,9 +427,9 @@ def test_two_failed_calls_exhaust_stage_budget_across_restarts(
     root = tmp_path / "job"
     for resume in (False, True):
         with pytest.raises(TimeoutError):
-            controller.run(mesh, "bottle", root, resume=resume)
+            controller.run(mesh, "bottle", root, resume=resume, max_calls=2)
     with pytest.raises(RuntimeError, match="budget exhausted"):
-        controller.run(mesh, "bottle", root, resume=True)
+        controller.run(mesh, "bottle", root, resume=True, max_calls=2)
     assert len(policy.requests) == 2
     assert len(renders) == 1
     assert not list(root.rglob("canonical.glb"))
@@ -458,8 +460,30 @@ def test_verified_photo_is_snapshotted_sent_and_cited(
         [reply(supporting_image_ids=["photo-1"], mesh_correspondence="Fixture part matching")]
     )
     root = tmp_path / "job"
-    result = Controller(policy, GeometryTools("fixture")).run(mesh, "bottle", root, photos)
+    result = Controller(policy, GeometryTools("fixture")).run(
+        mesh, "bottle", root, photos, max_calls=1
+    )
     assert "Supplement photo-1" in [label for label, _ in policy.requests[0].images]
     report = read_json(result / "canonicalization.json")
     assert report["decisions"][0]["supporting_evidence"]["image_ids"] == ["photo-1"]
     assert sha256(root / "work/inputs-1/observations/photo.png") == sha256(image)
+
+
+def test_unseen_identity_can_keep_front_unspecified_without_category_rules(
+    mesh: Path, renders: list[Path], tmp_path: Path
+) -> None:
+    front = reply(None)
+    value = json.loads(front["raw_text"])
+    value["selection"].update(
+        decision="no_unique_front", visible_evidence="Multiple equally supported directions"
+    )
+    front["raw_text"] = json.dumps(value)
+    policy = FixturePolicy([reply(), front])
+    result = Controller(policy, GeometryTools("fixture")).run(
+        mesh, "unseen-functional-object", tmp_path / "job"
+    )
+    report = read_json(result / "canonicalization.json")
+    assert report["scope"] == "up_only"
+    assert report["model_calls"] == 2
+    assert report["yaw"] == "unspecified"
+    assert len(renders) == 2

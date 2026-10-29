@@ -150,6 +150,14 @@ def main() -> None:
         "exposure": -1.0,
         "camera_convention": "Blender/OpenGL camera-to-world: right, up, backward",
         "mesh_to_blender": [[1, 0, 0], [0, 0, -1], [0, 1, 0]],
+        "appearance_rendering": {
+            "mode": "imported_materials_no_override",
+            "mesh_color_attributes": sum(len(o.data.color_attributes) for o in meshes),
+            "material_slots": sum(len(o.data.materials) for o in meshes),
+            "image_textures": sum(
+                image.source == "FILE" or image.packed_file is not None for image in bpy.data.images
+            ),
+        },
         "resolution": args.resolution,
         "preset": args.preset,
         "center_glb": center_glb,

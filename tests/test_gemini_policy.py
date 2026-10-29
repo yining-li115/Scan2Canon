@@ -151,8 +151,32 @@ def test_gemini_fails_closed_without_retries(
         GeminiPolicy("gemini-test", "test-secret").select(request_images)
     assert "test-secret" not in str(error.value)
     if failure == "quota":
+        from experiments.canonicalization.model_policy import PolicyRateLimited
+
+        assert isinstance(error.value, PolicyRateLimited)
         assert "429" in str(error.value)
     assert len(calls) == 1
+
+
+def test_agent_model_pool_and_explicit_pin(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    from experiments.canonicalization.runtime import build_agent_controller
+
+    monkeypatch.setenv("GEMINI_API_KEY", "test-secret")
+    monkeypatch.setenv("GEMINI_MODEL", "gemini-3.8-flash")
+    monkeypatch.delenv("GEMINI_MODELS_FILE", raising=False)
+    controller = build_agent_controller("gemini", "blender")
+    assert [p.identity["model"] for p in controller.policies] == [
+        "gemini-3.8-flash",
+        "gemini-3.6-flash",
+        "gemini-3.5-flash-lite",
+    ]
+    assert "test-secret" not in json.dumps(controller.policy_identity)
+    pool = tmp_path / "models.json"
+    pool.write_text(json.dumps({"models": ["gemini-3.8-flash", "gemini-3.8-flash"]}))
+    monkeypatch.setenv("GEMINI_MODELS_FILE", str(pool))
+    with pytest.raises(ValueError, match="distinct"):
+        build_agent_controller("gemini", "blender")
+    assert len(build_agent_controller("gemini", "blender", model="gemini-3.6-flash").policies) == 1
 
 
 def test_gemini_runtime_reads_its_own_key_and_model_override(
@@ -189,3 +213,46 @@ def test_gemini_cli_missing_key_stops_before_creating_job(
     assert error.value.code == 1
     assert "GEMINI_API_KEY" in capsys.readouterr().err
     assert not output.exists()
+
+
+def test_schema_rejection_is_classified_without_leaking_provider_text(
+    request_images: PolicyRequest,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from experiments.canonicalization.trace import failure_kind
+
+    calls = []
+
+    def send(request: urllib.request.Request, timeout: float) -> io.BytesIO:
+        calls.append(request)
+        raise urllib.error.HTTPError(
+            request.full_url,
+            400,
+            "test-secret",
+            Message(),
+            io.BytesIO(b'{"error":{"message":"Schema produces too many states; test-secret"}}'),
+        )
+
+    monkeypatch.setattr("urllib.request.urlopen", send)
+    with pytest.raises(RuntimeError, match="schema complexity") as error:
+        GeminiPolicy("gemini-test", "test-secret").select(request_images)
+    assert failure_kind(error.value) == "http_400"
+    assert "test-secret" not in str(error.value)
+    assert len(calls) == 1
+
+
+def test_transport_schema_simplifies_grammar_without_mutating_local_contract() -> None:
+    from experiments.canonicalization.agent_contracts import AgentTurn
+    from experiments.canonicalization.gemini_policy import transport_schema
+    from tests.test_canonicalization_agent import turn
+
+    contract = AgentTurn.model_json_schema()
+    adapted = transport_schema(contract)
+    assert contract["$defs"]["ImagePoint"]["properties"]["x"]["maximum"] == 1
+    assert "maximum" not in adapted["$defs"]["ImagePoint"]["properties"]["x"]
+    assert "maxItems" not in adapted["$defs"]["DirectionAssessment"]["properties"]["measurements"]
+    assert adapted["required"] == contract["required"]
+    invalid = turn()
+    invalid["directions"]["measurements"][0]["tail"]["x"] = 1.1
+    with pytest.raises(ValueError):
+        AgentTurn.model_validate(invalid)

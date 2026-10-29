@@ -12,14 +12,19 @@ For automatic decision generation and resumable execution, use the
 below and records `automated_model_policy` plus the actual backend/model in its
 run provenance. Interactive, cloud and local-model results remain separate policies.
 
+For one model choosing its own bounded evidence actions, see the
+[evidence agent worker](canonicalization-evidence-agent.md). That route also
+supports appending verified captures to a pending task; the older interactive
+procedure below uses separate diagnostic runs.
+
 ## Flow
 
 1. Preserve the source mesh and render a verified input bundle.
 2. Optionally collect OA V2 proposals. View consensus is diagnostic, not proof.
 3. Generate upright alternatives from surface PCA and convex-hull support planes.
 4. Select an upright alternative from visual part evidence, or describe the
-   missing evidence. Keep category conventions separate from instance geometry.
-5. For a category with a reference front, generate four horizontal PCA direction
+   missing evidence. Do not infer a direction from a category label alone.
+5. To investigate a possible front, generate four horizontal PCA direction
    candidates and select the view facing that direction. If yaw is unspecified,
    skip this stage. An unresolved front does not invalidate a useful up-only output.
 6. Validate the decision and export. Check SO(3), unchanged vertex/face counts,
@@ -46,15 +51,16 @@ This direct GLB path does not require OA inference or a separate input render pa
 The Python preparation tool also accepts an existing verified render bundle.
 
 Inspect `run/up/poses/contact-sheet.jpg` and, when needed, its original PNGs.
-Use `experiments/canonicalization/conventions.json` as the semantic definition.
+Infer instance direction hypotheses from the available evidence; no category table is loaded.
+Decision schema v2 removes the former rules hash. Historical v1 decisions are not
+accepted by this workflow; keep their saved artifacts rather than silently reinterpreting them.
 Save a decision JSON conforming to `workflow.Decision`:
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "actor": "interactive_visual_agent",
   "case_sha256": "<SHA-256 of upright.json or front.json>",
-  "rules_sha256": "<SHA-256 of conventions.json>",
   "model_calls": 1,
   "selection": {
     "decision": "selected",

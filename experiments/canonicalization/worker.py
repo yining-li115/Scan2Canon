@@ -11,7 +11,9 @@ def main() -> None:
     parser.add_argument("mesh", type=Path)
     parser.add_argument("category")
     parser.add_argument("output", type=Path)
-    parser.add_argument("--backend", choices=("gemini", "responses", "local"), required=True)
+    parser.add_argument(
+        "--backend", choices=("gemini", "claude", "responses", "local"), required=True
+    )
     parser.add_argument("--model", help="Model ID; Gemini falls back to GEMINI_MODEL")
     parser.add_argument("--weights", type=Path)
     parser.add_argument("--observations", type=Path)

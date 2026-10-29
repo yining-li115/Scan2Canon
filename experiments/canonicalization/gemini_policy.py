@@ -1,6 +1,7 @@
 """Bounded Gemini image selection through the native generateContent endpoint."""
 
 import base64
+import copy
 import io
 import json
 import re
@@ -12,7 +13,28 @@ from typing import Any
 from PIL import Image
 
 from experiments.artifacts import sha256
-from experiments.canonicalization.model_policy import PolicyReply, PolicyRequest
+from experiments.canonicalization.model_policy import PolicyRateLimited, PolicyReply, PolicyRequest
+
+
+def transport_schema(schema: dict[str, Any]) -> dict[str, Any]:
+    """Keep the JSON shape, enforcing numeric/array bounds locally instead of in grammar."""
+    bounds = {"minimum", "maximum", "exclusiveMinimum", "exclusiveMaximum", "minItems", "maxItems"}
+
+    def visit(value: Any) -> Any:
+        if isinstance(value, list):
+            return [visit(item) for item in value]
+        if not isinstance(value, dict):
+            return value
+        return {
+            key: {name: visit(child) for name, child in item.items()}
+            if key in ("properties", "$defs")
+            else visit(item)
+            for key, item in value.items()
+            if key not in bounds
+        }
+
+    result: dict[str, Any] = visit(schema)
+    return result
 
 
 class GeminiPolicy:
@@ -54,7 +76,9 @@ class GeminiPolicy:
                     },
                 ]
             )
-        schema = PolicyReply.model_json_schema()
+        schema = transport_schema(
+            copy.deepcopy(request.response_schema or PolicyReply.model_json_schema())
+        )
         schema["required"] = list(schema["properties"])
         for field in schema["properties"].values():
             field.pop("default", None)
@@ -80,8 +104,19 @@ class GeminiPolicy:
             with urllib.request.urlopen(http, timeout=self.timeout) as response:
                 data = response.read(2_000_001)
         except urllib.error.HTTPError as error:
+            if error.code == 400:
+                # Classify known schema failures without persisting arbitrary provider text,
+                # request bodies, URLs or credentials. Unknown 400s remain HTTP errors.
+                detail = error.read(65_536).lower()
+                if b"schema" in detail and any(
+                    marker in detail
+                    for marker in (b"too many states", b"too complex", b"branching")
+                ):
+                    raise RuntimeError(
+                        "Gemini schema complexity rejected (HTTP 400); no retry dispatched"
+                    ) from None
             if error.code == 429:
-                raise RuntimeError(
+                raise PolicyRateLimited(
                     "Gemini quota/rate limit reached (HTTP 429); no retry dispatched"
                 ) from None
             raise RuntimeError(

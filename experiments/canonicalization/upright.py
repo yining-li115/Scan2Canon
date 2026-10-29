@@ -43,8 +43,8 @@ def candidates(mesh: Any) -> list[dict[str, Any]]:
 
 
 def prepare(views: Path, category: str, output: Path, blender: str) -> Path:
-    if category not in read_json(Path(__file__).with_name("conventions.json"))["categories"]:
-        raise ValueError("Unsupported category; establish its convention before selecting axes")
+    if not category.strip():
+        raise ValueError("Provide a nonempty identity hypothesis")
     if views.is_file() and views.suffix.lower() == ".glb":
         mesh_path = views.resolve()
         mesh_hash = sha256(mesh_path)

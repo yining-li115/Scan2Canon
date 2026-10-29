@@ -8,8 +8,10 @@ The model estimates orientation; it does not generate or repair geometry.
 
 This is a Scan2Canon integration and consensus baseline, not a reproduction of the
 complete CanoVerse or CANIS methods. It remains independent of the production worker.
-LLM/VLM review, category-specific convention retrieval, and requests for additional
-user evidence are not implemented by this experiment.
+This inference adapter does not perform semantic review. The separate
+[open semantic worker](open-canonicalization.md) consumes its results for cloud
+visual assessment and bounded evidence requests. Shared category-convention
+retrieval remains future work.
 
 The [first GPU run](experiments/2026-10-26-orientation.md) completed on an A100 40GB.
 It produced reviewable meshes but conflicting orientation/symmetry predictions;
@@ -41,6 +43,11 @@ this experiment.
 
 For the current hole punch, use the existing `video-5573-orientation-02` bundle.
 The earlier `-01` render was overexposed and is retained only for diagnostics.
+
+For appearance-aware runs, use `--require-appearance` during rendering and OA
+inference. See the [appearance guide](appearance-canonicalization.md) for original
+photo admission, appearance checks and complete commands. Existing gray-mesh runs
+remain geometry-only controls.
 
 ## GPU installation and inference
 

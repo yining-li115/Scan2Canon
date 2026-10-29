@@ -9,6 +9,7 @@ from typing import Any
 
 from PIL import Image, ImageDraw
 
+from experiments.appearance import describe, require_color
 from experiments.artifacts import read_json, sha256, write_json
 
 
@@ -34,6 +35,7 @@ def render(
     preset: str = "sphere",
     poses: list[Any] | None = None,
     pose_camera: tuple[float, float, float] = (1, -2, 1),
+    require_appearance: bool = False,
 ) -> Path:
     mesh, output = mesh.resolve(), output.resolve()
     if not mesh.is_file() or mesh.suffix.lower() != ".glb" or not 3 <= views <= 64:
@@ -46,9 +48,12 @@ def render(
         if not 3 <= len(poses) <= 24:
             raise ValueError("Expected 3–24 candidate poses")
         poses = [rotation(p).tolist() for p in poses]
+    appearance = describe(mesh)
+    if require_appearance:
+        require_color(appearance)
     output.mkdir(parents=True, exist_ok=False)
     started = time.perf_counter()
-    report: dict[str, Any] = {"schema_version": 1, "status": "running"}
+    report: dict[str, Any] = {"schema_version": 1, "status": "running", "appearance": appearance}
     write_json(output / "manifest.json", report)
     try:
         shutil.copyfile(mesh, output / "source.glb")
@@ -110,8 +115,18 @@ def main() -> None:
     parser.add_argument(
         "--preset", choices=("sphere", "canonical", "ring", "axes"), default="sphere"
     )
+    parser.add_argument("--require-appearance", action="store_true")
     args = parser.parse_args()
-    print(render(args.mesh, args.output, args.blender, args.views, args.preset))
+    print(
+        render(
+            args.mesh,
+            args.output,
+            args.blender,
+            args.views,
+            args.preset,
+            require_appearance=args.require_appearance,
+        )
+    )
 
 
 if __name__ == "__main__":

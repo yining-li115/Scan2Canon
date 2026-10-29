@@ -1,9 +1,13 @@
 # Resumable canonicalization worker
 
+This is the geometry-only staged baseline. For OA V2 direction proposals and
+identity inference without a category input, use the
+[open semantic worker](open-canonicalization.md).
+
 The standalone worker takes an existing GLB and an explicit category hypothesis,
 then runs geometry generation, visual candidate selection and validated rigid
 export. It replaces manual decision-file authoring with a model policy. It does
-not reconstruct the object, infer an unknown category convention, approve dataset
+not reconstruct the object, establish a category standard, approve dataset
 admission, or connect the experiment to the capture HTTP API.
 
 ## Run with a cloud visual model
@@ -67,8 +71,8 @@ replacement for the cloud policy in this worker.
    `needs_evidence`. Candidate IDs are the only executable pose choice.
 4. If uncertain and budget remains, render opposite views of the same candidates
    and ask once more. Additional views do not create new geometry or repair a scan.
-5. Once up is selected, generate and select front candidates only when the
-   category convention defines a front. Apply the same bounded evidence loop.
+5. Once up is selected and budget remains, investigate front with the same bounded
+   evidence loop. The model can return `no_unique_front`; no label predefines yaw.
 6. Validate hashes, candidate membership, rotations and up/front consistency.
    Export a rigid proposal and verify its inverse transformation and topology.
 
@@ -76,17 +80,17 @@ There are at most two selection calls per axis and four per job. `--max-calls N`
 can lower the total to 1–4. Calls are journaled **before dispatch**, so timeouts
 and process interruptions consume budget. Each geometry/export stage has at most
 two attempts across restarts. The policy cannot invoke arbitrary tools, change
-budgets or conventions, supply a rotation matrix, or grant dataset approval.
+budgets, supply a rotation matrix, or grant dataset approval.
 
-The current reviewed category definitions are `bottle`, `bowl`, `can`, `camera`,
-`laptop` and `mug`. Bottle, bowl and can leave yaw unspecified. A plausible stable
+Any nonempty identity hypothesis is accepted; there is no category direction table.
+The hypothesis is not a direction definition. A plausible stable
 support is evidence for an up candidate, not proof of semantic uprightness; the
 support calculation uses a uniform-density convex-hull approximation.
 
 | Result scope | Export | Worker state |
 | --- | --- | --- |
 | `full_frame` | Up and front proposal | `succeeded` |
-| `up_only` | Up proposal; convention leaves yaw unspecified | `succeeded` |
+| `up_only` | Up proposal; model reports no unique front | `succeeded` |
 | `up_only_front_pending` | Up proposal; front remains unresolved | `needs_evidence` |
 | `unresolved` | No canonical mesh | `needs_evidence` |
 
@@ -101,11 +105,11 @@ The CLI prints the path of the completed `canonicalization.json`. Read
 `state.json` for the result directory rather than assuming an attempt number.
 
 ```text
-request.json              Input hashes, policy settings, code/convention/dependency versions
+request.json              Input hashes, policy settings, code/dependency versions
 state.json                Stage checkpoints, attempts, result scope and missing evidence
 calls/up-1.json            Prompt, image hashes, counted dispatch, raw reply and usage
 calls/front-1.json         Separate front decision request, when needed
-decisions/                Strict decisions bound to candidate and convention hashes
+decisions/                Strict decisions bound to candidate hashes (decision schema v2)
 work/inputs-1/            Original mesh and verified photo snapshot
 work/up-1/                Candidate poses, renders and Blender version
 work/up-extra-1/          Optional opposite-view evidence
@@ -127,7 +131,7 @@ remain failures rather than triggering unlimited repair requests.
 
 Keep the original input file, observation manifest, policy, budget, code and
 locked environment unchanged for resume. Modified completed artifacts are
-rejected. When adding evidence, changing the convention/model/code, or starting
+rejected. When adding evidence, changing the model/code, or starting
 another experiment after an exhausted budget, use a new output directory and
 retain the previous run. Repeated fresh runs are separate experiments, not
 free retries or independent evidence of accuracy. Model services can still be

@@ -11,11 +11,44 @@ runs pinned Orient Anything V2 inference, and exports ranked pose candidates wit
 explicit coordinate transforms and disagreement records. Candidates require review;
 successful export does not establish a category's semantic front or reconstruction accuracy.
 
+The [open semantic worker](docs/open-canonicalization.md) combines saved OA V2
+predictions with cloud visual reasoning over appearance, function and parts. It
+accepts objects without a fixed category label, preserves ambiguous axes, and
+exports reversible proposals. This route has implementation tests; open-world
+accuracy and cross-instance convention consistency are not yet established.
+
+The [evidence agent](docs/canonicalization-evidence-agent.md) adds a bounded
+model-selected tool loop: inspect original photos, crop details, request a new
+candidate camera, refine up from support evidence, or pause for a user capture.
+The current agent has no fixed category direction table or convention lookup action;
+instance front meanings and cross-instance consistency remain empirical questions.
+The [table-free trial](docs/experiments/2026-10-27-no-conventions.md) records three
+fresh real-object runs: all returned upright-only proposals, leaving front unresolved.
+The current agent separates competing direction meanings, missing observations
+and unverified symmetry hypotheses. Exported axes must pass a camera-based 2D
+part-direction check; the model's landmark locations and semantics remain unverified.
+The [appearance-aware path](docs/appearance-canonicalization.md) preserves mesh colors/textures,
+checks exports for appearance loss, and supplies original photos from the first turn.
+Gray inputs require an explicit geometry-only baseline flag.
+Verified new captures can resume the same task without resetting its call budget.
+It remains an experiment; automatic decision quality still needs evaluation.
+
 The [semantic front comparison](docs/semantic-orientation.md) adds isolated PointSO
 direction prediction and rule-grounded Qwen candidate selection, with shared inputs,
 raw evidence, abstentions, and separate accuracy/equivariance evaluation.
 See the [first comparison results](docs/experiments/2026-10-26-semantic-orientation.md)
 for the two-object diagnostic; it does not establish open-world accuracy.
+
+The [local object library](docs/object-library.md) stores completed evidence-agent
+results as immutable, evidence-linked proposals. It supports instance queries and
+explicit cross-instance match proposals, with transactional SQLite storage. It does
+not yet perform automatic classification, vector retrieval or knowledge admission.
+The shared-service target is PostgreSQL with optional pgvector when retrieval is added.
+
+The [shared-frame experiment](docs/shared-frames.md) compares two explicitly selected
+instances, stores a model-proposed direction definition, and applies it through
+the existing evidence gates. This uses saved meshes/OA predictions and a cloud
+visual model; it does not yet establish reusable category standards.
 
 The [37-object pilot](docs/datasets/mini-v1.md) fixes 12 NOCS, 20 OO3D-9D, and
 5 user-captured instances, with separate development, holdout, and diagnostic
