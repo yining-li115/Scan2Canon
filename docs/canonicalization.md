@@ -6,6 +6,11 @@ It renders known-camera images, estimates each view independently, maps orientat
 predictions back to the original mesh frame, and exports ranked rigid-pose candidates.
 The model estimates orientation; it does not generate or repair geometry.
 
+The optional [distribution-fusion experiment](experiments/2026-10-29-distribution-fusion.md)
+scores rotations against all three saved OA angle marginals and hands competing
+proposals to the evidence agent. It is a CPU development route; decoded consensus
+remains the default and neither method certifies semantic correctness.
+
 This is a Scan2Canon integration and consensus baseline, not a reproduction of the
 complete CanoVerse or CANIS methods. It remains independent of the production worker.
 This inference adapter does not perform semantic review. The separate

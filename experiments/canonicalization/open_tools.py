@@ -37,8 +37,11 @@ def photographs(directory: Path | None, mesh_sha256: str) -> list[tuple[str, Pat
 
 
 class OpenGeometryTools:
-    def __init__(self, blender: str) -> None:
+    def __init__(self, blender: str, proposal_method: str = "decoded") -> None:
+        if proposal_method not in ("decoded", "distribution"):
+            raise ValueError("Choose decoded or distribution proposals")
         self.blender = blender
+        self.proposal_method = proposal_method
 
     def snapshot(
         self, views: Path, predictions: Path, observations: Path | None, output: Path
@@ -72,10 +75,17 @@ class OpenGeometryTools:
         return output
 
     def prepare(self, snapshot: Path, output: Path) -> Path:
-        report = proposals(snapshot / "views", snapshot / "oa")
+        if self.proposal_method == "distribution":
+            from experiments.canonicalization.distribution_proposals import proposals as fused
+
+            report = fused(snapshot / "views", snapshot / "oa")
+        else:
+            report = proposals(snapshot / "views", snapshot / "oa")
         report["appearance"] = read_json(snapshot / "appearance.json")
         output.mkdir()
         write_json(output / "candidates.json", report)
+        if len(report["candidates"]) < 3:
+            raise ValueError("Insufficient distinct proposals for the bounded comparison tools")
         return self.render_candidates(snapshot, output, report)
 
     def render_candidates(self, snapshot: Path, output: Path, report: dict[str, Any]) -> Path:

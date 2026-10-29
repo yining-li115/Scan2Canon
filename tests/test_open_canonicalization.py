@@ -384,3 +384,33 @@ def test_textured_mesh_retains_uv_and_embedded_image(
     np.testing.assert_array_equal(
         original.material.baseColorTexture, exported.material.baseColorTexture
     )
+
+
+def test_proposal_method_cannot_change_on_resume(
+    bundles: tuple[Path, Path],
+    rendering: list[Path],
+    tmp_path: Path,
+) -> None:
+    policy = FixturePolicy([identity(status="uncertain", missing_evidence="Show the controls")])
+    root = tmp_path / "job"
+    OpenController(policy, OpenGeometryTools("fixture")).run(*bundles, root)
+    with pytest.raises(ValueError, match="Resume inputs"):
+        OpenController(policy, OpenGeometryTools("fixture", "distribution")).run(
+            *bundles, root, resume=True
+        )
+    assert len(policy.requests) == 1
+
+
+def test_flat_distributions_stop_before_render_or_model_call(
+    bundles: tuple[Path, Path],
+    rendering: list[Path],
+    tmp_path: Path,
+) -> None:
+    tools = OpenGeometryTools("fixture", "distribution")
+    snapshot = tools.snapshot(*bundles, None, tmp_path / "snapshot")
+    with pytest.raises(ValueError, match="Insufficient distinct"):
+        tools.prepare(snapshot, tmp_path / "candidates")
+    report = read_json(tmp_path / "candidates/candidates.json")
+    assert report["reason"] == "all_marginals_flat"
+    assert report["candidates"] == []
+    assert not rendering

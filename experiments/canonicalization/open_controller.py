@@ -162,6 +162,7 @@ class OpenController:
                 "oa_config": sha256(CONFIG_PATH),
                 "oa_bundle_validation": sha256(CONFIG_PATH.with_name("common.py")),
                 "blender": self.tools.blender,
+                "proposal_method": self.tools.proposal_method,
             }
             request_file = output / "request.json"
             if request_file.exists() and read_json(request_file) != expected:

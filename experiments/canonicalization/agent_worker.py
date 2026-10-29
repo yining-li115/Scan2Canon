@@ -19,6 +19,7 @@ def main() -> None:
     parser.add_argument("--blender", default="blender")
     parser.add_argument("--max-calls", choices=(2, 3, 4), type=int, default=4)
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--proposal-method", choices=("decoded", "distribution"), default="decoded")
     parser.add_argument(
         "--allow-shape-only",
         action="store_true",
@@ -27,7 +28,11 @@ def main() -> None:
     args = parser.parse_args()
     try:
         controller = build_agent_controller(
-            args.backend, args.blender, args.model, allow_shape_only=args.allow_shape_only
+            args.backend,
+            args.blender,
+            args.model,
+            allow_shape_only=args.allow_shape_only,
+            proposal_method=args.proposal_method,
         )
         if args.additional_observations:
             if not args.resume:

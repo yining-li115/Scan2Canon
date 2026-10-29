@@ -57,7 +57,12 @@ def build_open_controller(backend: str, blender: str, model: str | None = None) 
 
 
 def build_agent_controller(
-    backend: str, blender: str, model: str | None = None, *, allow_shape_only: bool = False
+    backend: str,
+    blender: str,
+    model: str | None = None,
+    *,
+    allow_shape_only: bool = False,
+    proposal_method: str = "decoded",
 ) -> AgentController:
     if backend not in ("gemini", "claude", "responses"):
         raise ValueError("Evidence agent requires a cloud policy with structured visual outputs")
@@ -84,7 +89,7 @@ def build_agent_controller(
         fallbacks = tuple(build_policy(backend, name) for name in models if name != model)
     return AgentController(
         build_policy(backend, model),
-        OpenGeometryTools(blender),
+        OpenGeometryTools(blender, proposal_method),
         allow_shape_only=allow_shape_only,
         fallback_policies=fallbacks,
     )

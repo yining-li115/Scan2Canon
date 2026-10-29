@@ -10,6 +10,13 @@ comparison. Both routes reuse verified OA predictions, appearance-preserving
 rendering, model transports, call journaling, input snapshots and rigid export.
 Neither is wired into the capture HTTP API or iOS app yet.
 
+An optional `--proposal-method distribution` route fuses the saved OA angle
+marginals across registered cameras before this same agent loop. It runs on CPU,
+retains multiple proposals and does not bypass any semantic checks. The default
+remains `decoded`; switching requires a fresh job. See the
+[fusion experiment](experiments/2026-10-29-distribution-fusion.md) for its mixed
+split-view results and the two actual up-only agent outcomes.
+
 The [appearance-aware path](appearance-canonicalization.md) now rejects missing
 mesh appearance by default and supplies original photos on the first turn. Use
 `--allow-shape-only` explicitly for the older gray-mesh baseline.

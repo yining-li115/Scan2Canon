@@ -26,6 +26,7 @@ def versions() -> dict[str, str]:
         *Path(__file__).parent.glob("*.py"),
         root / "appearance.py",
         root / "orientation/geometry.py",
+        root / "orientation/distribution.py",
         root / "orientation/support.py",
         root / "orientation/render.py",
         root / "orientation/blender_render.py",
