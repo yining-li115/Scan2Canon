@@ -172,6 +172,9 @@ or conflicting prediction must never be converted into automatic dataset approva
 The [fresh GPU pipeline trial](experiments/2026-10-29-fresh-gpu-pipeline.md)
 records two new SAM 3D reconstructions, per-image official OA parity, the pure-OA
 baseline and actual evidence-agent outcomes with XYZ visualizations.
+The subsequent [input-condition diagnostic](experiments/2026-10-29-oa-input-diagnostic.md)
+compares real photos, cropped photos and calibrated render viewpoints without
+turning unregistered photos into mesh poses.
 
 ```bash
 uv sync --locked --extra canonical

@@ -17,11 +17,23 @@ from experiments.orientation.download import verify_checkpoint
 def predict(
     views: Path, source: Path, checkpoint: Path, output: Path, verify_official: bool = False
 ) -> dict[str, Any]:
+    manifest = verify_views(views)
+    images = [(view["id"], views / view["image"]) for view in manifest["views"]]
+    return predict_images(images, source, checkpoint, output, verify_official)
+
+
+def predict_images(
+    images: list[tuple[int, Path]],
+    source: Path,
+    checkpoint: Path,
+    output: Path,
+    verify_official: bool = False,
+) -> dict[str, Any]:
+    """Shared forward pass; callers validate their distinct image/mesh contracts."""
     import numpy as np
     import torch
     from PIL import Image
 
-    manifest = verify_views(views)
     if not torch.cuda.is_available():
         raise RuntimeError("The upstream OA V2 forward pass requires CUDA")
     sys.path.insert(0, str(source))
@@ -41,8 +53,8 @@ def predict(
     predictions = []
     started = time.perf_counter()
     with torch.inference_mode():
-        for view in manifest["views"]:
-            with Image.open(views / view["image"]) as image:
+        for image_id, image_path in images:
+            with Image.open(image_path) as image:
                 rgba = image.convert("RGBA")
                 inputs = helpers.preprocess_images([rgba], mode="pad")
             inputs = inputs.unsqueeze(0).to("cuda")
@@ -65,13 +77,13 @@ def predict(
             logits = captured[0]
             if logits.shape != (900,) or not np.isfinite(logits).all():
                 raise ValueError("OA returned invalid orientation logits")
-            raw_outputs[f"view_{view['id']:02d}"] = logits
+            raw_outputs[f"view_{image_id:02d}"] = logits
             angles = [float(answer[f"ref_{name}_pred"]) for name in ("az", "el", "ro")]
             alpha = int(answer["ref_alpha_pred"])
             if not np.isfinite(angles).all() or alpha not in (0, 1, 2, 4):
                 raise ValueError("OA returned invalid angles or symmetry fit")
-            predictions.append({"id": view["id"], "angles_degrees": angles, "symmetry_fit": alpha})
-            print(f"View {view['id']:02d}: angles={angles}, symmetry_fit={alpha}", flush=True)
+            predictions.append({"id": image_id, "angles_degrees": angles, "symmetry_fit": alpha})
+            print(f"Image {image_id:02d}: angles={angles}, symmetry_fit={alpha}", flush=True)
             write_json(output / "partial-predictions.json", {"predictions": predictions})
     torch.cuda.synchronize()
     np.savez_compressed(output / "logits.npz", **raw_outputs)
