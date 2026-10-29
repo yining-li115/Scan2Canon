@@ -169,6 +169,10 @@ or conflicting prediction must never be converted into automatic dataset approva
 
 ## Validation
 
+The [fresh GPU pipeline trial](experiments/2026-10-29-fresh-gpu-pipeline.md)
+records two new SAM 3D reconstructions, per-image official OA parity, the pure-OA
+baseline and actual evidence-agent outcomes with XYZ visualizations.
+
 ```bash
 uv sync --locked --extra canonical
 uv run --locked --extra canonical pytest
