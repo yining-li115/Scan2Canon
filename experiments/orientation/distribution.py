@@ -1,5 +1,6 @@
 """CPU-only pose search over OA marginals; scores are not correctness probabilities."""
 
+from hashlib import sha256
 from typing import Any
 
 import numpy as np
@@ -15,7 +16,8 @@ from experiments.orientation.geometry import (
 )
 
 SETTINGS: dict[str, Any] = {
-    "version": "oa-marginal-fusion-v1",
+    "version": "oa-marginal-fusion-v2",
+    "input_order": "sha256-float64-logits-then-camera",
     "random_seed": 20261029,
     "global_samples": 4096,
     "refinement_seeds": 18,
@@ -102,6 +104,19 @@ def fuse(cameras: Matrix, logits: Matrix) -> dict[str, Any]:
     from scipy.spatial.transform import Rotation  # type: ignore[import-untyped]
 
     evidence = MarginalEvidence(cameras, logits)
+    # A finite multistart search must not change when a caller reorders identical
+    # evidence. Choose the seed-camera basis by content, without semantic labels.
+    # Camera bytes break ties for identical logits; identical rows remain equivalent.
+    order = sorted(
+        range(len(cameras)),
+        key=lambda i: (
+            sha256(np.asarray(logits[i], dtype="<f8").tobytes()).digest(),
+            np.asarray(evidence.cameras[i], dtype="<f8").tobytes(),
+        ),
+    )
+    cameras, logits = evidence.cameras[order], logits[order]
+    evidence = MarginalEvidence(cameras, logits)
+    input_order = np.argsort(order)
     report: dict[str, Any] = {
         "settings": SETTINGS.copy(),
         "decision": "needs_evidence",
@@ -121,7 +136,7 @@ def fuse(cameras: Matrix, logits: Matrix) -> dict[str, Any]:
         )
     )
     bases = [mesh_to_oa(a.tolist(), c) for a, c in zip(angles, cameras, strict=True)]
-    # Use the first camera frame rather than a preferred input-world upright axis.
+    # Use the content-ordered camera frame rather than a preferred world up axis.
     random = Rotation.random(SETTINGS["global_samples"], random_state=SETTINGS["random_seed"])
     pool = np.concatenate(
         (
@@ -186,7 +201,9 @@ def fuse(cameras: Matrix, logits: Matrix) -> dict[str, Any]:
                 "mesh_to_oa": refined_array[i].tolist(),
                 "score": float(final_scores[i]),
                 "gap_from_best": float(final_scores[selected[0]] - final_scores[i]),
-                "per_view_scores": evidence.per_view(refined_array[i : i + 1])[0].tolist(),
+                "per_view_scores": evidence.per_view(refined_array[i : i + 1])[0][
+                    input_order
+                ].tolist(),
                 "optimization": diagnostics[i],
             }
             for rank, i in enumerate(selected)

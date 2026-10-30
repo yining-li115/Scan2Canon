@@ -17,6 +17,11 @@ remains `decoded`; switching requires a fresh job. See the
 [fusion experiment](experiments/2026-10-29-distribution-fusion.md) for its mixed
 split-view results and the two actual up-only agent outcomes.
 
+Fusion v2 makes search initialization independent of input-list order and retains
+per-view score correspondence. See the [top-1 stability trial](experiments/2026-10-30-top1-stability.md)
+for its measured differences and remaining limits. It does not change this agent's
+decision policy or add an automatic acceptance threshold; changed code needs a fresh job.
+
 The [appearance-aware path](appearance-canonicalization.md) now rejects missing
 mesh appearance by default and supplies original photos on the first turn. Use
 `--allow-shape-only` explicitly for the older gray-mesh baseline.

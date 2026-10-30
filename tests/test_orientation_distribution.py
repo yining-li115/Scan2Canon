@@ -79,6 +79,19 @@ def test_flat_evidence_abstains_and_corrupt_logits_fail() -> None:
         fuse(cameras, logits)
 
 
+def test_reordering_evidence_preserves_candidates_and_score_view_bindings() -> None:
+    _, cameras, logits = synthetic(two_fronts=True)
+    first = fuse(cameras, logits)
+    order = [2, 0, 1]
+    second = fuse(cameras[order], logits[order])
+    assert first["settings"]["version"] == "oa-marginal-fusion-v2"
+    assert len(first["candidates"]) == len(second["candidates"])
+    for a, b in zip(first["candidates"], second["candidates"], strict=True):
+        np.testing.assert_allclose(a["mesh_to_oa"], b["mesh_to_oa"], atol=1e-12)
+        assert a["score"] == pytest.approx(b["score"], abs=1e-12)
+        np.testing.assert_allclose(np.array(a["per_view_scores"])[order], b["per_view_scores"])
+
+
 def test_polar_scores_do_not_depend_on_arbitrary_euler_branch() -> None:
     from experiments.orientation.geometry import mesh_to_oa
 

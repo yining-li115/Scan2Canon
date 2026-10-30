@@ -15,6 +15,11 @@ The [OA-reference agent trial](experiments/2026-10-30-oa-reference-review.md) ad
 OA's learned frame explicitly while retaining the existing export checks. Its two
 mug results remain up-only; the revised agent has not established front consistency.
 
+The [top-1 stability diagnostic](experiments/2026-10-30-top1-stability.md) resamples
+registered views without model calls. It also records the v2 fusion repair for
+input-order-dependent search initialization. Its stability statistics do not
+calibrate an automatic semantic acceptance threshold.
+
 This is a Scan2Canon integration and consensus baseline, not a reproduction of the
 complete CanoVerse or CANIS methods. It remains independent of the production worker.
 This inference adapter does not perform semantic review. The separate
