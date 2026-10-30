@@ -5,7 +5,12 @@ from pathlib import Path
 from typing import Any
 
 from experiments.artifacts import read_json, sha256, write_json
-from experiments.canonicalization.agent_contracts import AGENT_PROMPT, AgentTurn, EvidenceAction
+from experiments.canonicalization.agent_contracts import (
+    AGENT_PROMPT,
+    ORIENTATION_REFERENCE,
+    AgentTurn,
+    EvidenceAction,
+)
 from experiments.canonicalization.agent_tools import (
     action_key,
     execute_evidence,
@@ -63,6 +68,7 @@ def agent_request(
     }
     context = {
         "remaining_calls_including_this_one": remaining,
+        "orientation_reference": ORIENTATION_REFERENCE,
         "available_photos": photo_ids,
         "visible_image_ids": labels,
         "mesh_appearance": candidates["appearance"],
@@ -78,7 +84,7 @@ def agent_request(
 
 
 class AgentController(OpenController):
-    route = "oa-evidence-agent-v3"
+    route = "oa-evidence-agent-v4"
     allowed_budgets = (2, 3, 4)
 
     def __init__(
@@ -439,6 +445,7 @@ class AgentController(OpenController):
             self._export(snapshot, root, state, reply.semantics, candidates, reply.choice, output)
             report = read_json(output / "canonicalization.json")
             report.update(
+                orientation_reference=ORIENTATION_REFERENCE,
                 direction_assessment=reply.directions.model_dump(),
                 direction_checks=read_json(root / "direction-checks" / f"agent-{turn}.json"),
                 stop_reason=reason,

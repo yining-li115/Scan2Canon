@@ -144,7 +144,7 @@ def test_agent_selects_two_distinct_crops_then_finishes(
     root = tmp_path / "job"
     result = controller.run(*bundles, root, max_calls=4)
     report = read_json(result / "canonicalization.json")
-    assert report["route"] == "oa-evidence-agent-v3" and report["scope"] == "full_frame"
+    assert report["route"] == "oa-evidence-agent-v4" and report["scope"] == "full_frame"
     assert [a["action"]["kind"] for a in report["action_history"]] == [
         "inspect_image",
         "inspect_image",
@@ -797,6 +797,28 @@ def test_schema_repair_is_bounded_and_preserves_invalid_reply(
     assert len(policy.requests) == 2
 
 
+@pytest.mark.parametrize("problem", ["missing_measurements", "identity_pose_conflict"])
+def test_repair_identifies_contract_conflict_without_relaxing_export(
+    bundles: tuple[Path, Path], rendering: list[Path], tmp_path: Path, problem: str
+) -> None:
+    invalid = turn()
+    if problem == "missing_measurements":
+        del invalid["directions"]["measurements"]
+        expected = "directions.measurements: missing"
+    else:
+        invalid["semantics"]["status"] = "uncertain"
+        invalid["semantics"]["missing_evidence"] = "Fixture uncertainty"
+        expected = "choice.scope exports a pose but semantics.status is uncertain"
+    policy = FixturePolicy([invalid, turn()])
+    result = AgentController(policy, OpenGeometryTools("fixture")).run(
+        *bundles, tmp_path / "job", max_calls=2
+    )
+    assert expected in policy.requests[1].prompt
+    report = read_json(result / "canonicalization.json")
+    assert report["agent_turns"] == 2
+    assert report["semantics"]["status"] == "resolved"
+
+
 def test_agent_has_no_category_menu_or_lookup_and_cannot_resume_old_route(
     bundles: tuple[Path, Path], rendering: list[Path], tmp_path: Path
 ) -> None:
@@ -820,3 +842,30 @@ def test_agent_has_no_category_menu_or_lookup_and_cannot_resume_old_route(
     with pytest.raises(ValueError, match="Resume inputs"):
         controller.run(*bundles, root, resume=True)
     assert len(policy.requests) == 1
+
+
+def test_oa_reference_is_sent_and_preserved_without_category_certification(
+    bundles: tuple[Path, Path],
+    rendering: list[Path],
+    tmp_path: Path,
+) -> None:
+    directions = direction_fixture(pose())
+    directions["hypotheses"][1]["role"] = "model_reference"
+    directions["hypotheses"].append(
+        {
+            **directions["hypotheses"][1],
+            "id": "display",
+            "role": "presentation",
+            "description": "A different task-facing direction, not a conflict in the adopted frame",
+        }
+    )
+    policy = FixturePolicy([turn(directions=directions)])
+    root = tmp_path / "oa-reference"
+    result = AgentController(policy, OpenGeometryTools("fixture")).run(*bundles, root)
+    record = read_json(result / "canonicalization.json")
+    assert record["scope"] == "full_frame"
+    assert record["orientation_reference"]["id"] == "oa-v2-learned-frame-v1"
+    assert record["orientation_reference"]["category_annotation_verified"] is False
+    assert '"orientation_reference"' in policy.requests[0].prompt
+    assert record["direction_assessment"]["hypotheses"][2]["id"] == "display"
+    assert record["direction_checks"]["semantic_correctness_verified"] is False

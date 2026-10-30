@@ -4,7 +4,7 @@ from pathlib import Path
 from time import perf_counter
 from typing import Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
 from experiments.artifacts import read_json, sha256, write_json
 from experiments.canonicalization.model_policy import (
@@ -15,6 +15,34 @@ from experiments.canonicalization.model_policy import (
 )
 from experiments.canonicalization.trace import event, failure_kind
 from experiments.orientation.common import checked_file
+
+
+def validation_feedback(error: ValueError, reply_type: type[BaseModel]) -> str:
+    """Return bounded schema diagnostics without copying model-supplied values or keys."""
+    message = "Response does not match the required JSON schema."
+    if not isinstance(error, ValidationError):
+        return message
+    schema = reply_type.model_json_schema()
+    models = [schema, *schema.get("$defs", {}).values()]
+    fields = {name for model in models for name in model.get("properties", {})}
+    details = []
+    for issue in error.errors(include_input=False, include_context=False, include_url=False)[:5]:
+        path = (
+            ".".join(
+                str(part) if isinstance(part, int) or part in fields else "<unknown field>"
+                for part in issue["loc"]
+            )
+            or "<response>"
+        )
+        details.append(f"{path}: {issue['type']}")
+        if issue["msg"] == "Value error, An export requires resolved instance semantics":
+            details.append(
+                "choice.scope exports a pose but semantics.status is uncertain. "
+                "If identity and up are supported, front uncertainty belongs in front_mode "
+                "and directions, and an up_only choice is possible. If identity is uncertain, "
+                "choose unresolved. Do not change evidence claims just to pass validation."
+            )
+    return message + " " + "; ".join(details)
 
 
 def call_policy[Reply: BaseModel](
@@ -101,9 +129,6 @@ def call_policy[Reply: BaseModel](
         reply = reply_type.model_validate_json(saved["response"]["raw_text"])
     except ValueError as error:
         event(root, "model_reply_rejected", call=name, error_type=type(error).__name__)
-        raise InvalidPolicyReply(
-            "Response does not match the required JSON schema; check field types, "
-            "required arguments and semantic/pose consistency."
-        ) from None
+        raise InvalidPolicyReply(validation_feedback(error, reply_type)) from None
     event(root, "model_reply_parsed", call=name)
     return reply

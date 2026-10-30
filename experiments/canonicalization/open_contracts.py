@@ -16,7 +16,10 @@ class IdentityHypothesis(BaseModel):
 
 class ObjectSemantics(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
-    status: Literal["resolved", "uncertain"]
+    status: Literal["resolved", "uncertain"] = Field(
+        description="Identity and observable up meaning, not front certainty. A resolved "
+        "identity can have an unknown front and an up-only pose."
+    )
     hypotheses: list[IdentityHypothesis] = Field(min_length=1, max_length=3)
     up_description: str = Field(max_length=500)
     front_mode: Literal["unique", "multiple", "unspecified", "unknown"]

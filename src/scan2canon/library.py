@@ -35,7 +35,7 @@ class IdentityClaim(Model):
 class DirectionClaim(Model):
     id: Text
     axis: Literal["up", "front"]
-    role: Literal["upright", "functional", "presentation", "structural"]
+    role: Literal["upright", "functional", "presentation", "structural", "model_reference"]
     description: Text
     from_part: Text
     to_part: Text

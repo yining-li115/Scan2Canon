@@ -36,25 +36,37 @@ Every action includes a reason; nonterminal actions also require expected eviden
 instance identity hypothesis after observing new evidence. Function and decorative
 shape remain separate fields. No fixed category label is required as input.
 
-The current route (`oa-evidence-agent-v3`) has no category direction table, lookup
-action or category-name menu. The model proposes instance direction meanings from
-visible evidence. Multiple defensible fronts should retain ambiguity rather than
-become an invented standard. No category definitions were moved into the prompt.
-Cross-instance agreement is evaluated separately; it is not guaranteed by this
-change. Historical v1/v2 jobs are preserved and cannot resume with the changed code
-or action schema. Start a new job using the same raw input bundles.
+The current route (`oa-evidence-agent-v4`) adopts OA V2's learned coordinate frame
+as its reference. The agent reviews the OA proposals against visible part relations,
+rather than independently choosing a preferred functional or presentation front.
+There is no category direction table, lookup action or category-name menu. Another
+sensible display direction can remain an unselected hypothesis without vetoing the
+adopted reference. Conflicting OA branches, unsupported part relations or contradictory
+observations still require further evidence or a partial/unresolved result.
+
+Requests and final reports retain `orientation_reference`, including the upstream
+axis mapping and `category_annotation_verified: false`. A model-relative proposal
+does not certify the category's training labels, semantic correctness or cross-instance
+agreement. Historical v1–v3 jobs are preserved and cannot resume with the changed code
+or action schema. Start a new job using the same raw input bundles. Library import
+continues to accept completed v3 jobs without retroactively assigning this reference.
+
+The [OA-reference trial](experiments/2026-10-30-oa-reference-review.md) records the
+source research, a failed first attempt, improved validation feedback and two final
+up-only results. The revised framing has not yet established full-frame agreement.
 
 ## Direction meanings and projected part checks
 
 Every agent turn now contains `directions`, separate from its identity description:
 
 - `hypotheses`: named up/front hypotheses, each with a role (`upright`, `functional`,
-  `presentation`, `structural`), a visible `from_part → to_part` definition and
+  `presentation`, `structural`, `model_reference`), a visible `from_part → to_part` definition and
   image citations. These role names are not a category list or priority ordering.
 - `issues`: `missing_observation`, `competing_definitions` or
   `conflicting_observations`, each attached to an axis. Competing definitions need
-  at least two explicit hypotheses. Additional images can resolve missing parts
-  but do not automatically select between meaningful task definitions.
+  at least two explicit hypotheses. Under v4 these are conflicts within the adopted
+  OA reference; a separate possible task definition alone is not an unresolved issue.
+  A `model_reference` hypothesis still needs visible part anchors and the same checks.
 - `symmetry`: an unverified yaw hypothesis (`unknown`, `none`, `discrete`,
   `continuous`), with geometry/appearance basis, evidence and counterevidence.
   It never authorizes symmetry reduction or proves equivalence of poses.

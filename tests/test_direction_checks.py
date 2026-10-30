@@ -178,3 +178,18 @@ def test_conflicting_checks_cannot_be_hidden_by_one_passing_check(
     with pytest.raises(ValueError, match="without conflicting checks"):
         AgentController(policy, OpenGeometryTools("fixture")).run(*bundles, root, max_calls=2)
     assert not list(root.rglob("canonical.glb"))
+
+
+def test_model_reference_cannot_bypass_missing_or_conflicting_checks() -> None:
+    value = direction_fixture(pose())
+    value["hypotheses"][1]["role"] = "model_reference"
+    assessment = DirectionAssessment.model_validate(value)
+    for status in ("indeterminate", "conflict"):
+        checks = {
+            "checks": [
+                {"hypothesis_id": "up", "candidate_id": 0, "status": "compatible"},
+                {"hypothesis_id": "front", "candidate_id": 0, "status": status},
+            ]
+        }
+        with pytest.raises(ValueError, match="compatible projected part check"):
+            validate_export(assessment, checks, "full_frame", 0)

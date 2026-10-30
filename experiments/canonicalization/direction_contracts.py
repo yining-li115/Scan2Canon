@@ -9,7 +9,7 @@ class DirectionHypothesis(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
     id: str = Field(min_length=1, max_length=60)
     axis: Literal["up", "front"]
-    role: Literal["upright", "functional", "presentation", "structural"]
+    role: Literal["upright", "functional", "presentation", "structural", "model_reference"]
     description: str = Field(min_length=1, max_length=600)
     from_part: str = Field(min_length=1, max_length=150)
     to_part: str = Field(min_length=1, max_length=150)

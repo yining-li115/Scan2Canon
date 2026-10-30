@@ -11,6 +11,10 @@ scores rotations against all three saved OA angle marginals and hands competing
 proposals to the evidence agent. It is a CPU development route; decoded consensus
 remains the default and neither method certifies semantic correctness.
 
+The [OA-reference agent trial](experiments/2026-10-30-oa-reference-review.md) adopts
+OA's learned frame explicitly while retaining the existing export checks. Its two
+mug results remain up-only; the revised agent has not established front consistency.
+
 This is a Scan2Canon integration and consensus baseline, not a reproduction of the
 complete CanoVerse or CANIS methods. It remains independent of the production worker.
 This inference adapter does not perform semantic review. The separate

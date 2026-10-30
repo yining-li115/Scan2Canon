@@ -1,11 +1,12 @@
 """Import a completed evidence-agent job into the local object library, without inference."""
 
 import argparse
+import json
 from pathlib import Path
 from uuid import NAMESPACE_URL, UUID, uuid5
 
 from experiments.artifacts import read_json, sha256
-from experiments.canonicalization.agent_contracts import AgentTurn
+from experiments.canonicalization.agent_contracts import ORIENTATION_REFERENCE, AgentTurn
 from experiments.orientation.common import checked_file
 from scan2canon.library import Assessment, DirectionClaim, EvidenceRef, IdentityClaim, ObjectRecord
 from scan2canon.ports import ObjectLibrary
@@ -35,7 +36,7 @@ def import_job(
     report_path = reports[0]
     report = read_json(report_path)
     if (
-        report.get("route") != "oa-evidence-agent-v3"
+        report.get("route") not in {"oa-evidence-agent-v3", "oa-evidence-agent-v4"}
         or report.get("stop_reason") != "agent_finished"
     ):
         raise ValueError("Unsupported or nonterminal evidence-agent result")
@@ -46,6 +47,12 @@ def import_job(
         raise ValueError("Final model response is unavailable")
     call_path = checked_file(job, f"calls/{call_name}.json", call_state["sha256"])
     call = read_json(call_path)
+    if report["route"] == "oa-evidence-agent-v4" and (
+        report.get("orientation_reference") != ORIENTATION_REFERENCE
+        or json.loads(call["request"]["prompt"].rsplit("\n", 1)[-1]).get("orientation_reference")
+        != ORIENTATION_REFERENCE
+    ):
+        raise ValueError("OA reference must match the recorded model request and route")
     turn = AgentTurn.model_validate_json(call["response"]["raw_text"])
     if (
         turn.action.kind != "finish"
